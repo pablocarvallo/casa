@@ -1,0 +1,1722 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Panel Casa</title>
+<!--STANDALONE:START-->
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Casa">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#DFE9FD" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#13244A" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg?v=1">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=1">
+<!--STANDALONE:END-->
+<style>
+/* Concepto: la portada de las apps de la casa. Arriba, lo que hay que atender hoy; luego las cuatro cuentas
+   (FAN, Master, LiderBCI y Copec) y la lista de la casa (pagos, gas, cápsula, sábanas y mesadas).
+   El panel no guarda datos propios: lee lo que cada app publica en el buzón privado de GitHub. */
+/*DS:TOKENS:START*/
+/* ── Domésticas · sistema de diseño común (v1) ──────────────────────────────
+   Paleta: #2950F4 · #4D78F3 · #719DF6 · #99C2F8 · #BDEBFB, con el azul marino #182D4A de fondo oscuro.
+   Estilo iOS 27: tipografía del sistema (SF Pro), tarjetas blancas sobre fondo agrupado,
+   barras y botones de vidrio, cápsulas, esquinas amplias. Igual en todas las apps de la casa. */
+:root {
+  --ds-b1: #2950F4; --ds-b2: #4D78F3; --ds-b3: #719DF6; --ds-b4: #99C2F8; --ds-b5: #BDEBFB; --ds-navy: #182D4A;
+  --ds-font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro", system-ui, "Helvetica Neue", Arial, sans-serif;
+  --ds-font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro", system-ui, "Helvetica Neue", Arial, sans-serif;
+  --ds-font-round: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --ds-font-mono: ui-monospace, "SF Mono", Menlo, monospace;
+  --ds-r-card: 24px; --ds-r-inner: 16px; --ds-r-field: 14px; --ds-r-sheet: 34px; --ds-r-pill: 999px;
+
+  --ds-bg: #EFF3FB;
+  --ds-bg-top: #DFE9FD;
+  --ds-surface: #FFFFFF;
+  --ds-surface-2: #F3F6FD;
+  --ds-fill: rgba(41, 80, 244, 0.07);
+  --ds-fill-2: rgba(41, 80, 244, 0.13);
+  --ds-ink: #0E1B33;
+  --ds-ink-2: #55617A;
+  --ds-ink-3: #8691A8;
+  --ds-line: rgba(24, 45, 74, 0.12);
+  --ds-line-2: rgba(24, 45, 74, 0.2);
+  --ds-tint: #2950F4;
+  --ds-tint-soft: #E5ECFE;
+  --ds-btn: #2950F4;
+  --ds-on-btn: #FFFFFF;
+  --ds-pos: #157A43; --ds-pos-soft: #DDF4E6;
+  --ds-neg: #D1281C; --ds-neg-soft: #FDE8E6;
+  --ds-warn: #A35500; --ds-warn-soft: #FFF0D9;
+  --ds-hero: radial-gradient(120% 90% at 100% 0%, rgba(189, 235, 251, 0.45) 0%, rgba(189, 235, 251, 0) 55%), linear-gradient(150deg, #4D78F3 0%, #2950F4 58%, #2141D6 100%);
+  --ds-hero-ink: #FFFFFF;
+  --ds-hero-ink-2: rgba(255, 255, 255, 0.84);
+  --ds-hero-line: rgba(255, 255, 255, 0.28);
+  --ds-hero-glass: rgba(255, 255, 255, 0.18);
+  --ds-glass: rgba(255, 255, 255, 0.7);
+  --ds-glass-strong: rgba(255, 255, 255, 0.86);
+  --ds-glass-line: rgba(255, 255, 255, 0.85);
+  --ds-glass-edge: rgba(14, 27, 51, 0.1);
+  --ds-glass-blur: blur(22px) saturate(1.8);
+  --ds-shadow-1: 0 1px 2px rgba(24, 45, 74, 0.05), 0 4px 14px rgba(24, 45, 74, 0.05);
+  --ds-shadow-2: 0 12px 32px rgba(24, 45, 74, 0.16), 0 2px 8px rgba(24, 45, 74, 0.08);
+  --ds-shadow-btn: inset 0 1px 0 rgba(255, 255, 255, 0.32), 0 6px 16px rgba(41, 80, 244, 0.26);
+  --ds-scrim: rgba(14, 27, 51, 0.36);
+  --ds-chart-1: #2950F4; --ds-chart-2: #719DF6; --ds-chart-3: #99C2F8; --ds-chart-4: #BDEBFB;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ds-bg: #0A1224;
+    --ds-bg-top: #13244A;
+    --ds-surface: #152340;
+    --ds-surface-2: #1C2C4D;
+    --ds-fill: rgba(113, 157, 246, 0.12);
+    --ds-fill-2: rgba(113, 157, 246, 0.2);
+    --ds-ink: #EEF3FF;
+    --ds-ink-2: #A9B6D0;
+    --ds-ink-3: #77859F;
+    --ds-line: rgba(189, 235, 251, 0.11);
+    --ds-line-2: rgba(189, 235, 251, 0.2);
+    --ds-tint: #8EB0FA;
+    --ds-tint-soft: rgba(113, 157, 246, 0.18);
+    --ds-btn: #3A62F5;
+    --ds-on-btn: #FFFFFF;
+    --ds-pos: #5DD68E; --ds-pos-soft: rgba(93, 214, 142, 0.14);
+    --ds-neg: #FF8A80; --ds-neg-soft: rgba(255, 138, 128, 0.14);
+    --ds-warn: #FFB65C; --ds-warn-soft: rgba(255, 182, 92, 0.14);
+    --ds-hero: radial-gradient(120% 90% at 100% 0%, rgba(189, 235, 251, 0.28) 0%, rgba(189, 235, 251, 0) 55%), linear-gradient(150deg, #3D68F2 0%, #2950F4 55%, #1C38C2 100%);
+    --ds-glass: rgba(24, 40, 70, 0.62);
+    --ds-glass-strong: rgba(24, 40, 70, 0.84);
+    --ds-glass-line: rgba(255, 255, 255, 0.14);
+    --ds-glass-edge: rgba(0, 0, 0, 0.4);
+    --ds-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --ds-shadow-2: 0 14px 36px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+    --ds-shadow-btn: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 16px rgba(0, 0, 0, 0.35);
+    --ds-scrim: rgba(0, 0, 0, 0.55);
+    --ds-chart-1: #719DF6; --ds-chart-2: #4D78F3; --ds-chart-3: #99C2F8; --ds-chart-4: #BDEBFB;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ds-bg: #0A1224;
+  --ds-bg-top: #13244A;
+  --ds-surface: #152340;
+  --ds-surface-2: #1C2C4D;
+  --ds-fill: rgba(113, 157, 246, 0.12);
+  --ds-fill-2: rgba(113, 157, 246, 0.2);
+  --ds-ink: #EEF3FF;
+  --ds-ink-2: #A9B6D0;
+  --ds-ink-3: #77859F;
+  --ds-line: rgba(189, 235, 251, 0.11);
+  --ds-line-2: rgba(189, 235, 251, 0.2);
+  --ds-tint: #8EB0FA;
+  --ds-tint-soft: rgba(113, 157, 246, 0.18);
+  --ds-btn: #3A62F5;
+  --ds-on-btn: #FFFFFF;
+  --ds-pos: #5DD68E; --ds-pos-soft: rgba(93, 214, 142, 0.14);
+  --ds-neg: #FF8A80; --ds-neg-soft: rgba(255, 138, 128, 0.14);
+  --ds-warn: #FFB65C; --ds-warn-soft: rgba(255, 182, 92, 0.14);
+  --ds-hero: radial-gradient(120% 90% at 100% 0%, rgba(189, 235, 251, 0.28) 0%, rgba(189, 235, 251, 0) 55%), linear-gradient(150deg, #3D68F2 0%, #2950F4 55%, #1C38C2 100%);
+  --ds-glass: rgba(24, 40, 70, 0.62);
+  --ds-glass-strong: rgba(24, 40, 70, 0.84);
+  --ds-glass-line: rgba(255, 255, 255, 0.14);
+  --ds-glass-edge: rgba(0, 0, 0, 0.4);
+  --ds-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --ds-shadow-2: 0 14px 36px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+  --ds-shadow-btn: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 6px 16px rgba(0, 0, 0, 0.35);
+  --ds-scrim: rgba(0, 0, 0, 0.55);
+  --ds-chart-1: #719DF6; --ds-chart-2: #4D78F3; --ds-chart-3: #99C2F8; --ds-chart-4: #BDEBFB;
+  color-scheme: dark;
+}
+html { background: var(--ds-bg); }
+body {
+  font-family: var(--ds-font);
+  background: linear-gradient(180deg, var(--ds-bg-top) 0, var(--ds-bg) 340px) no-repeat, var(--ds-bg);
+  color: var(--ds-ink);
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.012em;
+}
+/* ── fin de los tokens comunes ── */
+
+/* Variables propias de Panel Casa */
+:root {
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  --piti: #2950F4; --piti-bg: #E5ECFE; --emi: #0B85BD; --emi-bg: #DCF2FB;
+  --ring: #C3CBDB;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --piti: #8EB0FA; --piti-bg: rgba(113, 157, 246, 0.18); --emi: #7FD3F5; --emi-bg: rgba(127, 211, 245, 0.15); --ring: #42537A; }
+}
+:root[data-theme="dark"] { --piti: #8EB0FA; --piti-bg: rgba(113, 157, 246, 0.18); --emi: #7FD3F5; --emi-bg: rgba(127, 211, 245, 0.15); --ring: #42537A; }
+/*DS:TOKENS:END*/
+
+/*DS:LAYER:START*/
+/* ── Domésticas · base común (v1) ── */
+html { background: var(--ds-bg); }
+body {
+  font-family: var(--ds-font);
+  background: linear-gradient(180deg, var(--ds-bg-top) 0, var(--ds-bg) 360px) no-repeat, var(--ds-bg);
+  color: var(--ds-ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+h1, h2, h3, h4 { font-family: var(--ds-font-display); letter-spacing: -0.022em; }
+button, input, select, textarea { font-family: inherit; }
+::selection { background: var(--ds-tint-soft); }
+:focus-visible { outline-color: var(--ds-tint); }
+input, select, textarea { accent-color: var(--ds-btn); caret-color: var(--ds-tint); }
+@keyframes ds-rise { from { transform: translateY(28px); opacity: 0; } to { transform: none; opacity: 1; } }
+.mark.app-icon, img.app-icon { display: block; overflow: hidden; padding: 0; background: none; object-fit: cover; border-radius: 23%; box-shadow: 0 0 0 0.5px rgba(14, 27, 51, 0.08), 0 4px 12px rgba(41, 80, 244, 0.25); }
+/* ── fin de la base común ── */
+
+/* ── Panel Casa ── */
+*, *::before, *::after { box-sizing: border-box; }
+html.lock { overflow: hidden; }
+[hidden] { display: none !important; }
+body { margin: 0; padding-inline: 16px; font-size: 17px; line-height: 1.38; letter-spacing: -0.012em; -webkit-text-size-adjust: 100%; }
+.app { max-width: 480px; margin: 0 auto; padding-block: 14px 48px; display: flex; flex-direction: column; gap: 22px; }
+button, input, textarea { font: inherit; color: inherit; letter-spacing: inherit; }
+button { cursor: pointer; touch-action: manipulation; -webkit-user-select: none; user-select: none; }
+svg { display: block; flex: none; }
+h1, h2, h3 { margin: 0; text-wrap: balance; }
+.eyebrow { font-size: 13px; font-weight: 600; color: var(--ds-ink-2); letter-spacing: -0.005em; }
+.muted { margin: 0; color: var(--ds-ink-2); font-size: 15px; }
+:focus-visible { outline: 3px solid var(--ds-tint); outline-offset: 2px; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* Encabezado: icono + fecha + título grande, y el botón para actualizar */
+.top { display: flex; align-items: center; gap: 12px; padding-top: 6px; }
+.top .app-icon { width: 46px; height: 46px; flex: none; }
+.top-txt { flex: 1; min-width: 0; }
+.top h1 { font-size: clamp(27px, 8.6vw, 34px); line-height: 1.08; font-weight: 700; letter-spacing: -0.03em; }
+.round-btn {
+  width: 44px; height: 44px; flex: none; display: grid; place-items: center; padding: 0; border: 0.5px solid var(--ds-glass-line); border-radius: 50%;
+  background: var(--ds-glass); color: var(--ds-tint); box-shadow: var(--ds-shadow-1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: var(--ds-glass-blur); backdrop-filter: var(--ds-glass-blur); transition: transform 0.16s ease;
+}
+.round-btn:active { transform: scale(0.94); }
+.round-btn.spin svg { animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Botones en cápsula */
+.btn {
+  min-height: 50px; padding: 0 20px; border: 0; border-radius: var(--ds-r-pill);
+  font-size: 17px; font-weight: 600; letter-spacing: -0.01em;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  transition: transform 0.16s ease, opacity 0.16s ease, background-color 0.16s ease;
+}
+.btn:active { transform: scale(0.97); opacity: 0.88; }
+.btn.primary { background: var(--ds-btn); color: var(--ds-on-btn); box-shadow: var(--ds-shadow-btn); }
+.btn.tonal { background: var(--ds-tint-soft); color: var(--ds-tint); }
+.btn.ghost { background: var(--ds-surface); color: var(--ds-tint); box-shadow: var(--ds-shadow-1); }
+.btn.danger { background: var(--ds-neg-soft); color: var(--ds-neg); }
+.btn.danger.armed { background: var(--ds-neg); color: #fff; }
+.btn.small { min-height: 38px; padding: 0 16px; font-size: 15px; }
+.btn.block { width: 100%; }
+
+/* Tarjeta principal: lo que hay que atender hoy */
+.hero {
+  position: relative; overflow: hidden; isolation: isolate;
+  border-radius: 28px; padding: 18px 20px 18px; background: var(--ds-hero); color: var(--ds-hero-ink);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), inset 0 -1px 0 rgba(14, 27, 51, 0.16), 0 16px 34px rgba(41, 80, 244, 0.26);
+}
+.hero::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 38%); }
+.hero-art { position: absolute; right: -26px; bottom: -40px; z-index: -1; width: 168px; height: 168px; opacity: 0.12; color: #fff; }
+.hero .eyebrow { font-size: 15px; color: var(--ds-hero-ink-2); }
+.count-big { margin-top: 6px; font-family: var(--ds-font-round); font-weight: 700; font-size: 52px; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.count-big span { margin-left: 8px; font-size: 22px; font-weight: 600; letter-spacing: -0.01em; color: var(--ds-hero-ink-2); }
+.count-big.ok { font-size: 38px; }
+.todo { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.todo li { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; font-size: 16px; line-height: 1.3; border-top: 0.5px solid var(--ds-hero-line); }
+.todo li:first-child { border-top: 0; }
+.todo i { width: 9px; height: 9px; flex: none; margin-top: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 10px rgba(189, 235, 251, 0.9); }
+.todo i.warn { background: #FFD08A; box-shadow: 0 0 10px rgba(255, 208, 138, 0.8); }
+.todo i.neg { background: #FFB0A8; box-shadow: 0 0 10px rgba(255, 176, 168, 0.85); }
+.hero-cta { margin-top: 14px; display: inline-flex; align-items: center; min-height: 40px; padding: 0 18px; border: 0; border-radius: var(--ds-r-pill); background: #fff; color: var(--ds-b1); font-size: 16px; font-weight: 700; box-shadow: 0 6px 16px rgba(14, 27, 51, 0.2); }
+.hero-cta:active { transform: scale(0.97); }
+
+/* Títulos de sección */
+.sec { display: flex; flex-direction: column; gap: 10px; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 0 6px; }
+.sec-head h2 { font-size: 22px; font-weight: 700; line-height: 1.2; letter-spacing: -0.025em; }
+.sec-note { flex: none; font-size: 13px; font-weight: 600; color: var(--ds-ink-2); }
+
+/* Cuentas: cuatro tarjetas en dos columnas */
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.tile {
+  min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 3px; padding: 14px 14px 13px;
+  border: 0; border-radius: 22px; background: var(--ds-surface); box-shadow: var(--ds-shadow-1); text-align: left; color: var(--ds-ink);
+  transition: transform 0.16s ease;
+}
+.tile:active { transform: scale(0.97); }
+.t-head { display: flex; align-items: center; gap: 8px; min-width: 0; margin-bottom: 6px; }
+.t-head img { width: 26px; height: 26px; flex: none; border-radius: 23%; box-shadow: 0 0 0 0.5px rgba(14, 27, 51, 0.08); }
+.t-head b { flex: 1; min-width: 0; font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t-amt { font-family: var(--ds-font-round); font-size: 24px; font-weight: 700; line-height: 1.1; letter-spacing: -0.025em; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t-amt.neg { color: var(--ds-neg); }
+.t-amt.dim { color: var(--ds-ink-3); }
+.t-cap { font-size: 13px; color: var(--ds-ink-2); }
+.t-last { margin-top: auto; padding-top: 8px; border-top: 0.5px solid var(--ds-line); display: flex; flex-direction: column; font-size: 13px; line-height: 1.3; color: var(--ds-ink-2); }
+.t-last > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.t-last b { font-weight: 600; color: var(--ds-ink); }
+.t-gap { height: 6px; flex: none; }
+.t-msg { font-size: 13px; color: var(--ds-ink-2); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.tag { display: inline-flex; align-items: center; min-height: 20px; padding: 0 8px; border-radius: 10px; background: var(--ds-warn-soft); color: var(--ds-warn); font-size: 12px; font-weight: 600; font-style: normal; white-space: nowrap; }
+.tag.ok { background: var(--ds-pos-soft); color: var(--ds-pos); }
+.tag.neg { background: var(--ds-neg-soft); color: var(--ds-neg); }
+.tag.info { background: var(--ds-tint-soft); color: var(--ds-tint); }
+
+/* La casa: lista agrupada estilo Ajustes */
+.list { list-style: none; margin: 0; padding: 0; background: var(--ds-surface); border-radius: var(--ds-r-card); overflow: hidden; box-shadow: var(--ds-shadow-1); }
+.list > li { position: relative; }
+.list > li + li::before { content: ""; position: absolute; top: 0; right: 0; left: 62px; z-index: 1; border-top: 0.5px solid var(--ds-line-2); pointer-events: none; }
+.row {
+  width: 100%; min-height: 66px; display: flex; align-items: center; gap: 12px; padding: 11px 12px 11px 14px;
+  border: 0; background: transparent; text-align: left; color: var(--ds-ink); transition: background-color 0.15s ease;
+}
+.row:active { background: var(--ds-fill); }
+.r-icon { width: 36px; height: 36px; flex: none; border-radius: 23%; box-shadow: 0 0 0 0.5px rgba(14, 27, 51, 0.08), 0 2px 6px rgba(41, 80, 244, 0.18); }
+.r-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.r-txt b { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+.r-txt small { font-size: 14px; line-height: 1.3; color: var(--ds-ink-2); }
+.r-txt small.warn { color: var(--ds-warn); font-weight: 600; }
+.r-txt small.neg { color: var(--ds-neg); font-weight: 600; }
+.r-txt small.dim { color: var(--ds-ink-3); }
+.r-bar { margin-top: 6px; height: 6px; border-radius: 99px; background: var(--ds-fill-2); overflow: hidden; }
+.r-bar span { display: block; height: 100%; border-radius: inherit; background: var(--ds-b2); }
+.r-bar.warn span { background: var(--ds-warn); }
+.r-bar.neg span { background: var(--ds-neg); }
+.r-end { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; text-align: right; }
+.r-big { font-family: var(--ds-font-round); font-size: 24px; font-weight: 700; line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+.r-big.warn { color: var(--ds-warn); }
+.r-big.neg { color: var(--ds-neg); }
+.r-unit { font-size: 12px; font-weight: 600; color: var(--ds-ink-2); }
+.r-chev { flex: none; color: var(--ds-ink-3); margin-left: -2px; }
+.ring { position: relative; width: 44px; height: 44px; flex: none; }
+.ring svg { width: 44px; height: 44px; transform: rotate(-90deg); }
+.ring .bg { stroke: var(--ds-fill-2); }
+.ring .fg { stroke: var(--ds-pos); transition: stroke-dashoffset 0.5s cubic-bezier(0.2, 0.9, 0.25, 1); }
+.ring.part .fg { stroke: var(--ds-b2); }
+.ring b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.who { display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 999px; font-size: 15px; font-weight: 700; }
+.who.piti { background: var(--piti-bg); color: var(--piti); }
+.who.emi { background: var(--emi-bg); color: var(--emi); }
+
+/* Pie: hora de la última lectura y conexiones */
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 6px; }
+.foot p { margin: 0; font-size: 13px; color: var(--ds-ink-2); }
+.link { min-height: 40px; padding: 0 2px; border: 0; background: none; color: var(--ds-tint); font-size: 15px; font-weight: 600; }
+
+/* Hojas inferiores */
+.sheet { position: fixed; inset: 0; z-index: 10; display: flex; align-items: flex-end; justify-content: center; }
+.backdrop { position: absolute; inset: 0; background: var(--ds-scrim); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); animation: fade 0.2s ease-out; }
+@keyframes fade { from { opacity: 0; } }
+.panel {
+  position: relative; width: 100%; max-width: 480px; max-height: 92%; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 30px 18px calc(22px + env(safe-area-inset-bottom, 0px));
+  background: var(--ds-surface); border-radius: var(--ds-r-sheet) var(--ds-r-sheet) 0 0;
+  box-shadow: 0 -10px 40px rgba(14, 27, 51, 0.18); animation: ds-rise 0.28s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+.panel::before { content: ""; position: absolute; top: 8px; left: 50%; width: 38px; height: 5px; margin-left: -19px; border-radius: 3px; background: var(--ds-line-2); }
+.panel:focus { outline: none; }
+.panel > * { flex-shrink: 0; }
+.p-head { display: flex; align-items: center; gap: 12px; }
+.p-head img { width: 44px; height: 44px; flex: none; border-radius: 23%; box-shadow: 0 0 0 0.5px rgba(14, 27, 51, 0.08), 0 4px 12px rgba(41, 80, 244, 0.22); }
+.p-head div { min-width: 0; }
+.panel h2 { font-size: 24px; font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; }
+.panel .sub { margin: 2px 0 0; font-size: 15px; color: var(--ds-ink-2); }
+.panel .big { font-family: var(--ds-font-round); font-size: 40px; font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.panel .big.neg { color: var(--ds-neg); }
+.grp { margin: 6px 0 -4px; padding: 0 4px; font-size: 13px; font-weight: 600; color: var(--ds-ink-2); }
+.panel .list { background: var(--ds-surface-2); box-shadow: none; }
+.panel .list > li + li::before { left: 16px; }
+.kv { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; padding: 10px 16px; font-size: 16px; }
+.kv > span:first-child { min-width: 0; color: var(--ds-ink); }
+.kv > span:last-child { flex: none; color: var(--ds-ink-2); text-align: right; font-variant-numeric: tabular-nums; }
+.kv small { display: block; font-size: 13px; color: var(--ds-ink-2); }
+.kv.icon { justify-content: flex-start; }
+.kv.icon img { width: 30px; height: 30px; flex: none; border-radius: 23%; }
+.kv.icon > span:nth-child(2) { flex: 1; }
+.kv .ok { color: var(--ds-pos); font-weight: 600; }
+.kv .off { color: var(--ds-ink-3); }
+.kv.done > span:first-child { color: var(--ds-ink-2); text-decoration: line-through; text-decoration-color: var(--ds-ink-3); }
+.mini { width: 20px; height: 20px; flex: none; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--ring); color: #fff; }
+.done .mini { background: var(--ds-pos); border-color: var(--ds-pos); }
+.mini svg { width: 12px; height: 12px; }
+.kv .lead { display: flex; align-items: center; gap: 10px; }
+.hint { margin: 0; padding: 0 4px; font-size: 14px; color: var(--ds-ink-2); }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; margin: 0; }
+.field > span { padding: 0 0 0 4px; font-size: 13px; font-weight: 600; color: var(--ds-ink-2); }
+.field textarea {
+  display: block; width: 100%; min-height: 96px; padding: 12px 14px; border: 1.5px solid transparent; border-radius: var(--ds-r-field);
+  background: var(--ds-surface-2); font-family: var(--ds-font-mono); font-size: 13px; line-height: 1.4; color: var(--ds-ink); resize: vertical; -webkit-appearance: none; appearance: none;
+}
+.field textarea:focus { outline: none; border-color: var(--ds-tint); box-shadow: 0 0 0 4px var(--ds-tint-soft); }
+.field textarea::placeholder { color: var(--ds-ink-3); font-family: var(--ds-font); font-size: 15px; }
+.err { margin: 0; padding: 10px 12px; border-radius: var(--ds-r-field); background: var(--ds-neg-soft); color: var(--ds-neg); font-size: 15px; font-weight: 600; }
+.note { margin: 0; padding: 12px 14px; border-radius: var(--ds-r-field); background: var(--ds-tint-soft); color: var(--ds-ink); font-size: 15px; }
+.note.warn { background: var(--ds-warn-soft); }
+.steps { margin: 0; padding: 0 0 0 22px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; color: var(--ds-ink); }
+
+/* Aviso flotante de vidrio */
+.toast {
+  position: fixed; left: 16px; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 20;
+  max-width: 448px; min-height: 46px; margin: 0 auto; padding: 10px 20px;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  border-radius: var(--ds-r-pill); background: rgba(14, 27, 51, 0.86); color: #fff; font-size: 15px;
+  -webkit-backdrop-filter: var(--ds-glass-blur); backdrop-filter: var(--ds-glass-blur);
+  box-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.25), 0 10px 30px rgba(14, 27, 51, 0.3);
+  animation: ds-rise 0.25s ease-out;
+}
+
+@media (max-width: 350px) {
+  .grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panel, .toast, .backdrop { animation: none; }
+  .round-btn.spin svg { animation-duration: 3s; }
+  .ring .fg { transition: none; }
+}
+/*DS:LAYER:END*/
+</style>
+</head>
+<body>
+
+<main class="app">
+  <header class="top">
+    <img class="mark app-icon" src="icons/apple-touch-icon.png?v=1" alt="">
+    <div class="top-txt">
+      <div class="eyebrow" id="today"></div>
+      <h1>Casa</h1>
+    </div>
+    <button type="button" class="round-btn" id="reload" data-act="reload" aria-label="Actualizar">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3M19.5 4.5v4.2h-4.2" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </header>
+
+  <section class="hero" id="hero" aria-label="Por atender hoy" aria-live="polite"></section>
+
+  <section class="sec" aria-labelledby="h-cuentas">
+    <div class="sec-head"><h2 id="h-cuentas">Cuentas</h2><span class="sec-note" id="acc-note"></span></div>
+    <div class="grid" id="accounts"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-casa">
+    <div class="sec-head"><h2 id="h-casa">La casa</h2></div>
+    <ul class="list" id="home"></ul>
+  </section>
+
+  <div class="foot">
+    <p id="stamp"></p>
+    <button type="button" class="link" data-act="settings">Conexiones</button>
+  </div>
+</main>
+<div class="sheet" id="sheet" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script>
+(function () {
+'use strict';
+
+/* ======================================================================================================== */
+/* Lectores de las cuentas: los mismos del panel de widgets de Copec (copec/widget/panel-widget.js).        */
+/* No se editan aquí: se copian con  python3 herramientas/armar-lectores.py <ruta a panel-widget.js>        */
+/* ======================================================================================================== */
+/*LECTORES:INICIO*/
+const MES = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const MESL = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+const ORDER = ['copec', 'fan', 'master', 'liderbci'];
+const APPS = {
+  copec: { name: 'Copec', title: 'Copec · widget' },
+  fan: { name: 'FAN', title: 'FAN · widget' },
+  master: { name: 'Master', title: 'Master · widget' },
+  liderbci: { name: 'LiderBCI', title: 'LiderBCI · widget' }
+};
+const KEYCHAIN = 'cuentas-panel';
+
+/* ---------- Formatos (los mismos de los cuatro widgets) ---------- */
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function dayKey(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function hm(d) { return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+function validDate(k) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(k))) return false;
+  const p = k.split('-'), d = new Date(Date.UTC(+p[0], +p[1] - 1, +p[2]));
+  return d.getUTCFullYear() === +p[0] && d.getUTCMonth() === +p[1] - 1 && d.getUTCDate() === +p[2];
+}
+function clean(s) { return String(s == null ? '' : s).replace(/\s+/g, ' ').trim().slice(0, 60); }
+function dots(n) { return String(Math.round(Math.abs(n))).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+function money(n) { return (n < 0 ? '−' : '') + '$' + dots(n); }
+function dayLabel(k) {
+  const t = new Date(), y = new Date(t.getFullYear(), t.getMonth(), t.getDate() - 1);
+  if (k === dayKey(t)) return 'hoy';
+  if (k === dayKey(y)) return 'ayer';
+  const p = k.split('-');
+  return (+p[2]) + ' ' + MES[+p[1] - 1];
+}
+
+/* ---------- GitHub ---------- */
+// Una misma consulta se hace una sola vez: FAN, Master y LiderBCI comparten el buzón y leen los mismos hitos.
+const asked = {};
+function ghFor(c) {
+  return function (path) {
+    const url = 'https://api.github.com/repos/' + c.repo + path, id = c.token + ' ' + url;
+    if (!asked[id]) asked[id] = getJSON(url, c.token);
+    return asked[id];
+  };
+}
+// Lo que la app publicó para su widget, en el hito con su nombre
+async function published(gh, title, app) {
+  const list = await gh('/milestones?state=all&per_page=100');
+  const ms = (Array.isArray(list) ? list : []).filter(function (x) { return x && x.title === title; })[0];
+  let st = null;
+  try { st = ms && ms.description ? JSON.parse(ms.description) : null; } catch (e) { st = null; }
+  return st && st.app === app ? st : null;
+}
+function sinceParam(read) {
+  return '&since=' + encodeURIComponent(new Date(read - 30 * 60000).toISOString().replace(/\.\d+Z$/, 'Z'));
+}
+
+/* ======================================================================================================== */
+/* Copec: saldo de la cuenta Copec Pay y últimos cargos de bip! (igual que widget/copec-widget.js)          */
+/* ======================================================================================================== */
+const COPEC = (function () {
+const MAX_AMOUNT = 9999999999;
+function atMs(at) { return new Date(+at.slice(0, 4), +at.slice(5, 7) - 1, +at.slice(8, 10), +at.slice(11, 13), +at.slice(14, 16)).getTime(); }
+
+/* LECTOR:INICIO */
+/* ---------- Lector de los avisos de Copec Pay ---------- */
+// El lector no depende de una frase exacta. De cada correo busca el monto, el comercio, la fecha y la hora del
+// cargo, vengan en una oración («…un cargo por $5.990 en NETFLIX el 10/10/2026 a las 03:12») o como una lista
+// de datos («Monto: $5.990 · Comercio: NETFLIX · Fecha: 10/10/2026 · Hora: 03:12»).
+//
+// La fecha y la hora que se guardan son las del cargo, no las de llegada del correo: los cargos se hacen de noche
+// y el correo llega recién al encender el iPhone. Si el aviso no trae la hora o la fecha, ver «settle».
+
+// Si Atajos entrega el correo mal decodificado, «é» llega como «Ã©» y el espacio duro como «Â ». Esto lo repara
+// letra por letra, sin tocar el texto que viene bien.
+var CP1252 = { 0x20ac: 0x80, 0x201a: 0x82, 0x0192: 0x83, 0x201e: 0x84, 0x2026: 0x85, 0x2020: 0x86, 0x2021: 0x87, 0x02c6: 0x88, 0x2030: 0x89, 0x0160: 0x8a,
+  0x2039: 0x8b, 0x0152: 0x8c, 0x017d: 0x8e, 0x2018: 0x91, 0x2019: 0x92, 0x201c: 0x93, 0x201d: 0x94, 0x2022: 0x95, 0x2013: 0x96, 0x2014: 0x97, 0x02dc: 0x98,
+  0x2122: 0x99, 0x0161: 0x9a, 0x203a: 0x9b, 0x0153: 0x9c, 0x017e: 0x9e, 0x0178: 0x9f };
+function contByte(ch) { var c = ch.charCodeAt(0); if (c > 0xff) c = CP1252[c] || 0; return c >= 0x80 && c <= 0xbf ? c : -1; }
+function demojibake(s) {
+  if (!/[ÂÃâ]/.test(s)) return s;
+  return s.replace(/[ÂÃ][^\u0000-\u007f]|â[^\u0000-\u007f]{2}/g, function (seq) {
+    var b1 = contByte(seq.charAt(1)), b2 = seq.length > 2 ? contByte(seq.charAt(2)) : 0;
+    if (b1 < 0 || b2 < 0) return seq;
+    return String.fromCharCode(seq.length > 2 ? (0x2 << 12) | ((b1 & 0x3f) << 6) | (b2 & 0x3f) : ((seq.charCodeAt(0) & 0x1f) << 6) | (b1 & 0x3f));
+  });
+}
+// Texto a bytes UTF-8 y de vuelta, escrito a mano: el mismo lector corre en el widget de Scriptable, sin las
+// funciones del navegador (TextDecoder, atob).
+function utf8Bytes(str, out) {
+  for (var i = 0; i < str.length; i++) {
+    var c = str.charCodeAt(i);
+    if (c >= 0xd800 && c <= 0xdbff && i + 1 < str.length) {
+      var d = str.charCodeAt(i + 1);
+      if (d >= 0xdc00 && d <= 0xdfff) { c = 0x10000 + ((c - 0xd800) << 10) + (d - 0xdc00); i++; }
+    }
+    if (c < 0x80) out.push(c);
+    else if (c < 0x800) out.push(0xc0 | c >> 6, 0x80 | c & 63);
+    else if (c < 0x10000) out.push(0xe0 | c >> 12, 0x80 | c >> 6 & 63, 0x80 | c & 63);
+    else out.push(0xf0 | c >> 18, 0x80 | c >> 12 & 63, 0x80 | c >> 6 & 63, 0x80 | c & 63);
+  }
+  return out;
+}
+function utf8Text(b) {   // null si los bytes no son UTF-8 válido
+  var out = '', i = 0;
+  while (i < b.length) {
+    var c = b[i++];
+    if (c < 0x80) { out += String.fromCharCode(c); continue; }
+    var n = c >= 0xc2 && c < 0xe0 ? 1 : c >= 0xe0 && c < 0xf0 ? 2 : c >= 0xf0 && c < 0xf5 ? 3 : 0;
+    if (!n || i + n > b.length) return null;
+    var cp = c & (n === 1 ? 0x1f : n === 2 ? 0x0f : 0x07);
+    for (var k = 0; k < n; k++) { var x = b[i++]; if ((x & 0xc0) !== 0x80) return null; cp = cp << 6 | x & 0x3f; }
+    if (cp >= 0x10000) { cp -= 0x10000; out += String.fromCharCode(0xd800 + (cp >> 10), 0xdc00 + (cp & 0x3ff)); }
+    else out += String.fromCharCode(cp);
+  }
+  return out;
+}
+var CP1252_BACK = {};
+Object.keys(CP1252).forEach(function (k) { CP1252_BACK[CP1252[k]] = +k; });
+// Bytes a texto: UTF-8 si es válido; si no, la codificación habitual de los correos en español (Windows-1252)
+function bytesToText(bytes) {
+  var t = utf8Text(bytes);
+  if (t !== null) return t;
+  var out = '';
+  for (var i = 0; i < bytes.length; i++) out += String.fromCharCode(CP1252_BACK[bytes[i]] || bytes[i]);
+  return out;
+}
+var B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+function b64Bytes(str) {
+  var out = [], acc = 0, bits = 0;
+  for (var i = 0; i < str.length; i++) {
+    var v = B64.indexOf(str.charAt(i));
+    if (v < 0) continue;
+    acc = (acc << 6 | v) & 0xffffff; bits += 6;
+    if (bits >= 8) { bits -= 8; out.push(acc >> bits & 0xff); }
+  }
+  return out;
+}
+// Un correo puede llegar tal como viaja por la red: con «=C3=A9» y líneas cortadas con «=», o entero en base64
+function unwrapMail(raw) {
+  var src = String(raw == null ? '' : raw), out = [];
+  if (/=\r?\n|=[0-9A-Fa-f]{2}/.test(src)) {
+    var q = src.replace(/=\r?\n/g, ''), bytes = [], last = 0, re = /(?:=[0-9A-Fa-f]{2})+/g, m;
+    while ((m = re.exec(q))) {
+      utf8Bytes(q.slice(last, m.index), bytes);
+      m[0].slice(1).split('=').forEach(function (h) { bytes.push(parseInt(h, 16)); });
+      last = re.lastIndex;
+    }
+    utf8Bytes(q.slice(last), bytes);
+    out.push(bytesToText(bytes));
+  }
+  var b = src.replace(/\s+/g, '');
+  if (b.length >= 80 && b.length % 4 === 0 && /^[A-Za-z0-9+\/]+={0,2}$/.test(b)) out.push(bytesToText(b64Bytes(b)));
+  return out;
+}
+// Entidades de HTML («&eacute;», «&#36;»): las habituales en un correo en español
+var ENT = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", dollar: '$', num: '#', percnt: '%', excl: '!', quest: '?', ast: '*',
+  colon: ':', semi: ';', comma: ',', period: '.', sol: '/', lpar: '(', rpar: ')', deg: '°', ordm: 'º', ordf: 'ª', iexcl: '¡', iquest: '¿',
+  laquo: '«', raquo: '»', ndash: '–', mdash: '—', hellip: '…', bull: '•', middot: '·', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”',
+  euro: '€', copy: '©', reg: '®', trade: '™', times: '×', shy: '', zwnj: '', zwj: '', ntilde: 'ñ', Ntilde: 'Ñ', uuml: 'ü', Uuml: 'Ü' };
+'aeiouAEIOU'.split('').forEach(function (v, i) { ENT[v + 'acute'] = 'áéíóúÁÉÍÓÚ'.charAt(i); });
+function decodeEntities(str) {
+  return str.replace(/&(#x?[0-9a-f]+|[a-z]+[0-9]*);/gi, function (all, e) {
+    if (e.charAt(0) === '#') {
+      var c = e.charAt(1).toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+      try { return c > 0 && c < 0x110000 ? String.fromCodePoint(c) : ' '; } catch (er) { return ' '; }
+    }
+    return Object.prototype.hasOwnProperty.call(ENT, e) ? ENT[e] : all;
+  });
+}
+// Texto del correo sin etiquetas. Cada bloque del correo (párrafo, fila o celda de una tabla) queda en su propia línea.
+function plainText(s) {
+  s = String(s == null ? '' : s);
+  if (s.length > 4000000) s = s.slice(-4000000);
+  s = demojibake(s);
+  if (s.normalize) s = s.normalize('NFC');   // «é» siempre como una sola letra, venga como venga en el correo
+  if (/<[a-z!\/][^>]*>/i.test(s)) {
+    s = s.replace(/<(script|style|head|title)\b[\s\S]*?<\/\1>/gi, ' ')
+      .replace(/<(?:br|hr)\b[^>]*>|<\/(?:p|div|tr|li|h[1-6]|table|ul|ol|td|th|section|article)>/gi, '\n')
+      .replace(/<[^>]+>/g, ' ');
+  }
+  if (/&[#a-z0-9]+;/i.test(s)) s = decodeEntities(s);
+  return s.replace(/[   ​‌‍﻿]/g, ' ');
+}
+
+var LETTER = 'a-záéíóúüñ';
+// La app registra solo los correos de bip!: los que traen «bip» en el asunto («Tu compra en Carga bip! se realizó con éxito»)
+var RE_BIP = new RegExp('(?:^|[^' + LETTER + '0-9])bip(?![' + LETTER + '0-9])', 'i');
+// Encabezado del aviso: «Tu compra en Carga bip! se realizó con éxito». Lo que va entre «en» y «se realizó» es el comercio.
+var RE_HEAD = /(?:compra|pago|cargo|transacci[oó]n|recarga)\s+en\s+(.{2,60}?)\s+(?:se\s+(?:realiz|proces|complet|hizo|efectu)|fue\s|ha\s+sido|no\s+(?:se\s+)?(?:pudo|ha\s+podido|realiz|proces)|est[aá]\s)/i;
+// Señas de un aviso de Copec Pay, para cuando el texto llega sin su encabezado
+var RE_COPEC = /copec\s*pay|cuenta\s+vista|n[°º]\s*(?:de\s+)?transacci/i;
+// Palabras de un movimiento que saca dinero de la cuenta
+var RE_CARGO = new RegExp('(?:^|[^' + LETTER + '])(?:compra|cargo|carg[oó]|pago|pag[oó]|pagaste|pagamos|cobr|transacci|suscripci|d[ée]bit|descont|recarga|carga|giro|retir|transfer|consumo|movimiento|operaci[oó]n)', 'i');
+// Un cargo que no se hizo: no descuenta
+var RE_NO = /rechazad|declinad|denegad|fallid|no\s+(?:fue\s+|ha\s+sido\s+|pudo\s+ser\s+|se\s+pudo\s+|se\s+ha\s+podido\s+|pudimos\s+|hemos\s+podido\s+)?(?:aprobad|realizad|realizar|procesad|procesar|autorizad|complet|efectu)|saldo\s+insuficiente|sin\s+saldo|fondos\s+insuficientes/i;
+// Dinero que entra: los abonos se anotan a mano, así que estos avisos no se registran solos
+var RE_IN = new RegExp('(?:^|[^' + LETTER + '])(?:abono|abonamos|abonad[oa]|abonaron|abonaste|dep[oó]sit|recibiste|has\\s+recibido|te\\s+transfiri|transferencia\\s+recibida|devoluci[oó]n|devolvimos|reembols|revers[oa]|anulaci[oó]n|anulad[oa]|cargaste\\s+(?:saldo|dinero)|carga\\s+de\\s+(?:saldo|dinero))', 'i');
+var MONEY_SRC = '(US\\$|USD|U\\$S|CLP|\\$)\\s{0,2}(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d{1,2})?(?!\\d)|(\\d{1,3}(?:[.,]\\d{3})+|\\d+)(?:[.,]\\d{1,2})?\\s{0,2}(pesos|CLP|USD|d[oó]lares)(?![' + LETTER + '])';
+// Montos que no son el del cargo: el saldo que quedó, un tope, una promoción
+var RE_AUX = /(?:saldo|disponible|cupo|l[ií]mite|tope|m[ií]nim[oa]|m[aá]xim[oa]|descuento|dcto|ahorr[a-z]*|gana[a-z]*|premio|hasta|desde|comisi[oó]n)[^$]{0,24}$/i;
+var MONTHS = { ene: 1, feb: 2, mar: 3, abr: 4, may: 5, jun: 6, jul: 7, ago: 8, sep: 9, set: 9, oct: 10, nov: 11, dic: 12 };
+var LABELS = ['nombre\\s+(?:del?\\s+)?comercio', 'comercio', 'establecimiento', 'tienda', 'destinatario', 'beneficiario', 'glosa', 'descripci[oó]n', 'detalle', 'concepto', 'servicio', 'empresa', 'local', 'lugar', 'motivo'];
+var STRONG = 6;   // los seis primeros rótulos se aceptan también sin dos puntos («Comercio NETFLIX»)
+// Dónde termina un nombre dentro de una lista de datos: en el rótulo siguiente, un monto o una fecha. Los rótulos se
+// reconocen en minúsculas o con mayúscula inicial («Fecha»), no en mayúsculas completas: así «BANCO ESTADO» queda entero.
+var RE_STOP = new RegExp('\\s+(?:' + ['monto', 'total', 'valor', 'importe', 'fecha', 'hora', 'tarjeta', 'nro\\.?', 'n[uú]mero', 'c[oó]digo', 'operaci[oó]n',
+  'autorizaci[oó]n', 'cuotas?', 'tipo', 'medio', 'saldo', 'estado', 'rut', 'cuenta', 'comercio', 'detalle'].map(function (w) {
+  return '[' + w.charAt(0) + w.charAt(0).toUpperCase() + ']' + w.slice(1);
+}).join('|') + '|[Nn][°º])(?![' + LETTER + 'A-ZÁÉÍÓÚÜÑ])|\\s*(?:US\\$|\\$)\\s?\\d|\\s+\\d{1,2}[\\/.\\-]\\d{1,2}[\\/.\\-]\\d{2,4}|\\s+[|·•]\\s+');
+// Dónde termina el nombre de un comercio dentro de una oración. Las palabras van en minúsculas a propósito:
+// los comercios suelen venir en mayúsculas («PIZZA CON TODO») y así no se cortan.
+var NAME_END = '(?=\\s+(?:el|con|por|a\\s+las|fecha|de\\s+fecha|del\\s+d[ií]a|mediante|desde|usando|fue|ha|han|se|est[aá]|qued[oó]|ya|que|realizad[oa]|aprobad[oa]|exitos[oa])\\s|\\s*[.;,](?:\\s|$)|\\s*$|\\s+(?:US\\$|\\$)\\s?\\d|\\s+\\d{1,2}[\\/.\\-]\\d{1,2}[\\/.\\-]\\d{2,4})';
+// «en tu cuenta», «en la app», «en cuotas»: no son un comercio. Los nombres en mayúsculas («LA FETE») sí pasan.
+var RE_NOT_NAME = /^(?:tu|tus|su|sus|la|las|el|los|mi|un|una|nuestr[a-z]*|l[ií]nea|cuotas?|pesos|d[oó]lares|caso|www|http|efectivo|total|forma|cualquier|est[ea]s?|breve|unos|minutos|adelante|cuanto|relaci[oó]n)(?:\s|$)/;
+
+function findAmount(flat) {
+  var re = new RegExp(MONEY_SRC, 'gi'), m, main = [], aux = [];
+  while ((m = re.exec(flat))) {
+    var cur = (m[1] || m[4] || '$').toUpperCase();
+    var amount = parseInt((m[2] || m[3]).replace(/[.,]/g, ''), 10);
+    if (!(amount > 0) || amount > MAX_AMOUNT) continue;
+    var pre = flat.slice(Math.max(0, m.index - 40), m.index);
+    var hit = { amount: amount, idx: m.index, end: re.lastIndex, foreign: /US|U\$S|D[OÓ]L/.test(cur), total: /(?:^|[^a-z])total[^$]{0,18}$/i.test(pre) };
+    (RE_AUX.test(pre) ? aux : main).push(hit);
+  }
+  for (var i = 0; i < main.length; i++) if (main[i].total) return main[i];
+  return main[0] || (RE_CARGO.test(flat) ? aux[0] : null) || null;
+}
+
+// Fecha y hora del cargo. «ref» es el momento en que llegó el aviso: ninguna fecha puede ser posterior.
+// «from» es dónde está el monto: manda la primera fecha que viene después de él. Un correo reenviado trae antes su
+// propia «Fecha:» de envío, que no es la del cargo.
+function findWhen(flat, ref, from) {
+  var base = new Date(ref || Date.now()), lim = dayKey(new Date(base.getTime() + 36 * 3600 * 1000));
+  var dates = [], times = [], m, re;
+  function add(y, mo, d, idx, end) {
+    var k = y + '-' + pad(mo) + '-' + pad(d);
+    if (validDate(k) && k <= lim && y >= 2000) dates.push({ date: k, idx: idx, end: end });
+  }
+  re = /(^|[^\d\/.\-])(\d{1,2})([\/.\-])(\d{1,2})\3(\d{4}|\d{2})(?![\d\/\-])/g;
+  while ((m = re.exec(flat))) {
+    var d = +m[2], mo = +m[4], y = +m[5];
+    if (y < 100) y += 2000;
+    if (mo > 12 && d <= 12) { var sw = d; d = mo; mo = sw; }
+    add(y, mo, d, m.index + m[1].length, re.lastIndex);
+  }
+  re = /(^|\D)(\d{4})-(\d{2})-(\d{2})(?!\d)/g;
+  while ((m = re.exec(flat))) add(+m[2], +m[3], +m[4], m.index + m[1].length, re.lastIndex);
+  re = new RegExp('(^|\\D)(\\d{1,2})\\s*(?:de\\s+)?(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|setiembre|octubre|noviembre|diciembre|ene|feb|mar|abr|may|jun|jul|ago|sept|sep|set|oct|nov|dic)\\.?(?![' + LETTER + '])(?:\\s*,?\\s*(?:de\\s+|del\\s+)?(\\d{4})(?!\\d))?', 'gi');
+  while ((m = re.exec(flat))) {
+    var mon = MONTHS[m[3].toLowerCase().slice(0, 3)], yr = m[4] ? +m[4] : base.getFullYear();
+    if (!m[4] && yr + '-' + pad(mon) + '-' + pad(+m[2]) > lim) yr--;   // sin año: el más reciente que no sea futuro
+    add(yr, mon, +m[2], m.index + m[1].length, re.lastIndex);
+  }
+  dates.sort(function (a, b) { return a.idx - b.idx; });
+  re = /(^|[^\d:])(\d{1,2}):(\d{2})(?::\d{2})?(?:\s*(a\.?\s?m\.?|p\.?\s?m\.?)(?![a-z]))?(?![\d:])/gi;
+  while ((m = re.exec(flat))) {
+    var h = +m[2], mi = +m[3], ap = (m[4] || '').toLowerCase().charAt(0);
+    if (ap === 'p' && h < 12) h += 12;
+    if (ap === 'a' && h === 12) h = 0;
+    if (h < 24 && mi < 60) times.push({ time: pad(h) + ':' + pad(mi), idx: m.index + m[1].length, end: re.lastIndex });
+  }
+  var date = null, time = null, i;
+  for (i = 0; i < dates.length && !date; i++) if (dates[i].idx >= (from || 0)) date = dates[i];
+  if (!date) date = dates[0] || null;
+  if (date) {
+    for (i = 0; i < times.length && !time; i++) if (times[i].idx >= date.end && times[i].idx - date.end <= 30) time = times[i];
+    for (i = 0; i < times.length && !time; i++) if (times[i].end <= date.idx && date.idx - times[i].end <= 16) time = times[i];
+  }
+  for (i = 0; i < times.length && !time; i++) if (/(?:hora|a\s+las?)\W{0,4}$/i.test(flat.slice(Math.max(0, times[i].idx - 16), times[i].idx))) time = times[i];
+  return { date: date ? date.date : '', time: time ? time.time : '' };
+}
+
+function tidyName(v) {
+  v = String(v == null ? '' : v).split(RE_STOP)[0];
+  return clean(v.replace(/^[\s:"'«»“”*\-–—]+|[\s:"'«»“”*.,;\-–—]+$/g, ''));
+}
+function okName(v) { return v.length >= 2 && /[a-z0-9]/i.test(v) && !/^[\s$\d.,:\/\-]+$/.test(v); }
+function findMerchant(lines, flat, from) {
+  var m, v, i, j, re;
+  // 1. «Comercio: NOMBRE», en cualquier parte del texto
+  for (j = 0; j < LABELS.length; j++) {
+    m = new RegExp('(?:^|[^' + LETTER + '])(?:' + LABELS[j] + ')\\s*:\\s*(.{2,90})', 'i').exec(flat);
+    if (m && okName(v = tidyName(m[1]))) return v;
+  }
+  // 2. El rótulo solo en su línea y el nombre en la siguiente, o «Comercio NOMBRE» sin dos puntos
+  for (j = 0; j < LABELS.length; j++) {
+    re = new RegExp('^(?:' + LABELS[j] + ')(?![' + LETTER + '])\\s*[:\\-–]?\\s*(.*)$', 'i');
+    for (i = 0; i < lines.length; i++) {
+      m = re.exec(lines[i]);
+      if (!m) continue;
+      if (!m[1]) v = tidyName(lines[i + 1]);
+      else if (j < STRONG && !/^del?\s/i.test(m[1])) v = tidyName(m[1]);
+      else continue;
+      if (okName(v)) return v;
+    }
+  }
+  // 3. «Comercio NOMBRE» en medio de una línea, sin dos puntos. El nombre debe partir con mayúscula o número, y el
+  //    rótulo no puede ir todo en mayúsculas: ahí es parte del nombre de un comercio («COMERCIO UNO»).
+  for (j = 0; j < STRONG; j++) {
+    m = new RegExp('(?:^|[^' + LETTER + '])(' + LABELS[j] + ')\\s+(.{2,90})', 'i').exec(flat);
+    if (m && m[1] !== m[1].toUpperCase() && /^[A-ZÁÉÍÓÚÑ0-9]/.test(m[2]) && okName(v = tidyName(m[2]))) return v;
+  }
+  // 4. «… en NOMBRE el 10/10/2026»: primero lo que sigue al monto, después el texto completo
+  var parts = [flat.slice(from), flat];
+  for (j = 0; j < parts.length; j++) {
+    re = new RegExp('(?:^|\\s)[Ee][Nn]\\s+(?:el\\s+comercio\\s+|el\\s+local\\s+|la\\s+tienda\\s+|comercio\\s+)?(.{2,60}?)' + NAME_END, 'g');
+    while ((m = re.exec(parts[j]))) {
+      if (RE_NOT_NAME.test(m[1])) { re.lastIndex = m.index + 3; continue; }
+      if (okName(v = tidyName(m[1]))) return v;
+    }
+  }
+  // 5. «Pagaste $5.990 a NETFLIX»
+  m = new RegExp('^\\s*(?:a|para|de)\\s+([A-Z0-9].{1,50}?)' + NAME_END).exec(flat.slice(from));
+  if (m && okName(v = tidyName(m[1]))) return v;
+  return '';
+}
+var RE_OP = new RegExp('(?:^|[^' + LETTER + '])(?:n[°ºo]\\.?|nro\\.?|n[uú]mero|c[oó]digo|id|folio)\\s*(?:de\\s+)?(?:la\\s+)?(?:operaci[oó]n|transacci[oó]n|autorizaci[oó]n|comprobante|orden|referencia|movimiento)\\s*[:#\\-]?\\s*([A-Za-z0-9][A-Za-z0-9\\-]{3,23})', 'i');
+function findOp(flat) {
+  var m = RE_OP.exec(flat);
+  return m && /\d/.test(m[1]) ? m[1].toUpperCase() : '';
+}
+// ¿El texto afirma esto? No cuenta si viene en una frase condicional («si la compra no fue realizada por ti…»).
+function says(re, text) {
+  var g = new RegExp(re.source, 'gi'), m;
+  while ((m = g.exec(text))) {
+    var clause = text.slice(0, m.index + 1).split(/[.!?:]\s+/).pop();
+    if (!new RegExp('(?:^|[^' + LETTER + '])(?:si|en\\s+caso)\\s', 'i').test(clause)) return true;
+    if (g.lastIndex === m.index) g.lastIndex++;
+  }
+  return false;
+}
+
+// Lee un aviso. «kind»: 'c' cargo, 'd' aviso de abono o devolución, 'x' cargo rechazado, 'f' cargo en dólares,
+// 'o' correo que no es de bip! (lo decide parseMail) y '' un correo que no se reconoce como aviso.
+function readNotice(text, ref) {
+  var lines = text.split(/[\r\n\t]+/).map(function (l) { return l.replace(/\s+/g, ' ').trim(); }).filter(Boolean);
+  var flat = lines.join(' ');
+  var out = { kind: '', amount: 0, merchant: '', date: '', time: '', op: '', bip: RE_BIP.test(flat), text: flat.slice(0, 300),
+    subj: findSubject(lines), head: '', copec: RE_COPEC.test(flat) };
+  var hm = RE_HEAD.exec(flat);
+  if (hm) out.head = clean(hm[1]);
+  var pay = flat ? findAmount(flat) : null;
+  if (!pay) return out;
+  var when = findWhen(flat, ref, pay.idx);
+  out.amount = pay.amount;
+  out.date = when.date; out.time = when.time;
+  out.merchant = findMerchant(lines, flat, pay.end);
+  out.op = findOp(flat);
+  // El asunto y el encabezado del aviso van antes del monto: ahí, o en el nombre del comercio, tiene que decir «bip».
+  // Una mención de bip! más abajo (en la letra chica de otro correo) no cuenta.
+  out.bip = RE_BIP.test(flat.slice(0, pay.idx) + ' ' + out.merchant);
+  // El rechazo o el abono se anuncian junto al monto, no en la letra chica del final del correo
+  out.kind = says(RE_NO, flat.slice(0, pay.end + 120)) ? 'x' : says(RE_IN, flat.slice(0, pay.end + 60)) ? 'd' : !RE_CARGO.test(flat) ? '' : pay.foreign ? 'f' : 'c';
+  return out;
+}
+// El asunto, cuando viene en el texto: la app y los widgets anteponen «Asunto: …» si el atajo envía el asunto como
+// título, y un correo reenviado lo trae en su encabezado.
+function findSubject(lines) {
+  for (var i = 0; i < lines.length && i < 40; i++) {
+    var m = /^(?:asunto|subject)\s*:\s*(.+)$/i.exec(lines[i]);
+    if (m) return clean(m[1]);
+  }
+  return '';
+}
+function parseAny(raw, ref) {
+  // Primero el texto tal como llegó. Si trae líneas cortadas con «=», primero su versión decodificada,
+  // para no leer un comercio o una hora partidos por la mitad.
+  var texts = [String(raw == null ? '' : raw)], alt = unwrapMail(raw), first = null;
+  texts = /=\r?\n/.test(texts[0]) ? alt.concat(texts) : texts.concat(alt);
+  for (var i = 0; i < texts.length; i++) {
+    var p = readNotice(plainText(texts[i]), ref);
+    if (p.kind) return p;
+    if (!first || (p.bip && !first.bip)) first = p;
+  }
+  return first;
+}
+// Solo cuentan los correos de bip!. Se descarta un correo solo cuando hay una señal de que es de otra cosa:
+//  1. Si se conoce el asunto, manda el asunto: tiene que decir «bip».
+//  2. Si no, manda el encabezado del aviso («Tu compra en … se realizó con éxito»): tiene que ser una compra en bip!.
+//  3. Si el texto no trae ni asunto ni encabezado (por ejemplo, porque se copió desde la mitad), se acepta un cargo
+//     que diga «bip» antes del monto o que sea un aviso de Copec Pay. El atajo ya deja pasar solo los correos con
+//     «bip» en el asunto.
+function parseMail(raw, ref) {
+  var p = parseAny(raw, ref), ok;
+  if (p.subj) { ok = RE_BIP.test(p.subj); p.why = ok ? '' : 'subj'; }
+  else if (p.head) { ok = RE_BIP.test(p.head); p.why = ok ? '' : 'head'; }
+  else { ok = p.bip || (p.kind === 'c' && p.copec); p.why = ok ? '' : 'none'; }
+  if (!ok) p.kind = 'o';
+  return p;
+}
+// Deja el cargo listo para guardarlo. «at» es el momento en que el aviso llegó al buzón (0 si se pegó a mano)
+// y «num», su número dentro del buzón.
+//  · Con fecha y hora en el aviso: se usan tal cual. Es el momento real del cargo, aunque el correo llegue horas después.
+//  · Con fecha y sin hora: si el aviso llegó ese mismo día, el cargo fue en la madrugada (00:00); si llegó al día
+//    siguiente, fue en la noche anterior (23:59).
+//  · Con hora y sin fecha: el día es el de llegada, o el anterior si esa hora todavía no había pasado.
+//  · Sin fecha ni hora: se usa el momento de llegada.
+function settle(p, at, num) {
+  var ref = new Date(at || Date.now()), date = p.date, time = p.time, nt = 0, est = 0;
+  if (!date) {
+    date = dayKey(ref);
+    if (time) { est = 1; if (time > hm(ref)) date = dayKey(new Date(ref.getFullYear(), ref.getMonth(), ref.getDate() - 1)); }
+    else { est = 2; time = hm(ref); }
+  } else if (!time) {
+    nt = 1; time = at && dayKey(ref) > date ? '23:59' : '00:00';
+  }
+  var name = p.merchant || 'Carga bip!', exact = !!(p.op || (p.date && p.time));
+  var key = p.op ? 'OP' + p.op + '|' + p.amount
+    : exact ? date + 'T' + time + '|' + p.amount + '|' + name.toUpperCase()
+    : num ? 'I' + num + '|' + p.amount
+    : date + '|' + p.amount + '|' + name.toUpperCase() + '|P';
+  return { date: date, time: time, amount: p.amount, merchant: name, key: key, exact: exact, nt: nt, est: est, rcv: at || 0, raw: p.text };
+}
+// La clave de un cargo, sin signos ni acentos en el comercio: así un mismo aviso se reconoce aunque el correo
+// haya llegado una vez con el texto dañado y otra vez bien.
+function skel(key) {
+  var p = String(key).split('|');
+  return p[0] + '|' + (p[1] || '') + '|' + p.slice(2).join('').toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+/* LECTOR:FIN */
+
+function counts(f, at) {
+  if (!at) return false;
+  if (f.nt) {
+    const day = at.slice(0, 10);
+    if (f.date !== day) return f.date > day;
+    return f.rcv ? f.rcv >= atMs(at) + 60000 : true;
+  }
+  return f.date + 'T' + f.time >= at;
+}
+async function load(gh) {
+  const st = await published(gh, APPS.copec.title, 'copec');
+  if (!st) return { msg: 'Activa el widget en Copec, en «Buzón y atajo».' };
+  const known = {};
+  (st.keys || []).forEach(function (k) { known[k] = 1; });
+  const since = st.read > 0 ? sinceParam(st.read) : '';
+  const nuevas = [];
+  for (let page = 1; page <= 3; page++) {
+    const issues = await gh('/issues?state=all&sort=created&direction=asc&per_page=100&page=' + page + since);
+    if (!Array.isArray(issues)) break;
+    issues.forEach(function (it) {
+      if (!it || it.pull_request) return;
+      const title = String(it.title || '').trim();
+      const text = (title && !/^(?:copec|aviso)$/i.test(title) ? 'Asunto: ' + title + '\n' : '') + String(it.body || '');
+      const at = Date.parse(it.created_at) || 0;
+      const p = parseMail(text, at);                 // solo los correos de bip!
+      if (p.kind !== 'c') return;
+      const f = settle(p, at, +it.number || 0), sk = skel(f.key);
+      if (known[sk]) return;
+      known[sk] = 1;
+      if (st.at && !counts(f, st.at)) return;         // anterior al saldo de partida: ya está incluido en él
+      nuevas.push(f);
+    });
+    if (issues.length < 100) break;
+  }
+  let saldo = typeof st.saldo === 'number' ? st.saldo : null;
+  if (saldo !== null) nuevas.forEach(function (f) { saldo -= f.amount; });
+  const buys = (st.ult || []).concat(nuevas.map(function (f) { return { d: f.date, h: f.time, c: f.merchant, m: f.amount, nt: f.nt }; }))
+    .filter(function (b) { return b && b.d && b.m > 0; })
+    .sort(function (a, b) { return (a.d + 'T' + a.h) < (b.d + 'T' + b.h) ? 1 : -1; }).slice(0, 3)
+    .map(function (b) { return { d: b.d, h: b.nt ? '' : b.h, c: String(b.c || 'Carga bip!'), m: -b.m }; });
+  return { total: saldo, empty: 'Sin saldo inicial', buys: buys };
+}
+return { load: load };
+})();
+
+/* ======================================================================================================== */
+/* FAN: saldo de la cuenta y últimas compras con cargo a la cuenta (igual que el widget de FAN)            */
+/* ======================================================================================================== */
+const FAN = (function () {
+const CP1252 = { 0x20ac: 0x80, 0x201a: 0x82, 0x0192: 0x83, 0x201e: 0x84, 0x2026: 0x85, 0x2020: 0x86, 0x2021: 0x87, 0x02c6: 0x88, 0x2030: 0x89, 0x0160: 0x8a,
+  0x2039: 0x8b, 0x0152: 0x8c, 0x017d: 0x8e, 0x2018: 0x91, 0x2019: 0x92, 0x201c: 0x93, 0x201d: 0x94, 0x2022: 0x95, 0x2013: 0x96, 0x2014: 0x97, 0x02dc: 0x98,
+  0x2122: 0x99, 0x0161: 0x9a, 0x203a: 0x9b, 0x0153: 0x9c, 0x017e: 0x9e, 0x0178: 0x9f };
+function contByte(ch) { let c = ch.charCodeAt(0); if (c > 0xff) c = CP1252[c] || 0; return c >= 0x80 && c <= 0xbf ? c : -1; }
+function demojibake(s) {
+  if (!/[ÂÃâ]/.test(s)) return s;
+  return s.replace(/[ÂÃ][^\u0000-\u007f]|â[^\u0000-\u007f]{2}/g, function (seq) {
+    const b1 = contByte(seq.charAt(1)), b2 = seq.length > 2 ? contByte(seq.charAt(2)) : 0;
+    if (b1 < 0 || b2 < 0) return seq;
+    return String.fromCharCode(seq.length > 2 ? (0x2 << 12) | ((b1 & 0x3f) << 6) | (b2 & 0x3f) : ((seq.charCodeAt(0) & 0x1f) << 6) | (b1 & 0x3f));
+  });
+}
+const ENT = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", dollar: '$', eacute: 'é', Eacute: 'É', aacute: 'á', iacute: 'í', oacute: 'ó', uacute: 'ú', ntilde: 'ñ', Ntilde: 'Ñ' };
+function plainText(s) {
+  s = String(s == null ? '' : s);
+  if (s.length > 400000) s = s.slice(-400000);
+  s = demojibake(s);
+  if (s.normalize) s = s.normalize('NFC');
+  if (/<[a-z!\/][^>]*>/i.test(s)) s = s.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ');
+  s = s.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, function (all, e) {
+    if (e.charAt(0) === '#') {
+      const c = e.charAt(1).toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+      return c > 0 && c < 0x10000 ? String.fromCharCode(c) : ' ';
+    }
+    return Object.prototype.hasOwnProperty.call(ENT, e) ? ENT[e] : all;
+  });
+  return s.replace(/[\s\xa0​-‍﻿]+/g, ' ');
+}
+function skel(key) {
+  const p = String(key).split('|');
+  return p[0] + '|' + (p[1] || '') + '|' + p.slice(2).join('').toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+// Devuelve las compras con cargo a la cuenta que trae un texto. Deja fuera las de tarjeta de crédito y en dólares.
+function parseMail(raw) {
+  const text = plainText(raw);
+  const re = /compra\W{1,4}por\W{1,4}?(US\$|USD|\$)?\W{0,3}?([\d.]+(?:,\d{1,2})?)\W{1,4}con\W{1,4}(?:cargo\W{1,4}a\W{1,4})?(.{1,60}?)\s+en\s+(.{1,80}?)\s+el\s+(\d{1,2})\/(\d{1,2})\/(\d{4})\W{1,4}(\d{1,2}):(\d{2})/gi;
+  const out = [];
+  let m;
+  while ((m = re.exec(text))) {
+    const cur = (m[1] || '$').toUpperCase(), medio = m[3], merchant = clean(m[4]);
+    const amount = parseInt(m[2].replace(/\./g, '').replace(/,.*$/, ''), 10);
+    const date = m[7] + '-' + pad(+m[6]) + '-' + pad(+m[5]), time = pad(+m[8]) + ':' + m[9];
+    if (!validDate(date) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(time) || !merchant || !(amount > 0)) continue;
+    if (cur !== '$' || /cr.{0,12}dito/i.test(medio)) continue;
+    out.push({ d: date, h: time, c: merchant, m: amount, acct: (/(\d{4})\W*$/.exec(medio) || [])[1] || '',
+      key: date + 'T' + time + '|' + amount + '|' + merchant.toUpperCase() });
+  }
+  return out;
+}
+async function load(gh) {
+  const st = await published(gh, APPS.fan.title, 'fan');
+  if (!st) return { msg: 'Activa el widget en FAN, en «Buzón y atajo».' };
+  const known = {};
+  (st.keys || []).forEach(function (k) { known[k] = 1; });
+  const acct = /^\d{4}$/.test(String(st.acct || '')) ? String(st.acct) : '';
+  const since = st.read > 0 ? sinceParam(st.read) : '';
+  const nuevas = [];
+  for (let page = 1; page <= 3; page++) {
+    const issues = await gh('/issues?state=all&sort=created&direction=asc&per_page=100&page=' + page + since);
+    if (!Array.isArray(issues)) break;
+    issues.forEach(function (it) {
+      if (!it || it.pull_request) return;
+      const title = String(it.title || '');
+      parseMail((title.length > 20 ? title + '\n' : '') + String(it.body || '')).forEach(function (f) {
+        const sk = skel(f.key);
+        if (known[sk]) return;
+        known[sk] = 1;
+        if (acct && f.acct && f.acct !== acct) return;            // FAN sigue una sola cuenta
+        if (st.at && f.d + 'T' + f.h < st.at) return;             // anterior al último ajuste de saldo
+        nuevas.push(f);
+      });
+    });
+    if (issues.length < 100) break;
+  }
+  let saldo = typeof st.saldo === 'number' ? st.saldo : null;
+  if (saldo !== null) nuevas.forEach(function (f) { saldo -= f.m; });
+  const buys = (st.ult || []).concat(nuevas).filter(function (b) { return b && b.d && b.m > 0; })
+    .sort(function (a, b) { return (a.d + 'T' + a.h) < (b.d + 'T' + b.h) ? 1 : -1; }).slice(0, 3)
+    .map(function (b) { return { d: b.d, h: b.h, c: String(b.c || 'Compra'), m: -b.m }; });
+  return { total: saldo, empty: 'Sin definir', buys: buys };
+}
+return { load: load };
+})();
+
+/* ======================================================================================================== */
+/* Master: total a pagar de este mes y últimas compras con la tarjeta (igual que el widget de Master)       */
+/* ======================================================================================================== */
+const MASTER = (function () {
+function thisMonth() { return dayKey(new Date()).slice(0, 7); }
+function addMonths(k, d) { const t = +k.slice(0, 4) * 12 + (+k.slice(5, 7) - 1) + d; return Math.floor(t / 12) + '-' + pad(t % 12 + 1); }
+function monthsFrom(a, b) { return (+b.slice(0, 4) - +a.slice(0, 4)) * 12 + (+b.slice(5, 7) - +a.slice(5, 7)); }
+const CP1252 = { 0x20ac: 0x80, 0x201a: 0x82, 0x0192: 0x83, 0x201e: 0x84, 0x2026: 0x85, 0x2020: 0x86, 0x2021: 0x87, 0x02c6: 0x88, 0x2030: 0x89, 0x0160: 0x8a,
+  0x2039: 0x8b, 0x0152: 0x8c, 0x017d: 0x8e, 0x2018: 0x91, 0x2019: 0x92, 0x201c: 0x93, 0x201d: 0x94, 0x2022: 0x95, 0x2013: 0x96, 0x2014: 0x97, 0x02dc: 0x98,
+  0x2122: 0x99, 0x0161: 0x9a, 0x203a: 0x9b, 0x0153: 0x9c, 0x017e: 0x9e, 0x0178: 0x9f };
+function contByte(ch) { let c = ch.charCodeAt(0); if (c > 0xff) c = CP1252[c] || 0; return c >= 0x80 && c <= 0xbf ? c : -1; }
+function demojibake(s) {
+  if (!/[ÂÃâ]/.test(s)) return s;
+  return s.replace(/[ÂÃ][^\x00-\x7f]|â[^\x00-\x7f]{2}/g, function (seq) {
+    const b1 = contByte(seq.charAt(1)), b2 = seq.length > 2 ? contByte(seq.charAt(2)) : 0;
+    if (b1 < 0 || b2 < 0) return seq;
+    return String.fromCharCode(seq.length > 2 ? (0x2 << 12) | ((b1 & 0x3f) << 6) | (b2 & 0x3f) : ((seq.charCodeAt(0) & 0x1f) << 6) | (b1 & 0x3f));
+  });
+}
+const ENT = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", dollar: '$', aacute: 'á', eacute: 'é', iacute: 'í', oacute: 'ó', uacute: 'ú',
+  Aacute: 'Á', Eacute: 'É', Iacute: 'Í', Oacute: 'Ó', Uacute: 'Ú', ntilde: 'ñ', Ntilde: 'Ñ', uuml: 'ü', Uuml: 'Ü', iexcl: '¡', iquest: '¿', ordf: 'ª', ordm: 'º',
+  deg: '°', middot: '·', laquo: '«', raquo: '»', ndash: '–', mdash: '—', hellip: '…', copy: '©', reg: '®' };
+function plainText(s) {
+  s = String(s == null ? '' : s);
+  if (s.length > 400000) s = s.slice(-400000);
+  s = demojibake(s);
+  if (s.normalize) s = s.normalize('NFC');
+  if (/<[a-z!\/][^>]*>/i.test(s)) s = s.replace(/<(script|style)\b[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]+>/g, ' ');
+  s = s.replace(/&(#x?[0-9a-f]+|[a-z]+);/gi, function (all, e) {
+    if (e.charAt(0) === '#') {
+      const c = e.charAt(1).toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+      return c > 0 && c < 0x10000 ? String.fromCharCode(c) : ' ';
+    }
+    return Object.prototype.hasOwnProperty.call(ENT, e) ? ENT[e] : all;
+  });
+  return s.replace(/[\s\xa0​-‍﻿]+/g, ' ');
+}
+function skel(key) {
+  const p = String(key).split('|');
+  return p[0] + '|' + (p[1] || '') + '|' + p.slice(2).join('').toUpperCase().replace(/[^A-Z0-9]/g, '');
+}
+// Devuelve las compras con la tarjeta que trae un texto. Manda la terminación de la tarjeta; quedan fuera las
+// compras con cargo a la cuenta (las registra FAN), las que son en dólares y las de otra tarjeta.
+function parseMail(raw, cards) {
+  const text = plainText(raw);
+  const re = /compra(?:\W{1,4}en\W{1,4}(?:(\d{1,2})\W{1,4})?cuotas?)?\W{1,4}por\W{1,4}?(US\$|USD|\$)?\W{0,3}?([\d.]+(?:,\d{1,2})?)(?:\W{1,4}en\W{1,4}(\d{1,2})\W{1,4}cuotas?)?\W{1,4}con\W{1,4}(?:cargo\W{1,4}a\W{1,4})?(.{1,60}?)\s+en\s+(.{1,80}?)\s+el\s+(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})(?:\W{1,4}a\W{1,4}las)?\W{1,4}(\d{1,2}):(\d{2})/gi;
+  const out = [];
+  let m;
+  while ((m = re.exec(text))) {
+    const cur = (m[2] || '$').toUpperCase(), medio = clean(m[5]), merchant = clean(m[6]);
+    const amount = parseInt(m[3].replace(/\./g, '').replace(/,.*$/, ''), 10);
+    const date = m[9] + '-' + pad(+m[8]) + '-' + pad(+m[7]), time = pad(+m[10]) + ':' + m[11];
+    if (!validDate(date) || !/^([01]\d|2[0-3]):[0-5]\d$/.test(time) || !merchant || !(amount > 0)) continue;
+    const card = (/(\d{4})\D{0,2}$/.exec(medio) || [])[1] || '';
+    if ((/cuenta/i.test(medio) && !/tarjeta/i.test(medio)) || cur !== '$' || !cards[card]) continue;
+    const n = +(m[1] || m[4] || 1);
+    out.push({ d: date, h: time, c: merchant, m: amount, w: cards[card], n: n >= 1 && n <= 60 ? n : 1,
+      key: date + 'T' + time + '|' + amount + '|' + merchant.toUpperCase() + '|' + card });
+  }
+  return out;
+}
+// De una compra en cuotas { a: monto total, n: cuotas, f: mes de la cuota 1 }, lo que vence después del mes dado.
+// Esas cuotas ocupan cupo, pero todavía no entran en el total a pagar.
+function laterAmt(q, month) {
+  const i = monthsFrom(q.f, month), paid = Math.max(0, Math.min(q.n, i)), now = i >= 0 && i < q.n ? i + 1 : 0;
+  const v = Math.floor(q.a / q.n), paidAmt = paid >= q.n ? q.a : paid * v;
+  const nowAmt = now ? (now === q.n ? q.a - v * (q.n - 1) : v) : 0;
+  return q.a - paidAmt - nowAmt;
+}
+async function load(gh) {
+  const st = await published(gh, APPS.master.title, 'master');
+  if (!st) return { msg: 'Activa el widget en Master, en «Buzón y atajo».' };
+  if (typeof st.used !== 'number') return { msg: 'Ingresa la deuda pendiente en Master.' };
+  const known = {}, nuevas = [];
+  (st.keys || []).forEach(function (k) { known[k] = 1; });
+  const cards = st.cards && typeof st.cards === 'object' ? st.cards : {};
+  if (st.read > 0) {   // sin una lectura previa de Master no hay desde dónde contar lo nuevo
+    const since = sinceParam(st.read);
+    for (let page = 1; page <= 3; page++) {
+      const issues = await gh('/issues?state=all&sort=created&direction=asc&per_page=100&page=' + page + since);
+      if (!Array.isArray(issues)) break;
+      issues.forEach(function (it) {
+        if (!it || it.pull_request) return;
+        const title = String(it.title || '');
+        parseMail((title.length > 20 ? title + '\n' : '') + String(it.body || ''), cards).forEach(function (f) {
+          const sk = skel(f.key);
+          if (known[sk]) return;
+          known[sk] = 1;
+          if (st.at && f.d + 'T' + f.h < st.at) return;           // anterior a la deuda inicial: ya está dentro de ella
+          nuevas.push(f);
+        });
+      });
+      if (issues.length < 100) break;
+    }
+  }
+  let used = st.used;
+  const cuotas = (st.cuotas || []).filter(function (q) { return q && q.a > 0 && q.n > 1 && /^\d{4}-\d{2}$/.test(String(q.f)); });
+  nuevas.forEach(function (f) {
+    used += f.m;
+    if (f.n > 1) cuotas.push({ a: f.m, n: f.n, f: addMonths(f.d.slice(0, 7), 1) });   // la cuota 1, el mes siguiente a la compra
+  });
+  const month = thisMonth();
+  let later = 0;
+  cuotas.forEach(function (q) { later += laterAmt(q, month); });
+  const buys = (st.ult || []).concat(nuevas).filter(function (b) { return b && b.d && b.m > 0; })
+    .sort(function (a, b) { return (a.d + 'T' + a.h) < (b.d + 'T' + b.h) ? 1 : -1; }).slice(0, 3)
+    .map(function (b) { return { d: b.d, h: b.h, c: String(b.c || 'Compra'), m: b.m, w: b.w === 'A' ? 'A' : 'T' }; });
+  return { total: Math.max(0, used - later), month: month, buys: buys };
+}
+return { load: load };
+})();
+
+/* ======================================================================================================== */
+/* LiderBCI: total del periodo y últimas compras, tal como LiderBCI los publicó (igual que su widget)       */
+/* ======================================================================================================== */
+const LIDERBCI = (function () {
+async function load(gh) {
+  const st = await published(gh, APPS.liderbci.title, 'liderbci');
+  if (!st) return { msg: 'Activa el widget en LiderBCI.' };
+  const buys = (Array.isArray(st.ult) ? st.ult : [])
+    .filter(function (b) { return b && /^\d{4}-\d{2}-\d{2}$/.test(String(b.d)) && b.m > 0; }).slice(0, 3)
+    .map(function (b) { return { d: String(b.d), h: '', c: String(b.c || 'Compra'), m: +b.m }; });
+  return { total: typeof st.total === 'number' ? st.total : 0, n: +st.n > 0 ? Math.round(+st.n) : 0, buys: buys };
+}
+return { load: load };
+})();
+
+const LOADERS = { copec: COPEC, fan: FAN, master: MASTER, liderbci: LIDERBCI };
+/*LECTORES:FIN*/
+
+/* ======================================================================================================== */
+/* Panel Casa                                                                                               */
+/* ======================================================================================================== */
+const CFG_KEY = 'panel-casa-config';      // buzones y tokens, solo en este iPhone
+const CACHE_KEY = 'panel-casa-cache';     // lo último que se leyó, para mostrarlo sin conexión
+const REPO_RE = /^[\w.-]+\/[\w.-]+$/;
+const ACC_ORDER = ['fan', 'master', 'liderbci', 'copec'];
+const ACC = {
+  fan: { name: 'FAN', cap: 'Saldo de la cuenta' },
+  master: { name: 'Master', cap: 'A pagar' },
+  liderbci: { name: 'LiderBCI', cap: 'Total del periodo' },
+  copec: { name: 'Copec', cap: 'Saldo Copec Pay' }
+};
+// Lo que publica cada app de la casa en el buzón, en un hito con este nombre
+const HOME = {
+  pagos: { title: 'Pagos · panel', name: 'Pagos del mes' },
+  gas: { title: 'Gas · panel', name: 'Balón de gas' },
+  capsula: { title: 'Cápsula · panel', name: 'Mi cápsula diaria' },
+  mesadas: { title: 'Mesadas · panel', name: 'Mesadas' }
+};
+const HOME_ORDER = ['pagos', 'gas', 'capsula', 'sabanas', 'mesadas'];
+const PEOPLE = { piti: 'Piti', emi: 'Emi' };
+// Sábanas: los miércoles, alternando. El miércoles 7 de octubre de 2026 le tocó a Piti.
+const SHEETS = { start: '2026-10-07', order: ['piti', 'emi'] };
+const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
+
+const I = {
+  chev: '<svg class="r-chev" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  check: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 12.5l4.2 4.2L18.5 7.5" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  house: '<svg class="hero-art" viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 11.2L12 4l8.5 7.2V20a1 1 0 0 1-1 1h-5v-5.5h-5V21h-5a1 1 0 0 1-1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>'
+};
+
+const $ = function (id) { return document.getElementById(id); };
+const heroEl = $('hero'), accEl = $('accounts'), homeEl = $('home'), stampEl = $('stamp'), accNoteEl = $('acc-note');
+const sheetEl = $('sheet'), toastEl = $('toast'), reloadEl = $('reload'), todayEl = $('today');
+
+/* ---------- Utilidades ---------- */
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function readJSON(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch (e) { return null; } }
+function writeJSON(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
+function plural(n, s, p) { return n === 1 ? s : p; }
+function todayKey() { return dayKey(new Date()); }
+function utcOf(k) { const p = k.split('-'); return Date.UTC(+p[0], +p[1] - 1, +p[2]); }
+function diffDays(a, b) { return Math.round((utcOf(b) - utcOf(a)) / 86400000); }
+function addDays(k, n) { const d = new Date(utcOf(k) + n * 86400000); return d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(d.getUTCDate()); }
+function fmtDay(k) { const p = k.split('-'); return (+p[2]) + ' ' + MES[+p[1] - 1]; }
+function weekday(k) { return DIAS[new Date(utcOf(k)).getUTCDay()]; }
+function fmtWhen(ms) {
+  if (!(ms > 0)) return '';
+  const d = new Date(ms), k = dayKey(d), t = todayKey();
+  if (k === t) return 'hoy, ' + hm(d);
+  if (k === addDays(t, -1)) return 'ayer, ' + hm(d);
+  return fmtDay(k) + ', ' + hm(d);
+}
+function cap1(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+function okConn(c) { return !!(c && REPO_RE.test(String(c.repo || '')) && typeof c.token === 'string' && c.token.trim().length >= 20); }
+function amountTxt(n) { return money(Math.abs(n)); }
+
+function toast(msg) {
+  toastEl.textContent = msg; toastEl.hidden = false;
+  clearTimeout(toast.t); toast.t = setTimeout(function () { toastEl.hidden = true; }, 3400);
+}
+function copyText(text, okMsg) {
+  function manual() {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.top = '0'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, text.length);
+    let ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+    ta.remove();
+    toast(ok ? okMsg : 'No se pudo copiar. Intenta de nuevo.');
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { toast(okMsg); }, manual);
+  else manual();
+}
+
+// Los lectores usan Request de Scriptable; en el navegador, la misma consulta va con fetch.
+async function getJSON(url, token) {
+  const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+  const timer = ctl ? setTimeout(function () { ctl.abort(); }, 20000) : 0;
+  try {
+    const r = await fetch(url, { headers: { Authorization: 'Bearer ' + token, Accept: 'application/vnd.github+json' }, cache: 'no-store', signal: ctl ? ctl.signal : undefined });
+    if (!r.ok) { const e = new Error('GitHub ' + r.status); e.status = r.status; throw e; }
+    return await r.json();
+  } finally { clearTimeout(timer); }
+}
+
+/* ---------- Conexiones y copia local ---------- */
+let cfg = (function () {
+  const c = readJSON(CFG_KEY) || {}, out = { acc: {}, home: null };
+  ACC_ORDER.forEach(function (k) { if (c.acc && okConn(c.acc[k])) out.acc[k] = { repo: String(c.acc[k].repo), token: c.acc[k].token.trim() }; });
+  if (okConn(c.home)) out.home = { repo: String(c.home.repo), token: c.home.token.trim() };
+  return out;
+})();
+function saveCfg() { writeJSON(CFG_KEY, cfg); }
+// Las apps de la casa publican en el mismo buzón de FAN, salvo que se haya indicado otro
+function homeConn() { return cfg.home || cfg.acc.fan || cfg.acc.master || cfg.acc.liderbci || null; }
+function anyConn() { return !!homeConn() || !!cfg.acc.copec; }
+
+let cache = readJSON(CACHE_KEY);
+if (!cache || typeof cache !== 'object') cache = {};
+cache.acc = cache.acc && typeof cache.acc === 'object' ? cache.acc : {};
+cache.home = cache.home && typeof cache.home === 'object' ? cache.home : {};
+
+const S = { acc: {}, home: cache.home, homeOld: false, at: +cache.at || 0, loading: false };
+ACC_ORDER.forEach(function (k) { S.acc[k] = cfg.acc[k] ? (cache.acc[k] || { pending: true }) : { missing: true }; });
+
+/* ---------- Lectura ---------- */
+async function loadAcc(k) {
+  const c = cfg.acc[k];
+  if (!c) return { missing: true };
+  try {
+    const gh = ghFor(c);
+    const r = await LOADERS[k].load(gh);
+    if (k === 'liderbci' && !r.msg) {
+      try {
+        const st = await published(gh, APPS.liderbci.title, 'liderbci');   // la misma consulta, ya hecha
+        if (st && typeof st.pts === 'number' && isFinite(st.pts)) r.pts = Math.round(st.pts);
+      } catch (e) {}
+    }
+    return r;
+  } catch (e) {
+    const s = e && e.status;
+    return { failed: true, msg: s === 401 ? 'El token venció. Pega de nuevo el script del widget de ' + ACC[k].name + '.'
+      : s === 404 ? 'No se encontró el buzón de ' + ACC[k].name + '.' : 'No se pudo leer ' + ACC[k].name + '.' };
+  }
+}
+async function loadHome() {
+  const c = homeConn();
+  if (!c) return { none: true };
+  try {
+    const list = await ghFor(c)('/milestones?state=all&per_page=100');
+    const out = {};
+    (Array.isArray(list) ? list : []).forEach(function (ms) {
+      Object.keys(HOME).forEach(function (k) {
+        if (!ms || ms.title !== HOME[k].title || !ms.description) return;
+        try { const st = JSON.parse(ms.description); if (st && st.app === k) out[k] = st; } catch (e) {}
+      });
+    });
+    return { data: out };
+  } catch (e) { return { failed: true }; }
+}
+async function refresh(manual) {
+  if (S.loading) return;
+  if (!anyConn()) { if (manual) openSettings(); return; }
+  S.loading = true; renderStamp();
+  Object.keys(asked).forEach(function (k) { delete asked[k]; });
+  const res = await Promise.all([Promise.all(ACC_ORDER.map(loadAcc)), loadHome()]);
+  let failed = 0;
+  ACC_ORDER.forEach(function (k, i) {
+    let r = res[0][i];
+    if (r.failed) {
+      failed++;
+      if (cache.acc[k] && !cache.acc[k].msg) r = Object.assign({}, cache.acc[k], { old: true, note: r.msg });
+    } else if (r.missing) delete cache.acc[k];
+    else if (!r.msg) cache.acc[k] = r;
+    S.acc[k] = r;
+  });
+  const home = res[1];
+  if (home.data) { S.home = home.data; S.homeOld = false; cache.home = home.data; }
+  else if (home.failed) { failed++; S.homeOld = true; }
+  else { S.home = {}; cache.home = {}; }
+  S.loading = false;
+  S.at = Date.now(); cache.at = S.at;
+  writeJSON(CACHE_KEY, cache);
+  render();
+  if (failed && manual) toast('Sin conexión: se muestra lo último que se leyó.');
+}
+
+/* ---------- Cálculos de la casa ---------- */
+function pagosInfo(p) {
+  if (!p || !Array.isArray(p.s)) return null;
+  let n = 0, done = 0;
+  const pend = [];
+  p.s.forEach(function (sec) {
+    (Array.isArray(sec.i) ? sec.i : []).forEach(function (it) {
+      n++;
+      if (it.d) done++; else pend.push({ t: String(it.t || ''), s: String(sec.n || '') });
+    });
+  });
+  // ¿La lista sigue con el título de un mes que ya pasó?
+  const now = new Date(), title = String(p.title || '');
+  const words = MESL.map(function (m) { return m; });
+  const named = words.filter(function (m) { return new RegExp('\\b' + m + '\\b', 'i').test(title); })[0];
+  const stale = !!named && named !== MESL[now.getMonth()] && !(named === 'septiembre' && /setiembre/i.test(title));
+  return { title: title, n: n, done: done, pend: pend, secs: p.s, stale: stale, at: +p.at || 0 };
+}
+function gasInfo(g, today) {
+  if (!g) return null;
+  const base = { res: Math.max(0, Math.round(+g.res || 0)), kg: +g.kg > 0 ? +g.kg : null, at: +g.at || 0, avg: +g.avg > 0 ? +g.avg : null };
+  if (!validDate(String(g.open || ''))) return Object.assign(base, { none: true });
+  const d = Math.max(0, diffDays(g.open, today));
+  const info = Object.assign(base, { open: g.open, d: d });
+  if (info.avg) {
+    const r = Math.max(Math.round(info.avg), 1);
+    info.left = r - d; info.end = addDays(g.open, r); info.frac = Math.min(d / r, 1);
+  }
+  return info;
+}
+function capInfo(c, today) {
+  if (!c) return null;
+  if (typeof c.left !== 'number') return { none: true, at: +c.at || 0 };
+  const left = Math.max(0, Math.round(c.left)), took = c.last === today;
+  return {
+    left: left, total: Math.max(left, Math.round(+c.total || 0)), took: took, at: +c.at || 0,
+    ordered: validDate(String(c.ordered || '')) ? c.ordered : '',
+    end: left > 0 ? addDays(today, took ? left : left - 1) : ''
+  };
+}
+function sheetsInfo(today) {
+  const delta = (3 - new Date(utcOf(today)).getUTCDay() + 7) % 7;   // días hasta el próximo miércoles (0 si es hoy)
+  const next = addDays(today, delta);
+  const w = Math.round(diffDays(SHEETS.start, next) / 7);
+  function whoAt(i) { return SHEETS.order[(((w + i) % 2) + 2) % 2]; }
+  const list = [0, 1, 2, 3].map(function (i) { return { date: addDays(next, 7 * i), who: whoAt(i) }; });
+  return { date: next, who: whoAt(0), today: delta === 0, tomorrow: delta === 1, list: list };
+}
+function mesInfo(m, today) {
+  if (!m) return null;
+  const ym = today.slice(0, 7), cur = m.mes && m.mes.ym === ym ? m.mes : {};
+  return { piti: +cur.piti || 0, emi: +cur.emi || 0, tot: m.tot || {}, ult: Array.isArray(m.ult) ? m.ult : [], at: +m.at || 0 };
+}
+
+// Lo que hay que atender hoy, de lo más urgente a lo menos
+function attention(today) {
+  const out = [];
+  const p = pagosInfo(S.home.pagos), g = gasInfo(S.home.gas, today), c = capInfo(S.home.capsula, today), sh = sheetsInfo(today);
+  ACC_ORDER.forEach(function (k) {
+    const r = S.acc[k];
+    if (r && (k === 'fan' || k === 'copec') && typeof r.total === 'number' && r.total < 0) out.push({ tone: 'neg', w: 0, text: 'El saldo de ' + ACC[k].name + ' está en negativo' });
+  });
+  if (c && !c.none) {
+    if (c.left <= 0) out.push({ tone: 'neg', w: 1, text: 'Se acabaron las cápsulas' });
+    else if (c.left <= 12 && !c.ordered) out.push({ tone: c.left <= 5 ? 'neg' : 'warn', w: c.left <= 5 ? 1 : 3, text: (c.left === 1 ? 'Queda 1 cápsula' : 'Quedan ' + c.left + ' cápsulas') + ': manda a hacer la receta' });
+    if (c.left > 0 && !c.took) out.push({ tone: 'info', w: 6, text: 'Falta la cápsula de hoy' });
+  }
+  if (g) {
+    if (g.none) out.push({ tone: 'warn', w: 2, text: 'No hay balón de gas en uso' });
+    else if (g.avg && g.left <= 3) {
+      const t = g.left < 0 ? 'El gas lleva ' + (-g.left) + ' ' + plural(-g.left, 'día', 'días') + ' sobre su promedio'
+        : g.left === 0 ? 'El gas llega hoy a su promedio' : 'Al gas le quedan unos ' + g.left + ' ' + plural(g.left, 'día', 'días');
+      out.push({ tone: g.res ? 'warn' : 'neg', w: g.res ? 4 : 2, text: t + (g.res ? ' (hay reserva)' : ' y no hay reserva') });
+    }
+  }
+  if (p && p.stale) out.push({ tone: 'warn', w: 3, text: 'Empieza el mes nuevo en Pagos del mes' });
+  else if (p && p.pend.length) out.push({ tone: 'warn', w: 5, text: p.pend.length === 1 ? 'Falta 1 pago: ' + p.pend[0].t : 'Faltan ' + p.pend.length + ' pagos del mes' });
+  if (sh.today) out.push({ tone: 'info', w: 5, text: 'Hoy toca cambiar sábanas: ' + PEOPLE[sh.who] });
+  else if (sh.tomorrow) out.push({ tone: 'info', w: 7, text: 'Mañana toca cambiar sábanas: ' + PEOPLE[sh.who] });
+  return out.sort(function (a, b) { return a.w - b.w; });
+}
+
+/* ---------- Vistas ---------- */
+function render() {
+  const today = todayKey();
+  todayEl.textContent = cap1(weekday(today)) + ' ' + (+today.slice(8)) + ' de ' + MESL[+today.slice(5, 7) - 1];
+  renderHero(today);
+  renderAccounts();
+  renderHome(today);
+  renderStamp();
+}
+
+function renderHero(today) {
+  if (!anyConn()) {
+    heroEl.innerHTML = I.house + '<div class="eyebrow">Bienvenido</div>' +
+      '<div class="count-big ok">Conecta tus apps</div>' +
+      '<p style="margin:10px 0 0;font-size:16px;color:var(--ds-hero-ink-2)">El panel junta en una pantalla lo que llevan FAN, Master, LiderBCI, Copec y las apps de la casa.</p>' +
+      '<button type="button" class="hero-cta" data-act="settings">Conectar</button>';
+    return;
+  }
+  const list = attention(today);
+  let h = I.house + '<div class="eyebrow">Hoy</div>';
+  if (!list.length) {
+    h += '<div class="count-big ok">Todo al día</div><p style="margin:8px 0 0;font-size:16px;color:var(--ds-hero-ink-2)">Nada pendiente por ahora.</p>';
+  } else {
+    h += '<div class="count-big">' + list.length + '<span>' + plural(list.length, 'cosa por atender', 'cosas por atender') + '</span></div>';
+    h += '<ul class="todo">' + list.slice(0, 5).map(function (a) { return '<li><i class="' + a.tone + '"></i><span>' + esc(a.text) + '</span></li>'; }).join('') + '</ul>';
+  }
+  heroEl.innerHTML = h;
+}
+
+function accCaption(k, r) {
+  if (k === 'master' && r.month) return 'A pagar en ' + MESL[+r.month.slice(5, 7) - 1];
+  if (k === 'liderbci') return r.n ? 'Periodo · ' + r.n + ' ' + plural(r.n, 'compra', 'compras') : 'Total del periodo';
+  return ACC[k].cap;
+}
+function renderAccounts() {
+  let old = false;
+  accEl.innerHTML = ACC_ORDER.map(function (k) {
+    const r = S.acc[k] || {}, name = ACC[k].name;
+    let h = '<button type="button" class="tile" data-acc="' + k + '" aria-label="' + esc(name) + '">';
+    h += '<span class="t-head"><img src="icons/apps/' + k + '.png" alt=""><b>' + esc(name) + '</b>' + (r.old ? '<i class="tag">sin conexión</i>' : '') + '</span>';
+    if (r.old) old = true;
+    if (r.missing) {
+      h += '<span class="t-amt dim">—</span><span class="t-cap">Sin conectar</span><span class="t-gap"></span><span class="t-last"><span>Toca para conectar</span></span>';
+    } else if (r.pending) {
+      h += '<span class="t-amt dim">…</span><span class="t-cap">Leyendo</span>';
+    } else if (r.msg) {
+      h += '<span class="t-amt dim">—</span><span class="t-msg">' + esc(r.msg) + '</span>';
+    } else {
+      const has = typeof r.total === 'number';
+      h += '<span class="t-amt' + (has && r.total < 0 ? ' neg' : '') + '">' + (has ? money(r.total) : esc(r.empty || 'Sin definir')) + '</span>';
+      h += '<span class="t-cap">' + esc(accCaption(k, r)) + '</span>';
+      if (k === 'liderbci' && typeof r.pts === 'number') h += '<span class="t-cap">' + dots(r.pts) + ' ' + plural(r.pts, 'punto', 'puntos') + '</span>';
+      const b = (r.buys || [])[0];
+      h += '<span class="t-gap"></span>';
+      h += b ? '<span class="t-last"><b>' + esc(b.c) + '</b><span>' + amountTxt(b.m) + ' · ' + esc(dayLabel(b.d)) + '</span></span>' : '<span class="t-last"><span>Sin movimientos</span></span>';
+    }
+    return h + '</button>';
+  }).join('');
+  accNoteEl.textContent = old ? 'Lo último leído' : '';
+}
+
+function ringSvg(done, n) {
+  const R = 18, C = 2 * Math.PI * R, f = n ? done / n : 0;
+  return '<span class="ring' + (done < n ? ' part' : '') + '" aria-hidden="true"><svg viewBox="0 0 44 44"><circle class="bg" cx="22" cy="22" r="' + R + '" fill="none" stroke-width="5"/>' +
+    '<circle class="fg" cx="22" cy="22" r="' + R + '" fill="none" stroke-width="5" stroke-linecap="round" stroke-dasharray="' + C.toFixed(2) + '" stroke-dashoffset="' + (C * (1 - f)).toFixed(2) + '"/></svg>' +
+    '<b>' + done + '/' + n + '</b></span>';
+}
+function homeRow(k, icon, title, sub, subTone, end, bar) {
+  return '<li><button type="button" class="row" data-home="' + k + '">' +
+    '<img class="r-icon" src="icons/apps/' + icon + '.png" alt="">' +
+    '<span class="r-txt"><b>' + esc(title) + '</b><small class="' + (subTone || '') + '">' + sub + '</small>' + (bar || '') + '</span>' +
+    (end ? '<span class="r-end">' + end + '</span>' : '') + I.chev + '</button></li>';
+}
+function offRow(k, icon, title) {
+  return homeRow(k, icon, title, homeConn() ? 'Aún no publica · conéctala en la app' : 'Sin conectar', 'dim', '');
+}
+function renderHome(today) {
+  let h = '';
+  HOME_ORDER.forEach(function (k) {
+    if (k === 'pagos') {
+      const p = pagosInfo(S.home.pagos);
+      if (!p) { h += offRow(k, 'pagos', HOME.pagos.name); return; }
+      const sub = p.stale ? esc(p.title) + ' · empieza el mes nuevo' : esc(p.title) + ' · ' + (p.n === 0 ? 'lista vacía' : p.pend.length ? 'faltan ' + p.pend.length : 'todo pagado');
+      h += homeRow(k, 'pagos', HOME.pagos.name, sub, p.stale ? 'warn' : '', p.n ? ringSvg(p.done, p.n) : '');
+    } else if (k === 'gas') {
+      const g = gasInfo(S.home.gas, today);
+      if (!g) { h += offRow(k, 'gas', HOME.gas.name); return; }
+      if (g.none) { h += homeRow(k, 'gas', HOME.gas.name, 'Sin balón en uso' + (g.res ? ' · reserva lista' : ''), 'warn', ''); return; }
+      let sub, tone = '', bar = '';
+      if (!g.avg) sub = 'Abierto el ' + fmtDay(g.open) + ' · sin promedio aún';
+      else {
+        if (g.left > 0) sub = 'Cambio cerca del ' + fmtDay(g.end);
+        else if (g.left === 0) sub = 'Hoy llega a su promedio';
+        else sub = (-g.left) + ' ' + plural(-g.left, 'día', 'días') + ' sobre el promedio';
+        tone = g.left <= 0 ? 'warn' : '';
+        const bt = g.left <= 0 ? (g.res ? 'warn' : 'neg') : g.left <= 3 ? 'warn' : '';
+        bar = '<span class="r-bar ' + bt + '"><span style="width:' + Math.round(g.frac * 100) + '%"></span></span>';
+      }
+      sub += ' · ' + (g.res ? 'hay reserva' : 'sin reserva');
+      h += homeRow(k, 'gas', HOME.gas.name, esc(sub), tone, '<span class="r-unit">Día</span><span class="r-big num">' + g.d + '</span>', bar);
+    } else if (k === 'capsula') {
+      const c = capInfo(S.home.capsula, today);
+      if (!c) { h += offRow(k, 'capsula', HOME.capsula.name); return; }
+      if (c.none) { h += homeRow(k, 'capsula', HOME.capsula.name, 'Sin frasco registrado', 'dim', ''); return; }
+      const tone = c.left <= 5 ? 'neg' : c.left <= 12 && !c.ordered ? 'warn' : '';
+      let sub = c.left <= 0 ? 'Frasco vacío' : 'Alcanza hasta el ' + fmtDay(c.end);
+      sub += c.left > 0 ? (c.took ? ' · hoy tomada' : ' · hoy pendiente') : '';
+      if (c.ordered) sub += ' · receta pedida';
+      h += homeRow(k, 'capsula', HOME.capsula.name, esc(sub), tone && !c.ordered ? tone : '', '<span class="r-big num ' + tone + '">' + c.left + '</span><span class="r-unit">' + plural(c.left, 'queda', 'quedan') + '</span>');
+    } else if (k === 'sabanas') {
+      const s = sheetsInfo(today);
+      const sub = s.today ? 'Hoy, miércoles ' + fmtDay(s.date) : s.tomorrow ? 'Mañana, miércoles ' + fmtDay(s.date) : 'Miércoles ' + fmtDay(s.date);
+      h += homeRow(k, 'sabanas', 'Sábanas', sub, s.today ? 'warn' : '', '<span class="who ' + s.who + '">' + PEOPLE[s.who] + '</span>');
+    } else if (k === 'mesadas') {
+      const m = mesInfo(S.home.mesadas, today);
+      if (!m) { h += offRow(k, 'mesadas', HOME.mesadas.name); return; }
+      const mes = MESL[+today.slice(5, 7) - 1];
+      h += homeRow(k, 'mesadas', HOME.mesadas.name, cap1(mes) + ': Piti ' + money(m.piti) + ' · Emi ' + money(m.emi), '',
+        '<span class="r-big num" style="font-size:19px">' + money(m.piti + m.emi) + '</span><span class="r-unit">este mes</span>');
+    }
+  });
+  homeEl.innerHTML = h;
+}
+
+function renderStamp() {
+  reloadEl.classList.toggle('spin', S.loading);
+  reloadEl.setAttribute('aria-busy', S.loading ? 'true' : 'false');
+  if (S.loading) { stampEl.textContent = 'Actualizando…'; return; }
+  if (!anyConn()) { stampEl.textContent = 'Sin conexiones'; return; }
+  stampEl.textContent = S.at ? 'Actualizado ' + fmtWhen(S.at) : 'Sin leer todavía';
+}
+
+/* ---------- Hojas ---------- */
+let sheet = null, lastFocus = null;
+function openSheet(kind, arg) {
+  sheet = { kind: kind, arg: arg };
+  lastFocus = document.activeElement;
+  sheetEl.innerHTML = '<div class="backdrop" data-act="close"></div><div class="panel" role="dialog" aria-modal="true" tabindex="-1">' + sheetBody(kind, arg) + '</div>';
+  sheetEl.hidden = false;
+  document.documentElement.classList.add('lock');
+  const p = sheetEl.querySelector('.panel');
+  p.setAttribute('aria-label', (p.querySelector('h2') || {}).textContent || 'Detalle');
+  p.focus();
+}
+function closeSheet() {
+  sheet = null; sheetEl.hidden = true; sheetEl.innerHTML = '';
+  document.documentElement.classList.remove('lock');
+  if (lastFocus && lastFocus.focus) try { lastFocus.focus(); } catch (e) {}
+}
+function head(icon, title, sub) {
+  return '<div class="p-head"><img src="icons/apps/' + icon + '.png" alt=""><div><h2>' + esc(title) + '</h2>' + (sub ? '<p class="sub">' + sub + '</p>' : '') + '</div></div>';
+}
+function kv(a, b, cls) { return '<li class="kv ' + (cls || '') + '"><span>' + a + '</span><span>' + b + '</span></li>'; }
+function updated(at) { return at ? '<p class="hint">La app publicó estos datos ' + esc(fmtWhen(at)) + '.</p>' : ''; }
+
+function sheetBody(kind, arg) {
+  const today = todayKey();
+  if (kind === 'settings') return settingsBody();
+  if (kind === 'acc') {
+    const r = S.acc[arg] || {}, name = ACC[arg].name;
+    if (r.missing) return head(arg, name, 'Sin conectar') + '<p class="note">Pega el script del widget de ' + esc(name) + ' en Conexiones para verla aquí.</p><button type="button" class="btn primary block" data-act="settings">Ir a Conexiones</button>';
+    if (r.msg) return head(arg, name, '') + '<p class="note warn">' + esc(r.msg) + '</p><button type="button" class="btn tonal block" data-act="close">Cerrar</button>';
+    const has = typeof r.total === 'number';
+    let h = head(arg, name, esc(accCaption(arg, r)));
+    h += '<div class="big' + (has && r.total < 0 ? ' neg' : '') + '">' + (has ? money(r.total) : esc(r.empty || 'Sin definir')) + '</div>';
+    if (arg === 'liderbci' && typeof r.pts === 'number') h += '<p class="hint" style="margin-top:-8px">' + dots(r.pts) + ' ' + plural(r.pts, 'punto acumulado', 'puntos acumulados') + '</p>';
+    if (r.old) h += '<p class="note warn">Sin conexión: es lo último que se leyó. ' + esc(r.note || '') + '</p>';
+    h += '<h3 class="grp">Últimos movimientos</h3>';
+    const buys = r.buys || [];
+    h += buys.length ? '<ul class="list">' + buys.map(function (b) {
+      const extra = arg === 'master' ? (b.w === 'A' ? ' · Adicional' : ' · Titular') : '';
+      return kv(esc(b.c) + '<small>' + esc(dayLabel(b.d) + (b.h ? ' ' + b.h : '') + extra) + '</small>', amountTxt(b.m));
+    }).join('') + '</ul>' : '<p class="hint">Aún no hay movimientos.</p>';
+    h += '<p class="hint">' + (arg === 'liderbci' ? 'Es lo que LiderBCI publicó la última vez que cambió algo.' : 'Se calcula con lo que ' + esc(name) + ' publicó y los avisos que llegaron después al buzón, aunque no hayas abierto la app.') + '</p>';
+    return h;
+  }
+  if (kind === 'home') {
+    if (arg === 'sabanas') {
+      const s = sheetsInfo(today);
+      let h = head('sabanas', 'Sábanas', 'Se cambian los miércoles, una vez cada una');
+      h += '<ul class="list">' + s.list.map(function (x, i) {
+        const when = x.date === today ? 'Hoy' : x.date === addDays(today, 1) ? 'Mañana' : cap1(weekday(x.date)) + ' ' + fmtDay(x.date);
+        return kv(esc(when) + (i === 0 ? '<small>Próximo cambio</small>' : ''), '<span class="who ' + x.who + '">' + PEOPLE[x.who] + '</span>');
+      }).join('') + '</ul>';
+      return h + '<p class="hint">El turno se calcula solo, a partir del miércoles 7 de octubre (Piti).</p>';
+    }
+    const raw = S.home[arg];
+    if (!raw) return head(arg, HOME[arg].name, 'Sin datos todavía') + connectHelp(arg);
+    if (arg === 'pagos') {
+      const p = pagosInfo(raw);
+      let h = head('pagos', p.title || HOME.pagos.name, p.n ? p.done + ' de ' + p.n + ' ' + plural(p.n, 'pago hecho', 'pagos hechos') : 'Lista vacía');
+      if (p.stale) h += '<p class="note warn">La lista sigue con el título de ' + esc(p.title) + '. En Pagos del mes, usa «Nuevo mes» para empezar el mes actual.</p>';
+      p.secs.forEach(function (sec) {
+        const items = Array.isArray(sec.i) ? sec.i : [];
+        if (!items.length) return;
+        h += '<h3 class="grp">' + esc(sec.n || 'Pagos') + '</h3><ul class="list">' + items.map(function (it) {
+          return '<li class="kv ' + (it.d ? 'done' : '') + '"><span class="lead"><i class="mini">' + (it.d ? I.check : '') + '</i>' + esc(it.t) + '</span><span>' +
+            (it.d ? (validDate(String(it.a || '')) ? '<span class="ok">' + fmtDay(it.a) + '</span>' : '<span class="ok">Hecho</span>') : 'Pendiente') + '</span></li>';
+        }).join('') + '</ul>';
+      });
+      return h + updated(p.at) + '<p class="hint">Los pagos se marcan en la app Pagos del mes.</p>';
+    }
+    if (arg === 'gas') {
+      const g = gasInfo(raw, today);
+      let h = head('gas', HOME.gas.name, g.none ? 'Sin balón en uso' : 'Día ' + g.d + ' del balón en uso');
+      h += '<ul class="list">';
+      if (!g.none) {
+        h += kv('Abierto el', fmtDay(g.open));
+        h += kv('Días de uso', String(g.d));
+      }
+      h += kv('Promedio por balón', g.avg ? String(Math.round(g.avg * 10) / 10).replace('.', ',') + ' días' : 'Aún sin promedio');
+      if (!g.none && g.avg) h += kv('Cambio estimado', fmtDay(g.end) + (g.left >= 0 ? ' (faltan ' + g.left + ')' : ' (pasó hace ' + (-g.left) + ')'));
+      h += kv('Reserva', g.res ? (g.res === 1 ? '1 balón lleno' : g.res + ' balones llenos') : '<span class="off">Sin reserva</span>');
+      if (g.kg) h += kv('Tamaño', g.kg + ' kg');
+      return h + '</ul>' + updated(g.at);
+    }
+    if (arg === 'capsula') {
+      const c = capInfo(raw, today);
+      if (c.none) return head('capsula', HOME.capsula.name, 'Sin frasco registrado') + '<p class="hint">Registra un frasco en Mi cápsula diaria para verlo aquí.</p>';
+      let h = head('capsula', HOME.capsula.name, c.left <= 0 ? 'Frasco vacío' : (c.left === 1 ? 'Queda 1 cápsula' : 'Quedan ' + c.left + ' cápsulas'));
+      h += '<ul class="list">';
+      h += kv('Cápsula de hoy', c.took ? '<span class="ok">Tomada</span>' : 'Pendiente');
+      if (c.end) h += kv('Alcanza hasta el', cap1(weekday(c.end)) + ' ' + fmtDay(c.end));
+      h += kv('Frasco', c.left + ' de ' + c.total);
+      h += kv('Receta', c.ordered ? '<span class="ok">Pedida el ' + fmtDay(c.ordered) + '</span>' : c.left <= 12 ? 'Hay que pedirla' : 'Aún no hace falta');
+      return h + '</ul>' + updated(c.at) + '<p class="hint">Las alertas de la receta llegan al quedar 12, 10 y 5 cápsulas.</p>';
+    }
+    if (arg === 'mesadas') {
+      const m = mesInfo(raw, today), mes = MESL[+today.slice(5, 7) - 1];
+      let h = head('mesadas', HOME.mesadas.name, 'Aportes a Piti y Emi');
+      h += '<h3 class="grp">' + cap1(mes) + '</h3><ul class="list">' + kv('<span class="who piti">Piti</span>', money(m.piti)) + kv('<span class="who emi">Emi</span>', money(m.emi)) + '</ul>';
+      h += '<h3 class="grp">Total acumulado</h3><ul class="list">' + kv('Piti', money(+m.tot.piti || 0)) + kv('Emi', money(+m.tot.emi || 0)) + '</ul>';
+      if (m.ult.length) {
+        h += '<h3 class="grp">Últimos aportes</h3><ul class="list">' + m.ult.slice(0, 3).map(function (u) {
+          return kv(esc(u.s || 'Aporte') + '<small>' + esc((PEOPLE[u.w] || '') + (validDate(String(u.d || '')) ? ' · ' + fmtDay(u.d) : '')) + '</small>', money(+u.m || 0));
+        }).join('') + '</ul>';
+      }
+      return h + updated(m.at);
+    }
+  }
+  return '';
+}
+function connectHelp(k) {
+  if (!homeConn()) return '<p class="note">Primero conecta el buzón: pega el script del widget de FAN en Conexiones.</p><button type="button" class="btn primary block" data-act="settings">Ir a Conexiones</button>';
+  return '<ol class="steps"><li>En Conexiones, toca «Copiar código para las apps».</li><li>Abre ' + esc(HOME[k].name) + ', baja hasta «Panel Casa» y toca «Pegar código».</li><li>Vuelve aquí y actualiza.</li></ol>' +
+    '<button type="button" class="btn primary block" data-act="copycode">Copiar código para las apps</button>';
+}
+
+function settingsBody() {
+  let h = '<div><h2>Conexiones</h2><p class="sub">El panel lee lo que cada app publica en tu buzón privado de GitHub. Los tokens quedan guardados solo en este iPhone.</p></div>';
+  h += '<h3 class="grp">Cuentas</h3><ul class="list">' + ACC_ORDER.map(function (k) {
+    const c = cfg.acc[k];
+    return '<li class="kv icon"><img src="icons/apps/' + k + '.png" alt=""><span>' + ACC[k].name + '<small>' + (c ? esc(c.repo) : 'Falta el script del widget') + '</small></span><span>' + (c ? '<span class="ok">Conectada</span>' : '<span class="off">Sin conectar</span>') + '</span></li>';
+  }).join('') + '</ul>';
+  h += '<label class="field"><span>Pega el script del widget</span><textarea id="f-script" rows="4" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="En FAN, Master, LiderBCI o Copec, toca «Copiar el script del widget» y pégalo aquí."></textarea></label>';
+  h += '<p class="err" id="f-err" hidden></p>';
+  h += '<button type="button" class="btn primary block" data-act="addscript">Conectar</button>';
+  h += '<p class="hint">FAN, Master y LiderBCI comparten el buzón: con el script de FAN basta para las tres. Copec usa su propio buzón, así que necesita el suyo.</p>';
+  h += '<h3 class="grp">Apps de la casa</h3><ul class="list">' + Object.keys(HOME).map(function (k) {
+    const st = S.home[k];
+    return '<li class="kv icon"><img src="icons/apps/' + k + '.png" alt=""><span>' + HOME[k].name + '<small>' + (st && st.at ? 'Publicó ' + esc(fmtWhen(+st.at)) : 'Aún no publica') + '</small></span><span>' + (st ? '<span class="ok">Conectada</span>' : '<span class="off">Sin conectar</span>') + '</span></li>';
+  }).join('') + '<li class="kv icon"><img src="icons/apps/sabanas.png" alt=""><span>Sábanas<small>Miércoles alternados, se calcula solo</small></span><span><span class="ok">Lista</span></span></li></ul>';
+  if (homeConn()) {
+    h += '<button type="button" class="btn tonal block" data-act="copycode">Copiar código para las apps</button>';
+    h += '<p class="hint">Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria y Mesadas: baja hasta «Panel Casa», toca «Pegar código» y listo. Desde ahí, cada cambio se ve en el panel.</p>';
+  } else {
+    h += '<p class="hint">Cuando conectes FAN, aquí aparecerá el código para conectar las apps de la casa.</p>';
+  }
+  if (anyConn()) h += '<button type="button" class="btn danger block" data-act="forget" id="forget">Quitar conexiones</button>';
+  return h;
+}
+
+/* ---------- Conectar ---------- */
+function parseScript(text) {
+  const s = String(text || '');
+  const code = /CASA1\.([A-Za-z0-9+\/=]+)/.exec(s);
+  if (code) {
+    try { const o = JSON.parse(atob(code[1])); if (okConn({ repo: o.r, token: o.t })) return { home: true, repo: o.r, token: o.t.trim() }; } catch (e) {}
+    return { err: 'El código no se pudo leer. Cópialo de nuevo.' };
+  }
+  const t = /^const MS_TITLE = '([^'\n]+)';/m.exec(s), r = /^const REPO = '([^'\n]*)';/m.exec(s), k = /^const TOKEN = '([^'\n]*)';/m.exec(s);
+  if (!t || !r || !k) return { err: 'Eso no parece el script de un widget. En la app, toca «Copiar el script del widget» y pégalo completo.' };
+  const key = ACC_ORDER.filter(function (x) { return APPS[x].title === t[1]; })[0];
+  if (!key) return { err: 'Ese script es de otro widget. Sirven los de FAN, Master, LiderBCI y Copec.' };
+  if (!okConn({ repo: r[1], token: k[1] }) || /^__/.test(k[1])) return { err: 'El script no trae el buzón o el token. Cópialo desde la app con el botón «Copiar el script del widget».' };
+  return { key: key, repo: r[1], token: k[1].trim() };
+}
+function addScript() {
+  const ta = $('f-script'), err = $('f-err');
+  const p = parseScript(ta.value);
+  if (p.err) { err.textContent = p.err; err.hidden = false; return; }
+  const conn = { repo: p.repo, token: p.token };
+  let msg;
+  if (p.home) { cfg.home = conn; msg = 'Buzón de la casa conectado.'; }
+  else {
+    cfg.acc[p.key] = conn;
+    const extra = [];
+    if (p.key !== 'copec') ['fan', 'master', 'liderbci'].forEach(function (x) { if (x !== p.key && !cfg.acc[x]) { cfg.acc[x] = { repo: conn.repo, token: conn.token }; extra.push(ACC[x].name); } });
+    msg = ACC[p.key].name + ' conectada' + (extra.length ? '; ' + extra.join(' y ') + ' usan el mismo buzón.' : '.');
+  }
+  saveCfg();
+  ACC_ORDER.forEach(function (k) { if (cfg.acc[k] && S.acc[k] && S.acc[k].missing) S.acc[k] = { pending: true }; });
+  closeSheet(); render(); toast(msg);
+  refresh(false);
+}
+function copyCode() {
+  const c = homeConn();
+  if (!c) { openSettings(); return; }
+  copyText('CASA1.' + btoa(JSON.stringify({ r: c.repo, t: c.token })), 'Código copiado. Pégalo en «Panel Casa» de cada app.');
+}
+let forgetArmed = false;
+function forget(btn) {
+  if (!forgetArmed) {
+    forgetArmed = true; btn.classList.add('armed'); btn.textContent = 'Toca de nuevo para quitar';
+    setTimeout(function () { forgetArmed = false; if (btn.isConnected) { btn.classList.remove('armed'); btn.textContent = 'Quitar conexiones'; } }, 4000);
+    return;
+  }
+  forgetArmed = false;
+  cfg = { acc: {}, home: null }; saveCfg();
+  cache = { acc: {}, home: {}, at: 0 }; writeJSON(CACHE_KEY, cache);
+  ACC_ORDER.forEach(function (k) { S.acc[k] = { missing: true }; });
+  S.home = {}; S.at = 0;
+  closeSheet(); render(); toast('Se quitaron las conexiones de este iPhone.');
+}
+function openSettings() { openSheet('settings'); }
+
+/* ---------- Eventos ---------- */
+document.addEventListener('click', function (e) {
+  const t = e.target.closest('[data-act],[data-acc],[data-home]');
+  if (!t) return;
+  if (t.dataset.acc) { openSheet('acc', t.dataset.acc); return; }
+  if (t.dataset.home) { openSheet('home', t.dataset.home); return; }
+  const a = t.dataset.act;
+  if (a === 'close') closeSheet();
+  else if (a === 'reload') refresh(true);
+  else if (a === 'settings') { if (sheet) closeSheet(); openSettings(); }
+  else if (a === 'addscript') addScript();
+  else if (a === 'copycode') copyCode();
+  else if (a === 'forget') forget(t);
+});
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sheet) closeSheet(); });
+// Al volver a la app, se lee de nuevo si pasó más de un minuto
+document.addEventListener('visibilitychange', function () {
+  if (document.visibilityState === 'visible') { render(); if (Date.now() - S.at > 60000) refresh(false); }
+});
+
+render();
+refresh(false);
+
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', function () { navigator.serviceWorker.register('sw.js').catch(function () {}); });
+}
+})();
+</script>
+</body>
+</html>

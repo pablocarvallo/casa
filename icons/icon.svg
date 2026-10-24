@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" role="img" aria-label="Panel Casa">
+<defs>
+  <linearGradient id="icasaxbg" x1="0.18" y1="0" x2="0.82" y2="1">
+    <stop offset="0" stop-color="#7AA4F7"/><stop offset="0.46" stop-color="#4D78F3"/><stop offset="1" stop-color="#2950F4"/>
+  </linearGradient>
+  <radialGradient id="icasaxlt" cx="0.18" cy="0.06" r="0.78">
+    <stop offset="0" stop-color="#BDEBFB" stop-opacity="0.62"/><stop offset="1" stop-color="#BDEBFB" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="icasaxdk" cx="0.86" cy="1.02" r="0.7">
+    <stop offset="0" stop-color="#1B3AD6" stop-opacity="0.45"/><stop offset="1" stop-color="#1B3AD6" stop-opacity="0"/>
+  </radialGradient>
+  <linearGradient id="icasaxgw" gradientUnits="userSpaceOnUse" x1="300" y1="160" x2="700" y2="870">
+    <stop offset="0" stop-color="#FFFFFF"/><stop offset="0.5" stop-color="#EEF5FF"/><stop offset="1" stop-color="#C7DCFC"/>
+  </linearGradient>
+  <linearGradient id="icasaxgs" gradientUnits="userSpaceOnUse" x1="300" y1="160" x2="700" y2="870">
+    <stop offset="0" stop-color="#EAFAFF" stop-opacity="0.9"/><stop offset="0.5" stop-color="#BDEBFB" stop-opacity="0.66"/><stop offset="1" stop-color="#99C2F8" stop-opacity="0.58"/>
+  </linearGradient>
+  <filter id="icasaxglass" x="-30%" y="-30%" width="160%" height="170%" color-interpolation-filters="sRGB">
+    <feGaussianBlur in="SourceAlpha" stdDeviation="20" result="sb"/>
+    <feOffset in="sb" dy="24" result="so"/>
+    <feFlood flood-color="#0E237E" flood-opacity="0.42"/>
+    <feComposite in2="so" operator="in" result="sh0"/>
+    <feComposite in="sh0" in2="SourceAlpha" operator="out" result="shadow"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="4" result="b1"/>
+    <feOffset in="b1" dy="8" result="o1"/>
+    <feComposite in="SourceAlpha" in2="o1" operator="arithmetic" k2="1" k3="-1" result="topEdge"/>
+    <feFlood flood-color="#FFFFFF" flood-opacity="1"/>
+    <feComposite in2="topEdge" operator="in" result="hl"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="9" result="b2"/>
+    <feOffset in="b2" dy="-12" result="o2"/>
+    <feComposite in="SourceAlpha" in2="o2" operator="arithmetic" k2="1" k3="-1" result="botEdge"/>
+    <feFlood flood-color="#2950F4" flood-opacity="0.38"/>
+    <feComposite in2="botEdge" operator="in" result="inner"/>
+    <feGaussianBlur in="SourceAlpha" stdDeviation="14" result="bump"/>
+    <feSpecularLighting in="bump" surfaceScale="5" specularConstant="0.9" specularExponent="32" lighting-color="#FFFFFF" result="spec">
+      <feDistantLight azimuth="235" elevation="58"/>
+    </feSpecularLighting>
+    <feComposite in="spec" in2="SourceAlpha" operator="in" result="specIn"/>
+    <feMorphology in="SourceAlpha" operator="dilate" radius="2.4" result="dil"/>
+    <feComposite in="dil" in2="SourceAlpha" operator="out" result="ringA"/>
+    <feFlood flood-color="#0B1F6E" flood-opacity="0.32"/>
+    <feComposite in2="ringA" operator="in" result="rim"/>
+    <feMerge>
+      <feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/><feMergeNode in="inner"/>
+      <feMergeNode in="specIn"/><feMergeNode in="hl"/><feMergeNode in="rim"/>
+    </feMerge>
+  </filter>
+  <clipPath id="icasaxround"><rect width="1024" height="1024" rx="230"/></clipPath>
+</defs>
+<g clip-path="url(#icasaxround)">
+<rect width="1024" height="1024" fill="url(#icasaxbg)"/>
+<rect width="1024" height="1024" fill="url(#icasaxlt)"/>
+<rect width="1024" height="1024" fill="url(#icasaxdk)"/>
+<g transform="translate(512 530) scale(1.02) translate(-512 -530)">
+<g filter="url(#icasaxglass)" fill="url(#icasaxgw)" stroke="url(#icasaxgw)" stroke-width="64" stroke-linejoin="round">
+  <path d="M512 236 L792 476 L792 806 L232 806 L232 476 Z"/>
+</g>
+<g filter="url(#icasaxglass)" fill="url(#icasaxgs)"><rect x="444" y="606" width="136" height="232" rx="46"/></g>
+<rect x="296" y="560" width="96" height="96" rx="26" fill="#2950F4" fill-opacity="0.34"/>
+<rect x="632" y="560" width="96" height="96" rx="26" fill="#2950F4" fill-opacity="0.34"/>
+<circle cx="512" cy="470" r="46" fill="#2950F4" fill-opacity="0.85"/>
+<path d="M512 444 V470 L530 488" fill="none" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="551" cy="724" r="13" fill="#2950F4" fill-opacity="0.55"/>
+</g>
+</g>
+</svg>
