@@ -12,14 +12,14 @@ Es un panel de lectura. No guarda datos propios: muestra lo que cada app publica
   - **Pagos del mes**: cuántos van hechos y cuáles faltan. Avisa si la lista sigue con el título de un mes que ya pasó.
   - **Balón de gas**: días del balón en uso, fecha estimada de cambio según el promedio y si hay reserva.
   - **Mi cápsula diaria**: cuántas quedan, hasta qué día alcanzan, si la de hoy ya se tomó y si la receta está pedida.
-  - **Sábanas**: el próximo miércoles y a quién le toca. Se calcula solo (el 7 de octubre de 2026 le tocó a Piti, y desde ahí se alternan).
+  - **Sábanas**: el próximo miércoles y a quién le toca (el 7 de octubre de 2026 le tocó a Piti, y desde ahí se alternan). Con la app Sábanas conectada, además sabe si el cambio ya se hizo y avisa si uno quedó atrasado.
   - **Mesadas**: lo entregado en el mes a Piti y a Emi, con el total acumulado y los últimos aportes.
 - **Sin conexión**: si no se puede leer el buzón, muestra lo último que se leyó.
 
 ## Conectar
 
 1. **Cuentas**: en FAN toca «Copiar el script del widget» y pégalo en Panel Casa → Conexiones. FAN, Master y LiderBCI comparten el buzón, así que con el de FAN quedan las tres. Copec tiene su propio buzón: repite el paso con el script del widget de Copec.
-2. **Apps de la casa**: en Conexiones toca «Copiar código para las apps». Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria y Mesadas, baja hasta «Panel Casa» y toca «Pegar código». Desde ese momento, cada cambio en esas apps se publica en el buzón (en un hito con el nombre de la app, por ejemplo «Gas · panel») y el panel lo muestra.
+2. **Apps de la casa**: en Conexiones toca «Copiar código para las apps». Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria, Mesadas y Sábanas, baja hasta «Panel Casa» y toca «Pegar código». Desde ese momento, cada cambio en esas apps se publica en el buzón (en un hito con el nombre de la app, por ejemplo «Gas · panel») y el panel lo muestra.
 
 Los tokens quedan guardados solo en el iPhone. «Quitar conexiones» los borra.
 
@@ -43,3 +43,4 @@ Los tokens quedan guardados solo en el iPhone. «Quitar conexiones» los borra.
   - `Gas · panel`: `{ app: "gas", v, at, open: fecha de apertura, avg: días promedio, kg, res: balones de reserva }`
   - `Cápsula · panel`: `{ app: "capsula", v, at, left, total, last: fecha de la última toma, ordered: fecha en que se pidió la receta }`
   - `Mesadas · panel`: `{ app: "mesadas", v, at, tot: { piti, emi }, mes: { ym, piti, emi }, ult: [{ w, m, s, d }] }`
+  - `Sábanas · panel`: `{ app: "sabanas", v, at, hechos: [los últimos miércoles marcados], pend: el primer miércoles sin marcar }`

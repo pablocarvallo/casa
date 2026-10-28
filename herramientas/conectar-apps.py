@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Conecta las apps de la casa con Panel Casa.
 
-A Pagos del mes (pagos), Balón de gas (gas), Mi cápsula diaria (receta) y Mesadas (hijas) les agrega:
+A Pagos del mes (pagos), Balón de gas (gas), Mi cápsula diaria (receta), Mesadas (hijas) y Sábanas (beds) les agrega:
   1. el módulo herramientas/panel-casa.js, que publica el resumen de la app en el buzón (marcas PANEL:START/END);
   2. los estilos de la tarjeta «Panel Casa» (marcas PANEL:CSS:START/END);
   3. el lugar de la tarjeta, al final de la pantalla (<div id="panel-casa">);
@@ -9,7 +9,9 @@ A Pagos del mes (pagos), Balón de gas (gas), Mi cápsula diaria (receta) y Mesa
 
 Se puede ejecutar de nuevo: reemplaza lo que esté entre las marcas y no repite los avisos.
 
-    python3 herramientas/conectar-apps.py <carpeta con los repositorios pagos, gas, receta e hijas>
+    python3 herramientas/conectar-apps.py <carpeta con los repositorios pagos, gas, receta, hijas y beds>
+
+Sábanas (beds) se publica desde la rama gh-pages: esa carpeta debe tener esa rama.
 """
 import pathlib, re, sys
 
@@ -92,6 +94,17 @@ if (window.PanelCasa) PanelCasa.init({ app: 'capsula', title: 'Cápsula · panel
     var tot = { piti: 0, emi: 0 }, mes = { ym: ym, piti: 0, emi: 0 };
     items.forEach(function (r) { if (tot[r.who] == null) return; tot[r.who] += r.amount; if (r.date.slice(0, 7) === ym) mes[r.who] += r.amount; });
     return { tot: tot, mes: mes, ult: items.slice(0, 3).map(function (r) { return { w: r.who, m: r.amount, s: r.subject, d: r.date }; }) };
+  } });""",
+    },
+    'beds': {
+        'host_after': '<main class="app" id="app" aria-live="polite"></main>\n',
+        'save': ("    localStorage.setItem(LS_KEY, JSON.stringify(Array.from(done)));\n  }",
+                 "    localStorage.setItem(LS_KEY, JSON.stringify(Array.from(done)));\n    " + HOOK + "\n  }"),
+        'init': """  // Panel Casa: los últimos miércoles marcados y el primero que falta
+  if (window.PanelCasa) PanelCasa.init({ app: 'sabanas', title: 'Sábanas · panel', mount: document.getElementById('panel-casa'), summary: function () {
+    var list = Array.from(done).filter(function (k) { return /^\\d{4}-\\d{2}-\\d{2}$/.test(k); }).sort();
+    var p = firstPending();
+    return { hechos: list.slice(-12), pend: p ? p.k : '' };
   } });""",
     },
 }

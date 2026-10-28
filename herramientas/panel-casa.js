@@ -1,6 +1,6 @@
 /*PANEL:START*/
 /* Panel Casa: publica en el buzón privado de GitHub un resumen de esta app, para que Panel Casa lo muestre.
-   Es el mismo código en Pagos del mes, Balón de gas, Mi cápsula diaria y Mesadas. No se edita en la app:
+   Es el mismo código en Pagos del mes, Balón de gas, Mi cápsula diaria, Mesadas y Sábanas. No se edita en la app:
    se copia desde casa/herramientas/panel-casa.js con  python3 herramientas/conectar-apps.py <carpeta de las apps>
    Uso: PanelCasa.init({ app, title, mount, summary }) al abrir la app y PanelCasa.changed() cada vez que se guarda. */
 var PanelCasa = (function () {

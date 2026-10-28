@@ -346,6 +346,7 @@ h1, h2, h3 { margin: 0; text-wrap: balance; }
 .kv.icon img { width: 30px; height: 30px; flex: none; border-radius: 23%; }
 .kv.icon > span:nth-child(2) { flex: 1; }
 .kv .ok { color: var(--ds-pos); font-weight: 600; }
+.kv .late { color: var(--ds-warn); font-weight: 600; }
 .kv .off { color: var(--ds-ink-3); }
 .kv.done > span:first-child { color: var(--ds-ink-2); text-decoration: line-through; text-decoration-color: var(--ds-ink-3); }
 .mini { width: 20px; height: 20px; flex: none; display: grid; place-items: center; border-radius: 50%; border: 1.5px solid var(--ring); color: #fff; }
@@ -1131,7 +1132,8 @@ const HOME = {
   pagos: { title: 'Pagos · panel', name: 'Pagos del mes' },
   gas: { title: 'Gas · panel', name: 'Balón de gas' },
   capsula: { title: 'Cápsula · panel', name: 'Mi cápsula diaria' },
-  mesadas: { title: 'Mesadas · panel', name: 'Mesadas' }
+  mesadas: { title: 'Mesadas · panel', name: 'Mesadas' },
+  sabanas: { title: 'Sábanas · panel', name: 'Sábanas' }
 };
 const HOME_ORDER = ['pagos', 'gas', 'capsula', 'sabanas', 'mesadas'];
 const PEOPLE = { piti: 'Piti', emi: 'Emi' };
@@ -1322,13 +1324,27 @@ function capInfo(c, today) {
     end: left > 0 ? addDays(today, took ? left : left - 1) : ''
   };
 }
+function turnOf(k) { const w = Math.round(diffDays(SHEETS.start, k) / 7); return SHEETS.order[((w % 2) + 2) % 2]; }
+// Sábanas: el turno se calcula por fecha. Si la app Sábanas está conectada, además se sabe qué miércoles ya se marcaron.
 function sheetsInfo(today) {
-  const delta = (3 - new Date(utcOf(today)).getUTCDay() + 7) % 7;   // días hasta el próximo miércoles (0 si es hoy)
-  const next = addDays(today, delta);
-  const w = Math.round(diffDays(SHEETS.start, next) / 7);
-  function whoAt(i) { return SHEETS.order[(((w + i) % 2) + 2) % 2]; }
-  const list = [0, 1, 2, 3].map(function (i) { return { date: addDays(next, 7 * i), who: whoAt(i) }; });
-  return { date: next, who: whoAt(0), today: delta === 0, tomorrow: delta === 1, list: list };
+  const raw = S.home.sabanas, data = raw && Array.isArray(raw.hechos) ? raw : null, done = {};
+  if (data) data.hechos.forEach(function (k) { if (validDate(String(k))) done[k] = 1; });
+  const wed = addDays(today, (3 - new Date(utcOf(today)).getUTCDay() + 7) % 7);   // este miércoles (hoy si es miércoles)
+  const pend = data && validDate(String(data.pend || '')) ? data.pend : '';
+  const late = pend && pend < today ? pend : '';                                 // un miércoles pasado sin marcar
+  const todayDone = wed === today && !!done[today];
+  const next = late || (todayDone ? addDays(today, 7) : wed);
+  const dates = [];
+  if (late) dates.push(late);
+  for (let i = 0; dates.length < 4; i++) { const d = addDays(wed, 7 * i); if (d !== late) dates.push(d); }
+  const list = dates.map(function (d) {
+    return { date: d, who: turnOf(d), done: !!done[d], late: !done[d] && d < today };
+  });
+  const tomorrow = addDays(today, 1);
+  return { connected: !!data, at: data ? +data.at || 0 : 0, date: next, who: turnOf(next), late: !!late,
+    today: !late && next === today, tomorrow: !late && next === tomorrow, todayDone: todayDone, list: list,
+    // lo de hoy o mañana, aunque haya otro atrasado
+    todayPending: wed === today && !done[today], tomorrowPending: wed === tomorrow && !done[tomorrow], wedWho: turnOf(wed) };
 }
 function mesInfo(m, today) {
   if (!m) return null;
@@ -1359,8 +1375,9 @@ function attention(today) {
   }
   if (p && p.stale) out.push({ tone: 'warn', w: 3, text: 'Empieza el mes nuevo en Pagos del mes' });
   else if (p && p.pend.length) out.push({ tone: 'warn', w: 5, text: p.pend.length === 1 ? 'Falta 1 pago: ' + p.pend[0].t : 'Faltan ' + p.pend.length + ' pagos del mes' });
-  if (sh.today) out.push({ tone: 'info', w: 5, text: 'Hoy toca cambiar sábanas: ' + PEOPLE[sh.who] });
-  else if (sh.tomorrow) out.push({ tone: 'info', w: 7, text: 'Mañana toca cambiar sábanas: ' + PEOPLE[sh.who] });
+  if (sh.late) out.push({ tone: 'warn', w: 4, text: 'Sábanas atrasadas: le tocaba a ' + PEOPLE[sh.who] + ' el miércoles ' + fmtDay(sh.date) });
+  if (sh.todayPending) out.push({ tone: 'info', w: 5, text: 'Hoy toca cambiar sábanas: ' + PEOPLE[sh.wedWho] });
+  else if (sh.tomorrowPending) out.push({ tone: 'info', w: 7, text: 'Mañana toca cambiar sábanas: ' + PEOPLE[sh.wedWho] });
   return out.sort(function (a, b) { return a.w - b.w; });
 }
 
@@ -1475,8 +1492,11 @@ function renderHome(today) {
       h += homeRow(k, 'capsula', HOME.capsula.name, esc(sub), tone && !c.ordered ? tone : '', '<span class="r-big num ' + tone + '">' + c.left + '</span><span class="r-unit">' + plural(c.left, 'queda', 'quedan') + '</span>');
     } else if (k === 'sabanas') {
       const s = sheetsInfo(today);
-      const sub = s.today ? 'Hoy, miércoles ' + fmtDay(s.date) : s.tomorrow ? 'Mañana, miércoles ' + fmtDay(s.date) : 'Miércoles ' + fmtDay(s.date);
-      h += homeRow(k, 'sabanas', 'Sábanas', sub, s.today ? 'warn' : '', '<span class="who ' + s.who + '">' + PEOPLE[s.who] + '</span>');
+      let sub = s.late ? 'Atrasado: miércoles ' + fmtDay(s.date)
+        : s.todayDone ? 'Hoy: hecho · próximo, miércoles ' + fmtDay(s.date)
+        : s.today ? 'Hoy, miércoles ' + fmtDay(s.date) : s.tomorrow ? 'Mañana, miércoles ' + fmtDay(s.date) : 'Miércoles ' + fmtDay(s.date);
+      if (!s.connected) sub += ' · sin conectar';
+      h += homeRow(k, 'sabanas', 'Sábanas', esc(sub), s.late || s.today ? 'warn' : '', '<span class="who ' + s.who + '">' + PEOPLE[s.who] + '</span>');
     } else if (k === 'mesadas') {
       const m = mesInfo(S.home.mesadas, today);
       if (!m) { h += offRow(k, 'mesadas', HOME.mesadas.name); return; }
@@ -1544,11 +1564,14 @@ function sheetBody(kind, arg) {
     if (arg === 'sabanas') {
       const s = sheetsInfo(today);
       let h = head('sabanas', 'Sábanas', 'Se cambian los miércoles, una vez cada una');
-      h += '<ul class="list">' + s.list.map(function (x, i) {
+      h += '<ul class="list">' + s.list.map(function (x) {
         const when = x.date === today ? 'Hoy' : x.date === addDays(today, 1) ? 'Mañana' : cap1(weekday(x.date)) + ' ' + fmtDay(x.date);
-        return kv(esc(when) + (i === 0 ? '<small>Próximo cambio</small>' : ''), '<span class="who ' + x.who + '">' + PEOPLE[x.who] + '</span>');
+        const st = !s.connected ? (x.date === s.date ? 'Próximo cambio' : '')
+          : x.done ? '<span class="ok">Hecho</span>' : x.late ? '<span class="late">Atrasado</span>' : x.date === s.date ? 'Próximo cambio' : 'Pendiente';
+        return '<li class="kv"><span>' + esc(when) + (st ? '<small>' + st + '</small>' : '') + '</span><span><span class="who ' + x.who + '">' + PEOPLE[x.who] + '</span></span></li>';
       }).join('') + '</ul>';
-      return h + '<p class="hint">El turno se calcula solo, a partir del miércoles 7 de octubre (Piti).</p>';
+      h += '<p class="hint">El turno se calcula a partir del miércoles 7 de octubre (Piti).' + (s.connected ? ' Los cambios hechos se marcan en la app Sábanas; publicó ' + esc(fmtWhen(s.at)) + '.' : '') + '</p>';
+      return s.connected ? h : h + '<h3 class="grp">Saber si ya se hizo</h3>' + connectHelp('sabanas');
     }
     const raw = S.home[arg];
     if (!raw) return head(arg, HOME[arg].name, 'Sin datos todavía') + connectHelp(arg);
@@ -1625,10 +1648,10 @@ function settingsBody() {
   h += '<h3 class="grp">Apps de la casa</h3><ul class="list">' + Object.keys(HOME).map(function (k) {
     const st = S.home[k];
     return '<li class="kv icon"><img src="icons/apps/' + k + '.png" alt=""><span>' + HOME[k].name + '<small>' + (st && st.at ? 'Publicó ' + esc(fmtWhen(+st.at)) : 'Aún no publica') + '</small></span><span>' + (st ? '<span class="ok">Conectada</span>' : '<span class="off">Sin conectar</span>') + '</span></li>';
-  }).join('') + '<li class="kv icon"><img src="icons/apps/sabanas.png" alt=""><span>Sábanas<small>Miércoles alternados, se calcula solo</small></span><span><span class="ok">Lista</span></span></li></ul>';
+  }).join('') + '</ul>';
   if (homeConn()) {
     h += '<button type="button" class="btn tonal block" data-act="copycode">Copiar código para las apps</button>';
-    h += '<p class="hint">Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria y Mesadas: baja hasta «Panel Casa», toca «Pegar código» y listo. Desde ahí, cada cambio se ve en el panel.</p>';
+    h += '<p class="hint">Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria, Mesadas y Sábanas: baja hasta «Panel Casa», toca «Pegar código» y listo. Desde ahí, cada cambio se ve en el panel.</p>';
   } else {
     h += '<p class="hint">Cuando conectes FAN, aquí aparecerá el código para conectar las apps de la casa.</p>';
   }
