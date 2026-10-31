@@ -143,7 +143,14 @@ def main(argv):
             quiere = capas.get(clave) is True or (clave == 'componentes' and capas.get(clave) == 'comunes')
             if not quiere:
                 continue
-            if nombre not in pos:
+            if nombre == 'COMP' and 'COMP' not in pos and 'BASE' in pos:
+                # App que pasa a los componentes comunes: el bloque va justo después de los elementos,
+                # antes de DS:APP, para que lo propio de la app siga pudiendo ajustarlo.
+                fin = '/*DS:BASE:END*/'
+                i = texto.index(fin) + len(fin)
+                texto = texto[:i] + '\n/*DS:COMP:START*//*DS:COMP:END*/' + texto[i:]
+                hechos.append('bloque de componentes nuevo')
+            elif nombre not in pos:
                 errores.append(f'{app["id"]}: el catálogo pide {clave} pero falta la marca DS:{nombre}')
                 continue
             texto, cambio = reemplazar(texto, nombre, piezas[clave])

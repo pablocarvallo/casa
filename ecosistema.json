@@ -332,7 +332,7 @@
       "capas": {
         "tokens": true,
         "elementos": true,
-        "componentes": "propios",
+        "componentes": "comunes",
         "panel_casa": "publica",
         "buzon": [
           "fan-avisos"
@@ -349,7 +349,7 @@
           "panel-casa"
         ]
       },
-      "cache_sw": "pagos-v1-sinzoom",
+      "cache_sw": "pagos-v1-sinzoom-b1",
       "icono": "Portapapeles con checks",
       "notas": "Secciones «A inicios de mes» y «A mitad de mes». Define el estilo de lista de check del sistema de diseño."
     },
@@ -800,9 +800,8 @@
   "pendientes_detectados": [
     {
       "tema": "Apps con componentes propios",
-      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas y Sábanas. Las otras nueve tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Pagos 40 diferencias, Indicadores 64, Panel Casa 166, Lecturas 258, Ronquidos 308, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
+      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas, Sábanas y Pagos del mes (desde el 31 oct 2026). Las otras ocho tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Indicadores 64 diferencias, Panel Casa 166, Lecturas 258, Ronquidos 308, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
       "apps": [
-        "pagos",
         "indicadores",
         "casa",
         "lecturas",
