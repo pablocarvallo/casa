@@ -82,7 +82,7 @@ def rama_actual(carpeta):
 
 
 def subir_cache(sw):
-    m = re.search(r"(const\s+CACHE\s*=\s*)(['\"])([^'\"]+)\2", sw)
+    m = re.search(r"((?:const|let|var)\s+CACHE\s*=\s*)(['\"])([^'\"]+)\2", sw)
     if not m:
         return sw, None
     nombre = m.group(3)

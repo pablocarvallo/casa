@@ -42,7 +42,7 @@
     "buzon": "Repositorio privado de GitHub donde Atajos deja cada correo de aviso como issue, y donde las apps publican resúmenes.",
     "widget": "Widget de iOS hecho con Scriptable (carpeta widget/).",
     "respaldo": "Permite copiar todos los datos como texto y restaurarlos.",
-    "sin_zoom": "Bloquea el zoom con los dedos en la app instalada.",
+    "sin_zoom": "Bloquea el zoom con los dedos en la app instalada: viewport con maximum-scale=1 y user-scalable=no, html { touch-action: pan-x pan-y } y un script que cancela los eventos gesture* y el movimiento con dos dedos. Todas las apps del catálogo lo tienen desde el 31 oct 2026.",
     "sin_conexion": "Tiene service worker: abre sin conexión y guarda caché."
   },
   "buzones": {
@@ -409,7 +409,7 @@
         ],
         "widget": false,
         "respaldo": false,
-        "sin_zoom": false,
+        "sin_zoom": true,
         "sin_conexion": true
       },
       "datos": {
@@ -419,7 +419,7 @@
           "panel-casa"
         ]
       },
-      "cache_sw": "capsula-v2-panel",
+      "cache_sw": "capsula-v2-panel-b1",
       "icono": "Cápsula",
       "notas": "Alertas a 12 y 10 cápsulas, crítica a 5. Iconos en la raíz y sin tamaño 192. Tiene una rama gh-pages del 20 oct que parece sin uso (la publicación reciente está en main)."
     },
@@ -512,7 +512,7 @@
         "buzon": [],
         "widget": false,
         "respaldo": null,
-        "sin_zoom": false,
+        "sin_zoom": true,
         "sin_conexion": true
       },
       "datos": {
@@ -531,7 +531,7 @@
       "automatizaciones": [
         "Tarea de GitHub .github/workflows/banco-central.yml, cada mañana, con los secretos BCCH_USER y BCCH_PASS"
       ],
-      "cache_sw": "indicadores-v1",
+      "cache_sw": "indicadores-v1-b1",
       "icono": "Barras con línea ascendente",
       "notas": "Define el estilo de gráficos del sistema de diseño."
     },
@@ -558,7 +558,7 @@
         "buzon": [],
         "widget": false,
         "respaldo": null,
-        "sin_zoom": false,
+        "sin_zoom": true,
         "sin_conexion": false
       },
       "datos": {
@@ -591,7 +591,7 @@
         "buzon": [],
         "widget": false,
         "respaldo": true,
-        "sin_zoom": false,
+        "sin_zoom": true,
         "sin_conexion": true
       },
       "datos": {
@@ -603,7 +603,7 @@
       "servicios": [
         "api.themoviedb.org (clave TMDB)"
       ],
-      "cache_sw": "cartelera-v2",
+      "cache_sw": "cartelera-v2-b1",
       "icono": "Televisor con marcador sobre fondo blanco (no es de la familia de vidrio)",
       "notas": "La paleta tiene marca de inicio pero no de cierre, y no tiene capa de componentes: ningún script puede actualizarla hoy. Incluye historial de Netflix y Prime Video. No figura en el documento de diseño."
     },
@@ -642,7 +642,7 @@
       "servicios": [
         "api.open-meteo.com"
       ],
-      "cache_sw": "reposo-v3-ds1",
+      "cache_sw": "reposo-v3-ds1-b1",
       "icono": "Despertador",
       "notas": "Colores escritos directamente en el código, sin marcas DS."
     },
@@ -704,7 +704,7 @@
         "buzon": [],
         "widget": false,
         "respaldo": null,
-        "sin_zoom": false,
+        "sin_zoom": true,
         "sin_conexion": true
       },
       "datos": {
@@ -713,7 +713,7 @@
           "royalstudy:*"
         ]
       },
-      "cache_sw": "royal-study-v6-classic",
+      "cache_sw": "royal-study-v6-classic-b1",
       "icono": "Caballo de ajedrez (propio)",
       "notas": "Basado en the-royal-study-chess.vercel.app."
     },
@@ -739,7 +739,7 @@
         "buzon": [],
         "widget": true,
         "respaldo": null,
-        "sin_zoom": false,
+        "sin_zoom": true,
         "sin_conexion": false
       },
       "datos": {
@@ -775,7 +775,7 @@
         "buzon": [],
         "widget": false,
         "respaldo": null,
-        "sin_zoom": false,
+        "sin_zoom": true,
         "sin_conexion": true
       },
       "datos": {
@@ -784,7 +784,7 @@
           "miniexcel:planilla:v1"
         ]
       },
-      "cache_sw": "miniexcel-v4",
+      "cache_sw": "miniexcel-v4-b1",
       "icono": "Propio, colores de Excel",
       "notas": "Sin menús ni opción de guardar; los datos persisten hasta que se borran."
     }
@@ -818,19 +818,6 @@
       "apps": [
         "cartelera",
         "despertador"
-      ]
-    },
-    {
-      "tema": "Zoom con los dedos activo",
-      "detalle": "Siguen con zoom: Cápsula, Indicadores, Lecturas, Cartelera y Royal Study (además de Calendario y Mini Planilla, de diseño propio).",
-      "apps": [
-        "receta",
-        "indicadores",
-        "lecturas",
-        "cartelera",
-        "royal-study",
-        "calendario",
-        "miniexcel"
       ]
     },
     {
