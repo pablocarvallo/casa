@@ -37,10 +37,14 @@ Los tokens quedan guardados solo en el iPhone. «Quitar conexiones» los borra.
   python3 herramientas/armar-lectores.py ../copec/widget/panel-widget.js
   ```
 
-- El diseño sigue el sistema común de las apps domésticas (marcas `DS:TOKENS` y `DS:LAYER` en `index.html`).
+- El diseño sigue la base común de las apps domésticas (marcas `DS:TOKENS`, `DS:VARS`, `DS:BASE` y `DS:APP` en `index.html`).
 - Lo que publica cada app de la casa (descripción del hito, en JSON):
   - `Pagos · panel`: `{ app: "pagos", v, at, title, s: [{ n: sección, i: [{ t: pago, d: 1 si está hecho, a: fecha }] }] }`
   - `Gas · panel`: `{ app: "gas", v, at, open: fecha de apertura, avg: días promedio, kg, res: balones de reserva }`
   - `Cápsula · panel`: `{ app: "capsula", v, at, left, total, last: fecha de la última toma, ordered: fecha en que se pidió la receta }`
   - `Mesadas · panel`: `{ app: "mesadas", v, at, tot: { piti, emi }, mes: { ym, piti, emi }, ult: [{ w, m, s, d }] }`
   - `Sábanas · panel`: `{ app: "sabanas", v, at, hechos: [los últimos miércoles marcados], pend: el primer miércoles sin marcar }`
+
+## Base común de las apps
+
+Este repositorio también guarda el catálogo de las apps (`ecosistema.json`), la base común de diseño (`base/`) y las herramientas que la copian a cada app (`herramientas/aplicar-base.py`) y revisan su aspecto (`herramientas/revisar-apps.py`). El detalle está en `CLAUDE.md`.

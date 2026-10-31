@@ -1,0 +1,16 @@
+/* ── Domésticas · elementos comunes (v1): fondo, tipografía, campos, icono de la app ── */
+html { background: var(--ds-bg); }
+body {
+  font-family: var(--ds-font);
+  background: linear-gradient(180deg, var(--ds-bg-top) 0, var(--ds-bg) 360px) no-repeat, var(--ds-bg);
+  color: var(--ds-ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+h1, h2, h3, h4 { font-family: var(--ds-font-display); letter-spacing: -0.022em; }
+button, input, select, textarea { font-family: inherit; }
+::selection { background: var(--ds-tint-soft); }
+:focus-visible { outline-color: var(--ds-tint); }
+input, select, textarea { accent-color: var(--ds-btn); caret-color: var(--ds-tint); }
+@keyframes ds-rise { from { transform: translateY(28px); opacity: 0; } to { transform: none; opacity: 1; } }
+.mark.app-icon, img.app-icon { display: block; overflow: hidden; padding: 0; background: none; object-fit: cover; border-radius: 23%; box-shadow: 0 0 0 0.5px rgba(14, 27, 51, 0.08), 0 4px 12px rgba(41, 80, 244, 0.25); }

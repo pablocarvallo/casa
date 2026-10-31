@@ -1,0 +1,896 @@
+{
+  "nombre": "Apps domésticas",
+  "version_catalogo": 1,
+  "revisado": "2026-10-31",
+  "propietario_github": "pablocarvallo",
+  "documento_diseno": "claude/sistema-de-diseno-domesticas.md (Project App Domésticas)",
+  "como_usar": [
+    "Una instrucción indica su alcance: «todas», un grupo («las de cuentas») o una app («solo FAN»).",
+    "«Todas» abarca las apps con diseno = comun o comun-con-excepcion. Las de diseno = propio reciben cambios de comportamiento (zoom, respaldo, actualización), no de diseño, salvo que la instrucción las nombre.",
+    "Un cambio de diseño común se hace en base/ y se copia a las apps con herramientas/aplicar-base.py; lo propio de cada app va en sus bloques VARS y APP.",
+    "Antes de cambiar una app, revisar sus excepciones y notas.",
+    "Los campos de capas describen el estado real del código revisado en la fecha indicada."
+  ],
+  "base_comun": {
+    "repositorio": "pablocarvallo/casa",
+    "archivos": {
+      "tokens": "base/tokens.css",
+      "elementos": "base/elementos.css",
+      "componentes": "base/componentes.css"
+    },
+    "marcas_propias_de_cada_app": {
+      "VARS": "/*DS:VARS:START*/ … /*DS:VARS:END*/: variables propias tomadas de las --ds-*",
+      "APP": "/*DS:APP:START*/ … /*DS:APP:END*/: estilos propios, después de la base para poder ajustarla"
+    },
+    "aplicar": "python3 herramientas/aplicar-base.py <carpeta con los repositorios> [--revisar] [--solo …] [--grupo …] [--subir-cache]",
+    "revisar_aspecto": "python3 herramientas/revisar-apps.py foto|comparar …"
+  },
+  "grupos": {
+    "portada": "Panel Casa: reúne en una pantalla lo que publican las demás.",
+    "cuentas": "Dinero: saldos, tarjetas, créditos y gastos médicos.",
+    "casa": "Tareas y consumos del hogar; publican su resumen en Panel Casa.",
+    "informacion": "Consulta de datos externos o personales: indicadores, lecturas, series.",
+    "noche": "Se usan de noche, con pantalla oscura o atenuada.",
+    "juegos": "Juegos personales.",
+    "herramientas": "Utilidades con diseño propio por decisión expresa."
+  },
+  "capas": {
+    "tokens": "Paleta, tipografía, radios y sombras (variables --ds-*), en claro y oscuro. Archivo base/tokens.css; en la app, entre /*DS:TOKENS:START*/ y /*DS:TOKENS:END*/.",
+    "elementos": "Fondo, títulos, campos, selección e icono de la app. Archivo base/elementos.css; en la app, entre /*DS:BASE:START*/ y /*DS:BASE:END*/.",
+    "componentes": "Encabezado, botones, tarjeta principal, listas, filtros, hojas y avisos. «comunes» = la app usa base/componentes.css, entre /*DS:COMP:START*/ y /*DS:COMP:END*/; «propios» = la app tiene sus propios componentes dentro de /*DS:APP*/ y aún no usa los comunes.",
+    "panel_casa": "Módulo /*PANEL:START*/ (más /*PANEL:CSS*/ y /*PANEL:APP*/) que publica el resumen de la app en el buzón. Se copia con herramientas/conectar-apps.py.",
+    "buzon": "Repositorio privado de GitHub donde Atajos deja cada correo de aviso como issue, y donde las apps publican resúmenes.",
+    "widget": "Widget de iOS hecho con Scriptable (carpeta widget/).",
+    "respaldo": "Permite copiar todos los datos como texto y restaurarlos.",
+    "sin_zoom": "Bloquea el zoom con los dedos en la app instalada.",
+    "sin_conexion": "Tiene service worker: abre sin conexión y guarda caché."
+  },
+  "buzones": {
+    "fan-avisos": {
+      "privado": true,
+      "recibe": "Avisos del Banco de Chile (enviodigital@bancochile.cl) a p.carvallo.ceroni@icloud.com, enviados por Atajos",
+      "usado_por": [
+        "fan",
+        "master",
+        "liderbci",
+        "casa",
+        "pagos",
+        "gas",
+        "receta",
+        "hijas",
+        "beds"
+      ]
+    },
+    "copec-avisos": {
+      "privado": true,
+      "recibe": "Avisos de Copec Pay (mensajeria@copecpay.cl) con asunto que contiene «bip»",
+      "usado_por": [
+        "copec",
+        "casa"
+      ]
+    }
+  },
+  "apps": [
+    {
+      "id": "casa",
+      "nombre": "Panel Casa",
+      "repo": "pablocarvallo/casa",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/casa/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "portada"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "propios",
+        "panel_casa": "lee",
+        "buzon": [
+          "fan-avisos",
+          "copec-avisos"
+        ],
+        "widget": false,
+        "respaldo": null,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "panel-casa-config",
+          "panel-casa-cache",
+          "cuentas-panel"
+        ],
+        "nota": "No guarda datos propios; solo conexiones y caché."
+      },
+      "cache_sw": "casa-v2-sinzoom",
+      "icono": "Casa con reloj en el frontón",
+      "herramientas": [
+        "herramientas/conectar-apps.py",
+        "herramientas/armar-lectores.py",
+        "herramientas/panel-casa.js"
+      ],
+      "notas": "Los lectores de las cuentas (/*LECTORES:INICIO*/) se copian desde copec/widget/panel-widget.js. Sábanas se calcula sola: miércoles alternados desde el 7 oct 2026 (Piti)."
+    },
+    {
+      "id": "fan",
+      "nombre": "FAN",
+      "repo": "pablocarvallo/fan",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/fan/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "cuentas"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "comunes",
+        "panel_casa": false,
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": true,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "fan-movimientos"
+        ]
+      },
+      "cache_sw": "fan-v8-ds1-sinzoom",
+      "icono": "Sobre con moneda",
+      "notas": "Lee los avisos de compra con cargo a cuenta; deja fuera tarjeta de crédito y compras en dólares. Solo cuenta los correos que llegan a p.carvallo.ceroni@icloud.com."
+    },
+    {
+      "id": "master",
+      "nombre": "Master",
+      "repo": "pablocarvallo/master",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/master/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "cuentas"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "comunes",
+        "panel_casa": false,
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": true,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "master-movimientos",
+          "fan-preferencias"
+        ]
+      },
+      "cache_sw": "master-v4-simple",
+      "icono": "Tarjeta",
+      "notas": "Rehecha desde cero el 30 oct 2026: arriba solo disponible y utilizado. Tarjeta ****9908 = Titular, ****4526 = Adicional. Extracto exportable a Excel. Usa la clave fan-preferencias, compartida con FAN."
+    },
+    {
+      "id": "liderbci",
+      "nombre": "LiderBCI",
+      "repo": "pablocarvallo/liderbci",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/liderbci/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "cuentas"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "comunes",
+        "panel_casa": false,
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": true,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "liderbci-compras",
+          "liderbci-comercios"
+        ]
+      },
+      "cache_sw": "liderbci-v3-ds1-sinzoom",
+      "icono": "Bolsa",
+      "notas": "Compras ingresadas a mano; publica en el buzón solo para el widget y el panel. Puntos: 6 % en Lider, 1 % en otros; el saldo de puntos sobrevive a la limpieza del periodo."
+    },
+    {
+      "id": "copec",
+      "nombre": "Copec",
+      "repo": "pablocarvallo/copec",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/copec/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "cuentas"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "comunes",
+        "panel_casa": false,
+        "buzon": [
+          "copec-avisos"
+        ],
+        "widget": true,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "copec-movimientos",
+          "cuentas-panel"
+        ]
+      },
+      "cache_sw": "copec-v4-ds1-sinzoom",
+      "icono": "Bus",
+      "notas": "Cargos de bip! que llegan en la mañana (iPhone apagado de noche): relee el buzón cada minuto los primeros diez minutos. widget/panel-widget.js es la fuente de los lectores de las cuatro cuentas que usa Panel Casa."
+    },
+    {
+      "id": "mis-creditos",
+      "nombre": "Mis créditos",
+      "repo": "pablocarvallo/mis-creditos",
+      "rama": "gh-pages",
+      "url": "https://pablocarvallo.github.io/mis-creditos/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "cuentas"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "propios",
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "mis-creditos.v1"
+        ]
+      },
+      "cache_sw": "mis-creditos-v1-ds1-sinzoom",
+      "icono": "Moneda en anillo",
+      "notas": "La rama main solo tiene el README; la app vive en gh-pages. Pendiente calculado con las fórmulas de la columna E de admincasa.xlsx; hipotecario aparte, en UF."
+    },
+    {
+      "id": "cigna",
+      "nombre": "Gastos médicos",
+      "repo": "pablocarvallo/cigna",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/cigna/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "cuentas"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "propios",
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": null,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "archivo cifrado en el repositorio",
+        "claves": [
+          "datos/cigna.enc.json"
+        ],
+        "nota": "Solo lectura en el iPhone; los datos se ingresan en el artifact y se publican a pedido con herramientas/publicar.mjs."
+      },
+      "cache_sw": "cigna-v1",
+      "icono": "Escudo con cruz",
+      "notas": "El artifact de escritorio debe verse completo sin desplazarse en el navegador de Windows."
+    },
+    {
+      "id": "pagos",
+      "nombre": "Pagos del mes",
+      "repo": "pablocarvallo/pagos",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/pagos/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "casa"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "propios",
+        "panel_casa": "publica",
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": false,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "pagos-del-mes",
+          "panel-casa"
+        ]
+      },
+      "cache_sw": "pagos-v1-sinzoom",
+      "icono": "Portapapeles con checks",
+      "notas": "Secciones «A inicios de mes» y «A mitad de mes». Define el estilo de lista de check del sistema de diseño."
+    },
+    {
+      "id": "gas",
+      "nombre": "Balón de gas",
+      "repo": "pablocarvallo/gas",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/gas/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "casa"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "comunes",
+        "panel_casa": "publica",
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": false,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "balon-gas-registros",
+          "panel-casa"
+        ]
+      },
+      "cache_sw": "balon-gas-v4-ds1-sinzoom",
+      "icono": "Balón 45 kg",
+      "notas": "Balones de 45 kg; distingue compra de reserva y apertura."
+    },
+    {
+      "id": "receta",
+      "nombre": "Mi cápsula diaria",
+      "repo": "pablocarvallo/receta",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/receta/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "casa"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "propios",
+        "panel_casa": "publica",
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": false,
+        "respaldo": false,
+        "sin_zoom": false,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "frasco-magistral-v1",
+          "panel-casa"
+        ]
+      },
+      "cache_sw": "capsula-v2-panel",
+      "icono": "Cápsula",
+      "notas": "Alertas a 12 y 10 cápsulas, crítica a 5. Iconos en la raíz y sin tamaño 192. Tiene una rama gh-pages del 20 oct que parece sin uso (la publicación reciente está en main)."
+    },
+    {
+      "id": "hijas",
+      "nombre": "Mesadas",
+      "repo": "pablocarvallo/hijas",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/hijas/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "casa"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "comunes",
+        "panel_casa": "publica",
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": false,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "mesadas-aportes",
+          "panel-casa"
+        ]
+      },
+      "cache_sw": "mesadas-v6-ds1",
+      "icono": "Alcancía",
+      "notas": "Mesadas de Piti y Emi. Tiene una rama gh-pages del 7 oct que parece sin uso (la publicación reciente está en main)."
+    },
+    {
+      "id": "beds",
+      "nombre": "Sábanas",
+      "repo": "pablocarvallo/beds",
+      "rama": "gh-pages",
+      "url": "https://pablocarvallo.github.io/beds/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "casa"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "comunes",
+        "panel_casa": "publica",
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": false,
+        "respaldo": false,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "cambio-sabanas-hechos",
+          "panel-casa"
+        ]
+      },
+      "cache_sw": "sabanas-v2-panel-sinzoom",
+      "icono": "Cama",
+      "notas": "La rama main solo tiene el README; la app vive en gh-pages. Su módulo panel_casa es una variante distinta de la de las otras cuatro apps de la casa."
+    },
+    {
+      "id": "indicadores",
+      "nombre": "Indicadores",
+      "repo": "pablocarvallo/indicadores",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/indicadores/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "informacion"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "propios",
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": null,
+        "sin_zoom": false,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "indicadores-preferencias",
+          "indicadores-lectura"
+        ],
+        "nota": "Solo preferencias; los datos vienen de fuentes públicas."
+      },
+      "servicios": [
+        "mindicador.cl",
+        "si3.bcentral.cl",
+        "raw.githubusercontent.com (datos/consumo.json)"
+      ],
+      "automatizaciones": [
+        "Tarea de GitHub .github/workflows/banco-central.yml, cada mañana, con los secretos BCCH_USER y BCCH_PASS"
+      ],
+      "cache_sw": "indicadores-v1",
+      "icono": "Barras con línea ascendente",
+      "notas": "Define el estilo de gráficos del sistema de diseño."
+    },
+    {
+      "id": "lecturas",
+      "nombre": "Lecturas",
+      "repo": "pablocarvallo/lecturas",
+      "rama": "main",
+      "url": "https://lecturas-beta.vercel.app",
+      "alojamiento": "Vercel",
+      "grupos": [
+        "informacion"
+      ],
+      "diseno": "comun-con-excepcion",
+      "excepciones": [
+        "Icono propio: pila de libros negra (#262631) sobre fondo blanco, elegido el 21 oct 2026; no reemplazar sin preguntar.",
+        "Estructura de pestañas sin icono en el encabezado."
+      ],
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "propios",
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": null,
+        "sin_zoom": false,
+        "sin_conexion": false
+      },
+      "datos": {
+        "almacen": "Goodreads (lectura)",
+        "claves": []
+      },
+      "servicios": [
+        "goodreads.com, a través de las funciones de api/ en Vercel"
+      ],
+      "cache_sw": null,
+      "icono": "Pila de libros (propio)",
+      "notas": "Único alojamiento fuera de GitHub Pages. Perfil Goodreads 90308354."
+    },
+    {
+      "id": "cartelera",
+      "nombre": "Cartelera",
+      "repo": "pablocarvallo/cartelera",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/cartelera/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "informacion"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": false,
+        "componentes": null,
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": true,
+        "sin_zoom": false,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "cartelera.v1"
+        ]
+      },
+      "servicios": [
+        "api.themoviedb.org (clave TMDB)"
+      ],
+      "cache_sw": "cartelera-v2",
+      "icono": "Televisor con marcador sobre fondo blanco (no es de la familia de vidrio)",
+      "notas": "La paleta tiene marca de inicio pero no de cierre, y no tiene capa de componentes: ningún script puede actualizarla hoy. Incluye historial de Netflix y Prime Video. No figura en el documento de diseño."
+    },
+    {
+      "id": "despertador",
+      "nombre": "Despertador",
+      "repo": "pablocarvallo/despertador",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/despertador/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "noche"
+      ],
+      "diseno": "comun-con-excepcion",
+      "excepciones": [
+        "De día usa la paleta (cifras #99C2F8, acento #719DF6); de noche, tonos rojizos.",
+        "Debe funcionar en un iPhone 7 con iOS 15.8: cualquier cambio común se prueba contra esa versión."
+      ],
+      "capas": {
+        "tokens": false,
+        "elementos": false,
+        "componentes": null,
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": null,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "reposo.v1"
+        ]
+      },
+      "servicios": [
+        "api.open-meteo.com"
+      ],
+      "cache_sw": "reposo-v3-ds1",
+      "icono": "Despertador",
+      "notas": "Colores escritos directamente en el código, sin marcas DS."
+    },
+    {
+      "id": "ronquidos",
+      "nombre": "Ronquidos",
+      "repo": "pablocarvallo/ronquidos",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/ronquidos/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "noche"
+      ],
+      "diseno": "comun-con-excepcion",
+      "excepciones": [
+        "Pantalla de la noche negra (#000), hora en azul tenue #7F98D4; se atenúa a los 20 s y se desplaza cada minuto."
+      ],
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "propios",
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": false,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "IndexedDB (noches y grabaciones) y localStorage",
+        "claves": [
+          "ronquidos-ajustes"
+        ]
+      },
+      "cache_sw": "ronquidos-v1",
+      "icono": "Luna creciente con dos zetas",
+      "notas": "Motor de detección entre /*MOTOR:START*/ y /*MOTOR:END*/. Datos solo en el iPhone."
+    },
+    {
+      "id": "royal-study",
+      "nombre": "The Royal Study",
+      "repo": "pablocarvallo/royal-study",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/royal-study/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "juegos"
+      ],
+      "diseno": "comun-con-excepcion",
+      "excepciones": [
+        "Colores tradicionales de ajedrez y tablero blanco y negro (pedido del 20 oct 2026).",
+        "Icono: caballo negro sobre fondo blanco, sin tablero. El documento de diseño todavía dice «rey de ajedrez»."
+      ],
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "propios",
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": null,
+        "sin_zoom": false,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "royalstudy:*"
+        ]
+      },
+      "cache_sw": "royal-study-v6-classic",
+      "icono": "Caballo de ajedrez (propio)",
+      "notas": "Basado en the-royal-study-chess.vercel.app."
+    },
+    {
+      "id": "calendario",
+      "nombre": "Calendario",
+      "repo": "pablocarvallo/calendario",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/calendario/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "herramientas"
+      ],
+      "diseno": "propio",
+      "excepciones": [
+        "No usa la paleta de las apps domésticas, por pedido expreso (colores claros, estilo hoja de calendario)."
+      ],
+      "capas": {
+        "tokens": false,
+        "elementos": false,
+        "componentes": null,
+        "panel_casa": false,
+        "buzon": [],
+        "widget": true,
+        "respaldo": null,
+        "sin_zoom": false,
+        "sin_conexion": false
+      },
+      "datos": {
+        "almacen": "ninguno",
+        "claves": []
+      },
+      "servicios": [
+        "fonts.googleapis.com"
+      ],
+      "cache_sw": null,
+      "icono": "Propio",
+      "notas": "Feriados de Chile y de la CEPAL; domingos en rojo sin etiqueta."
+    },
+    {
+      "id": "miniexcel",
+      "nombre": "Mini Planilla",
+      "repo": "pablocarvallo/miniexcel",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/miniexcel/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "herramientas"
+      ],
+      "diseno": "propio",
+      "excepciones": [
+        "Usa los colores de Excel en la app y el icono, por pedido expreso."
+      ],
+      "capas": {
+        "tokens": false,
+        "elementos": false,
+        "componentes": null,
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": null,
+        "sin_zoom": false,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "miniexcel:planilla:v1"
+        ]
+      },
+      "cache_sw": "miniexcel-v4",
+      "icono": "Propio, colores de Excel",
+      "notas": "Sin menús ni opción de guardar; los datos persisten hasta que se borran."
+    }
+  ],
+  "fuera_del_ecosistema": [
+    {
+      "id": "summerkamp",
+      "nombre": "Mi Summer Kamp",
+      "repo": "pablocarvallo/summerkamp",
+      "motivo": "Juego para una niña de 12 años en una tablet Samsung, con estética propia; no debe recibir cambios de las apps domésticas."
+    }
+  ],
+  "pendientes_detectados": [
+    {
+      "tema": "Apps con componentes propios",
+      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas y Sábanas. Las otras nueve tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Pagos 40 diferencias, Indicadores 64, Panel Casa 166, Lecturas 258, Ronquidos 308, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
+      "apps": [
+        "pagos",
+        "indicadores",
+        "casa",
+        "lecturas",
+        "ronquidos",
+        "cigna",
+        "mis-creditos",
+        "receta",
+        "royal-study"
+      ]
+    },
+    {
+      "tema": "Marcas incompletas",
+      "detalle": "Cartelera tiene solo la paleta común (DS:TOKENS), sin elementos ni componentes comunes. Despertador no tiene marcas: sus colores están escritos en el código.",
+      "apps": [
+        "cartelera",
+        "despertador"
+      ]
+    },
+    {
+      "tema": "Zoom con los dedos activo",
+      "detalle": "Siguen con zoom: Cápsula, Indicadores, Lecturas, Cartelera y Royal Study (además de Calendario y Mini Planilla, de diseño propio).",
+      "apps": [
+        "receta",
+        "indicadores",
+        "lecturas",
+        "cartelera",
+        "royal-study",
+        "calendario",
+        "miniexcel"
+      ]
+    },
+    {
+      "tema": "Sin respaldo de datos",
+      "detalle": "Guardan datos solo en el iPhone y no permiten copiarlos ni restaurarlos.",
+      "apps": [
+        "receta",
+        "beds",
+        "ronquidos"
+      ]
+    },
+    {
+      "tema": "Sin funcionamiento sin conexión",
+      "detalle": "No tienen service worker.",
+      "apps": [
+        "lecturas",
+        "calendario"
+      ]
+    },
+    {
+      "tema": "Versiones sin convención",
+      "detalle": "Ninguna app muestra su número de versión, y los nombres de caché son libres (por ejemplo fan-v8-ds1-sinzoom, master-v4-simple). La versión del icono también varía: ds1, ds2, 1, libros2, classic2. aplicar-base.py --subir-cache agrega o incrementa un sufijo -bN al nombre de caché."
+    },
+    {
+      "tema": "Ramas de publicación distintas",
+      "detalle": "Sábanas y Mis créditos publican desde gh-pages (main solo tiene el README). Mesadas y Cápsula tienen una rama gh-pages antigua que parece sin uso. Además quedan 12 ramas diseno-comun del 18 oct, ya superadas por la rama publicada.",
+      "apps": [
+        "beds",
+        "mis-creditos",
+        "hijas",
+        "receta"
+      ]
+    },
+    {
+      "tema": "Módulo Panel Casa con dos variantes",
+      "detalle": "Sábanas tiene una versión del módulo panel_casa distinta de la de Pagos, Gas, Cápsula y Mesadas.",
+      "apps": [
+        "beds"
+      ]
+    },
+    {
+      "tema": "Iconos",
+      "detalle": "Cápsula y Mini Planilla no tienen el tamaño 192. Cápsula, Cartelera, Lecturas y Mini Planilla los guardan en la raíz y no en icons/. El icono de Cartelera no es de la familia de vidrio.",
+      "apps": [
+        "receta",
+        "miniexcel",
+        "cartelera",
+        "lecturas"
+      ]
+    },
+    {
+      "tema": "Documento de diseño desactualizado",
+      "detalle": "Dice que el icono de Royal Study es un rey; hoy es un caballo sobre fondo blanco, con colores tradicionales. No menciona Cartelera, Calendario ni Mini Planilla.",
+      "apps": [
+        "royal-study",
+        "cartelera",
+        "calendario",
+        "miniexcel"
+      ]
+    }
+  ]
+}
