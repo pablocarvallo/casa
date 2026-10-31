@@ -507,7 +507,7 @@
       "capas": {
         "tokens": true,
         "elementos": true,
-        "componentes": "propios",
+        "componentes": "comunes",
         "panel_casa": false,
         "buzon": [],
         "widget": false,
@@ -531,7 +531,7 @@
       "automatizaciones": [
         "Tarea de GitHub .github/workflows/banco-central.yml, cada mañana, con los secretos BCCH_USER y BCCH_PASS"
       ],
-      "cache_sw": "indicadores-v1-b1",
+      "cache_sw": "indicadores-v1-b2",
       "icono": "Barras con línea ascendente",
       "notas": "Define el estilo de gráficos del sistema de diseño."
     },
@@ -800,9 +800,8 @@
   "pendientes_detectados": [
     {
       "tema": "Apps con componentes propios",
-      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas, Sábanas y Pagos del mes (desde el 31 oct 2026). Las otras ocho tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Indicadores 64 diferencias, Panel Casa 166, Lecturas 258, Ronquidos 308, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
+      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas, Sábanas, Pagos del mes e Indicadores (estas dos desde el 31 oct 2026). Las otras siete tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Panel Casa 166 diferencias, Lecturas 258, Ronquidos 308, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
       "apps": [
-        "indicadores",
         "casa",
         "lecturas",
         "ronquidos",
