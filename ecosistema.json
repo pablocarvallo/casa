@@ -85,7 +85,7 @@
       "capas": {
         "tokens": true,
         "elementos": true,
-        "componentes": "propios",
+        "componentes": "comunes",
         "panel_casa": "lee",
         "buzon": [
           "fan-avisos",
