@@ -1,5 +1,5 @@
 // Service worker mínimo: deja la app disponible sin conexión.
-const CACHE = 'casa-v2-sinzoom-b1';
+const CACHE = 'casa-v2-sinzoom-b2';
 const ASSETS = [
   './',
   'index.html',
@@ -15,6 +15,7 @@ const ASSETS = [
   'icons/apps/pagos.png',
   'icons/apps/gas.png',
   'icons/apps/capsula.png',
+  'icons/apps/agua.png',
   'icons/apps/sabanas.png',
   'icons/apps/mesadas.png'
 ];

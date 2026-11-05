@@ -12,6 +12,7 @@ Es un panel de lectura. No guarda datos propios: muestra lo que cada app publica
   - **Pagos del mes**: cuántos van hechos y cuáles faltan. Avisa si la lista sigue con el título de un mes que ya pasó.
   - **Balón de gas**: días del balón en uso, fecha estimada de cambio según el promedio y si hay reserva.
   - **Mi cápsula diaria**: cuántas quedan, hasta qué día alcanzan, si la de hoy ya se tomó y si la receta está pedida.
+  - **Filtro de agua**: cuántos días faltan para cambiar el filtro de la jarra (cada 3 meses), la fecha del cambio y una barra con el avance. Avisa en «Hoy» cuando faltan 14 días o menos, y en rojo con 7 o menos o vencido.
   - **Sábanas**: el próximo miércoles y a quién le toca (el 7 de octubre de 2026 le tocó a Piti, y desde ahí se alternan). Con la app Sábanas conectada, además sabe si el cambio ya se hizo y avisa si uno quedó atrasado.
   - **Mesadas**: lo entregado en el mes a Piti y a Emi, con el total acumulado y los últimos aportes.
 - **Sin conexión**: si no se puede leer el buzón, muestra lo último que se leyó.
@@ -19,7 +20,7 @@ Es un panel de lectura. No guarda datos propios: muestra lo que cada app publica
 ## Conectar
 
 1. **Cuentas**: en FAN toca «Copiar el script del widget» y pégalo en Panel Casa → Conexiones. FAN, Master y LiderBCI comparten el buzón, así que con el de FAN quedan las tres. Copec tiene su propio buzón: repite el paso con el script del widget de Copec.
-2. **Apps de la casa**: en Conexiones toca «Copiar código para las apps». Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria, Mesadas y Sábanas, baja hasta «Panel Casa» y toca «Pegar código». Desde ese momento, cada cambio en esas apps se publica en el buzón (en un hito con el nombre de la app, por ejemplo «Gas · panel») y el panel lo muestra.
+2. **Apps de la casa**: en Conexiones toca «Copiar código para las apps». Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria, Filtro de agua, Mesadas y Sábanas, baja hasta «Panel Casa» y toca «Pegar código». Desde ese momento, cada cambio en esas apps se publica en el buzón (en un hito con el nombre de la app, por ejemplo «Gas · panel») y el panel lo muestra.
 
 Los tokens quedan guardados solo en el iPhone. «Quitar conexiones» los borra.
 

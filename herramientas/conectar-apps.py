@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Conecta las apps de la casa con Panel Casa.
 
-A Pagos del mes (pagos), Balón de gas (gas), Mi cápsula diaria (receta), Mesadas (hijas) y Sábanas (beds) les agrega:
+A Pagos del mes (pagos), Balón de gas (gas), Mi cápsula diaria (receta), Filtro de agua (agua), Mesadas (hijas) y Sábanas (beds) les agrega:
   1. el módulo herramientas/panel-casa.js, que publica el resumen de la app en el buzón (marcas PANEL:START/END);
   2. los estilos de la tarjeta «Panel Casa» (marcas PANEL:CSS:START/END);
   3. el lugar de la tarjeta, al final de la pantalla (<div id="panel-casa">);
@@ -9,15 +9,18 @@ A Pagos del mes (pagos), Balón de gas (gas), Mi cápsula diaria (receta), Mesad
 
 Se puede ejecutar de nuevo: reemplaza lo que esté entre las marcas y no repite los avisos.
 
-    python3 herramientas/conectar-apps.py <carpeta con los repositorios pagos, gas, receta, hijas y beds>
+    python3 herramientas/conectar-apps.py <carpeta con los repositorios pagos, gas, receta, agua, hijas y beds> [app ...]
+
+Si se indican nombres de app (por ejemplo «agua»), solo se conectan esas y no hace falta tener las demás.
 
 Sábanas (beds) se publica desde la rama gh-pages: esa carpeta debe tener esa rama.
 """
 import pathlib, re, sys
 
-if len(sys.argv) != 2:
-    sys.exit('Uso: python3 herramientas/conectar-apps.py <carpeta con los repositorios>')
+if len(sys.argv) < 2:
+    sys.exit('Uso: python3 herramientas/conectar-apps.py <carpeta con los repositorios> [app ...]')
 base = pathlib.Path(sys.argv[1])
+SOLO = sys.argv[2:]
 aqui = pathlib.Path(__file__).resolve().parent
 MODULO = (aqui / 'panel-casa.js').read_text(encoding='utf-8').strip('\n')
 
@@ -84,6 +87,16 @@ if (window.PanelCasa) PanelCasa.init({ app: 'capsula', title: 'Cápsula · panel
   return { left: b.remaining, total: b.total, last: last, ordered: b.ordered ? dayKey(b.ordered) : '' };
 } });""",
     },
+    'agua': {
+        'host_after': '</main>\n',
+        'save': ("function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(filters)); } catch (e) {} }",
+                 "function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(filters)); } catch (e) {} " + HOOK + " }"),
+        'init': """  // Panel Casa: fecha del filtro puesto y fecha del cambio (el panel cuenta los días)
+  if (window.PanelCasa) PanelCasa.init({ app: 'agua', title: 'Agua · panel', mount: document.getElementById('panel-casa'), summary: function () {
+    var f = filters[0];
+    return f ? { date: f.date, due: addMonths(f.date, CICLO_MESES), n: filters.length } : { date: '' };
+  } });""",
+    },
     'hijas': {
         'host_after': '</main>\n',
         'save': ("function saveLocal() { try { localStorage.setItem(LS_KEY, JSON.stringify(items)); return true; } catch (e) { return false; } }",
@@ -118,7 +131,15 @@ def between(text, start, end, block, where):
     return where(text, block)
 
 
+def fin_principal(s):
+    """Posición donde termina el script principal de la app, sin contar el script final que bloquea el zoom."""
+    tope = s.find('<script>\n// Sin zoom')
+    return s.rindex('\n})();\n</script>', 0, tope if tope >= 0 else len(s))
+
+
 for nombre, conf in APPS.items():
+    if SOLO and nombre not in SOLO:
+        continue
     path = base / nombre / 'index.html'
     t = path.read_text(encoding='utf-8')
 
@@ -146,13 +167,13 @@ for nombre, conf in APPS.items():
     # 4. Resumen propio de la app, al final del script principal
     init = '/*PANEL:APP:START*/\n' + conf['init'] + '\n/*PANEL:APP:END*/'
     def put_init(s, b):
-        i = s.rindex('\n})();\n</script>')
+        i = fin_principal(s)
         return s[:i] + '\n' + b + s[i:]
     t = between(t, '/*PANEL:APP:START*/', '/*PANEL:APP:END*/', init, put_init)
 
     # 5. Módulo, en su propio <script> antes del script principal
     def put_mod(s, b):
-        fin = s.rindex('\n})();\n</script>')
+        fin = fin_principal(s)
         i = s.rindex('<script>', 0, fin)
         return s[:i] + '<script>\n' + b + '\n</script>\n' + s[i:]
     t = between(t, '/*PANEL:START*/', '/*PANEL:END*/', MODULO, put_mod)

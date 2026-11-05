@@ -1243,10 +1243,11 @@ const HOME = {
   pagos: { title: 'Pagos · panel', name: 'Pagos del mes' },
   gas: { title: 'Gas · panel', name: 'Balón de gas' },
   capsula: { title: 'Cápsula · panel', name: 'Mi cápsula diaria' },
+  agua: { title: 'Agua · panel', name: 'Filtro de agua' },
   mesadas: { title: 'Mesadas · panel', name: 'Mesadas' },
   sabanas: { title: 'Sábanas · panel', name: 'Sábanas' }
 };
-const HOME_ORDER = ['pagos', 'gas', 'capsula', 'sabanas', 'mesadas'];
+const HOME_ORDER = ['pagos', 'gas', 'capsula', 'agua', 'sabanas', 'mesadas'];
 const PEOPLE = { piti: 'Piti', emi: 'Emi' };
 // Sábanas: los miércoles, alternando. El miércoles 7 de octubre de 2026 le tocó a Piti.
 const SHEETS = { start: '2026-10-07', order: ['piti', 'emi'] };
@@ -1435,6 +1436,15 @@ function capInfo(c, today) {
     end: left > 0 ? addDays(today, took ? left : left - 1) : ''
   };
 }
+// Filtro de agua: la app publica la fecha en que se puso el filtro y la del cambio (3 meses después)
+function aguaInfo(a, today) {
+  if (!a) return null;
+  if (!validDate(String(a.date || ''))) return { none: true, at: +a.at || 0 };
+  let due = validDate(String(a.due || '')) ? a.due : '';
+  if (!due) { const p = a.date.split('-'), d = new Date(Date.UTC(+p[0], +p[1] - 1 + 3, 1)); due = d.getUTCFullYear() + '-' + pad(d.getUTCMonth() + 1) + '-' + pad(Math.min(+p[2], new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 0)).getUTCDate())); }
+  const total = Math.max(1, diffDays(a.date, due)), left = diffDays(today, due);
+  return { date: a.date, due: due, left: left, total: total, frac: Math.max(0, Math.min(1, 1 - left / total)), n: Math.max(1, Math.round(+a.n || 1)), at: +a.at || 0 };
+}
 function turnOf(k) { const w = Math.round(diffDays(SHEETS.start, k) / 7); return SHEETS.order[((w % 2) + 2) % 2]; }
 // Sábanas: el turno se calcula por fecha. Si la app Sábanas está conectada, además se sabe qué miércoles ya se marcaron.
 function sheetsInfo(today) {
@@ -1466,7 +1476,7 @@ function mesInfo(m, today) {
 // Lo que hay que atender hoy, de lo más urgente a lo menos
 function attention(today) {
   const out = [];
-  const p = pagosInfo(S.home.pagos), g = gasInfo(S.home.gas, today), c = capInfo(S.home.capsula, today), sh = sheetsInfo(today);
+  const p = pagosInfo(S.home.pagos), g = gasInfo(S.home.gas, today), c = capInfo(S.home.capsula, today), sh = sheetsInfo(today), w = aguaInfo(S.home.agua, today);
   ACC_ORDER.forEach(function (k) {
     const r = S.acc[k];
     if (r && (k === 'fan' || k === 'copec') && typeof r.total === 'number' && r.total < 0) out.push({ tone: 'neg', w: 0, text: 'El saldo de ' + ACC[k].name + ' está en negativo' });
@@ -1483,6 +1493,11 @@ function attention(today) {
         : g.left === 0 ? 'El gas llega hoy a su promedio' : 'Al gas le quedan unos ' + g.left + ' ' + plural(g.left, 'día', 'días');
       out.push({ tone: g.res ? 'warn' : 'neg', w: g.res ? 4 : 2, text: t + (g.res ? ' (hay reserva)' : ' y no hay reserva') });
     }
+  }
+  if (w && !w.none) {
+    if (w.left < 0) out.push({ tone: 'neg', w: 2, text: 'El filtro de agua lleva ' + (-w.left) + ' ' + plural(-w.left, 'día', 'días') + ' vencido' });
+    else if (w.left === 0) out.push({ tone: 'neg', w: 2, text: 'Hoy toca cambiar el filtro de agua' });
+    else if (w.left <= 14) out.push({ tone: w.left <= 7 ? 'neg' : 'warn', w: w.left <= 7 ? 3 : 4, text: 'Al filtro de agua le ' + plural(w.left, 'falta', 'faltan') + ' ' + w.left + ' ' + plural(w.left, 'día', 'días') + ' para el cambio' });
   }
   if (p && p.stale) out.push({ tone: 'warn', w: 3, text: 'Empieza el mes nuevo en Pagos del mes' });
   else if (p && p.pend.length) out.push({ tone: 'warn', w: 5, text: p.pend.length === 1 ? 'Falta 1 pago: ' + p.pend[0].t : 'Faltan ' + p.pend.length + ' pagos del mes' });
@@ -1601,6 +1616,16 @@ function renderHome(today) {
       sub += c.left > 0 ? (c.took ? ' · hoy tomada' : ' · hoy pendiente') : '';
       if (c.ordered) sub += ' · receta pedida';
       h += homeRow(k, 'capsula', HOME.capsula.name, esc(sub), tone && !c.ordered ? tone : '', '<span class="r-big num ' + tone + '">' + c.left + '</span><span class="r-unit">' + plural(c.left, 'queda', 'quedan') + '</span>');
+    } else if (k === 'agua') {
+      const a = aguaInfo(S.home.agua, today);
+      if (!a) { h += offRow(k, 'agua', HOME.agua.name); return; }
+      if (a.none) { h += homeRow(k, 'agua', HOME.agua.name, 'Sin filtro registrado', 'dim', ''); return; }
+      const tone = a.left <= 7 ? 'neg' : a.left <= 14 ? 'warn' : '';
+      const sub = a.left > 0 ? 'Cambio el ' + fmtDay(a.due) : a.left === 0 ? 'Hoy toca cambiarlo' : 'Vencido el ' + fmtDay(a.due);
+      const bar = '<span class="r-bar ' + tone + '"><span style="width:' + Math.round(a.frac * 100) + '%"></span></span>';
+      h += homeRow(k, 'agua', HOME.agua.name, esc(sub), tone === 'neg' ? 'warn' : tone, a.left >= 0
+        ? '<span class="r-big num ' + tone + '">' + a.left + '</span><span class="r-unit">' + plural(a.left, 'día', 'días') + '</span>'
+        : '<span class="r-big num neg">' + (-a.left) + '</span><span class="r-unit">de atraso</span>', bar);
     } else if (k === 'sabanas') {
       const s = sheetsInfo(today);
       let sub = s.late ? 'Atrasado: miércoles ' + fmtDay(s.date)
@@ -1725,6 +1750,17 @@ function sheetBody(kind, arg) {
       h += kv('Receta', c.ordered ? '<span class="ok">Pedida el ' + fmtDay(c.ordered) + '</span>' : c.left <= 12 ? 'Hay que pedirla' : 'Aún no hace falta');
       return h + '</ul>' + updated(c.at) + '<p class="hint">Las alertas de la receta llegan al quedar 12, 10 y 5 cápsulas.</p>';
     }
+    if (arg === 'agua') {
+      const a = aguaInfo(raw, today);
+      if (a.none) return head('agua', HOME.agua.name, 'Sin filtro registrado') + '<p class="hint">Registra el filtro nuevo en Filtro de agua para verlo aquí.</p>';
+      let h = head('agua', HOME.agua.name, a.left > 0 ? 'Faltan ' + a.left + ' ' + plural(a.left, 'día', 'días') + ' para el cambio' : a.left === 0 ? 'Hoy toca cambiar el filtro' : 'Cambio vencido hace ' + (-a.left) + ' ' + plural(-a.left, 'día', 'días'));
+      h += '<ul class="list">';
+      h += kv('Filtro puesto el', fmtDay(a.date) + ' ' + a.date.slice(0, 4));
+      h += kv('Cambio', cap1(weekday(a.due)) + ' ' + fmtDay(a.due) + ' ' + a.due.slice(0, 4));
+      h += kv('Días de uso', Math.max(0, diffDays(a.date, today)) + ' de ' + a.total);
+      h += kv('Filtros registrados', String(a.n));
+      return h + '</ul>' + updated(a.at) + '<p class="hint">El filtro se cambia cada 3 meses. La fecha del filtro nuevo se anota en la app Filtro de agua.</p>';
+    }
     if (arg === 'mesadas') {
       const m = mesInfo(raw, today), mes = MESL[+today.slice(5, 7) - 1];
       let h = head('mesadas', HOME.mesadas.name, 'Aportes a Piti y Emi');
@@ -1762,7 +1798,7 @@ function settingsBody() {
   }).join('') + '</ul>';
   if (homeConn()) {
     h += '<button type="button" class="btn tonal block" data-act="copycode">Copiar código para las apps</button>';
-    h += '<p class="hint">Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria, Mesadas y Sábanas: baja hasta «Panel Casa», toca «Pegar código» y listo. Desde ahí, cada cambio se ve en el panel.</p>';
+    h += '<p class="hint">Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria, Filtro de agua, Mesadas y Sábanas: baja hasta «Panel Casa», toca «Pegar código» y listo. Desde ahí, cada cambio se ve en el panel.</p>';
   } else {
     h += '<p class="hint">Cuando conectes FAN, aquí aparecerá el código para conectar las apps de la casa.</p>';
   }

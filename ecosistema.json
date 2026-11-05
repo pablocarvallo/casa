@@ -1,7 +1,7 @@
 {
   "nombre": "Apps domésticas",
   "version_catalogo": 1,
-  "revisado": "2026-10-31",
+  "revisado": "2026-11-04",
   "propietario_github": "pablocarvallo",
   "documento_diseno": "claude/sistema-de-diseno-domesticas.md (Project App Domésticas)",
   "como_usar": [
@@ -57,6 +57,7 @@
         "pagos",
         "gas",
         "receta",
+        "agua",
         "hijas",
         "beds"
       ]
@@ -105,7 +106,7 @@
         ],
         "nota": "No guarda datos propios; solo conexiones y caché."
       },
-      "cache_sw": "casa-v2-sinzoom-b1",
+      "cache_sw": "casa-v2-sinzoom-b2",
       "icono": "Casa con reloj en el frontón",
       "herramientas": [
         "herramientas/conectar-apps.py",
@@ -851,7 +852,7 @@
     },
     {
       "tema": "Módulo Panel Casa con dos variantes",
-      "detalle": "Sábanas tiene una versión del módulo panel_casa distinta de la de Pagos, Gas, Cápsula y Mesadas.",
+      "detalle": "Sábanas tiene una versión del módulo panel_casa distinta de la de Pagos, Gas, Cápsula, Agua y Mesadas.",
       "apps": [
         "beds"
       ]
