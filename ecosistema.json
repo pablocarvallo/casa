@@ -495,6 +495,41 @@
       "notas": "La rama main solo tiene el README; la app vive en gh-pages. Su módulo panel_casa es una variante distinta de la de las otras cuatro apps de la casa."
     },
     {
+      "id": "agua",
+      "nombre": "Filtro de agua",
+      "repo": "pablocarvallo/agua",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/agua/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "casa"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "comunes",
+        "panel_casa": "publica",
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": false,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "filtro-agua-registros",
+          "panel-casa"
+        ]
+      },
+      "cache_sw": "agua-v2-panel-sinzoom",
+      "icono": "Jarra con gota",
+      "notas": "Creada el 3 nov 2026. Ciclo fijo de 3 meses calendario desde la fecha del filtro; el nivel del agua baja en línea recta hasta vaciarse. La jarra es un canvas con olas, burbujas, oleaje al tocarla y el mismo balanceo (wobble) del frasco de Cápsula. Publica en Panel Casa (hito «Agua · panel»: fecha del filtro, fecha del cambio y cantidad de filtros). Avisos a 14 días (ámbar) y a 7 días o vencido (rojo), también en «Hoy» de Panel Casa. GitHub Pages se activa a mano en Settings → Pages (rama main, raíz)."
+    },
+    {
       "id": "indicadores",
       "nombre": "Indicadores",
       "repo": "pablocarvallo/indicadores",
@@ -801,7 +836,7 @@
   "pendientes_detectados": [
     {
       "tema": "Apps con componentes propios",
-      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas, Sábanas, Pagos del mes, Indicadores y Panel Casa (estas tres desde el 31 oct 2026). Las otras seis tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Lecturas 258 diferencias, Ronquidos 308, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
+      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas, Sábanas, Pagos del mes, Filtro de agua, Indicadores y Panel Casa (estas tres desde el 31 oct 2026). Las otras seis tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Lecturas 258 diferencias, Ronquidos 308, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
       "apps": [
         "lecturas",
         "ronquidos",
