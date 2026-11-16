@@ -1,7 +1,7 @@
 {
   "nombre": "Apps domésticas",
   "version_catalogo": 1,
-  "revisado": "2026-11-04",
+  "revisado": "2026-11-16",
   "propietario_github": "pablocarvallo",
   "documento_diseno": "claude/sistema-de-diseno-domesticas.md (Project App Domésticas)",
   "como_usar": [
@@ -528,6 +528,41 @@
       "cache_sw": "agua-v2-panel-sinzoom",
       "icono": "Jarra con gota",
       "notas": "Creada el 3 nov 2026. Ciclo fijo de 3 meses calendario desde la fecha del filtro; el nivel del agua baja en línea recta hasta vaciarse. La jarra es un canvas con olas, burbujas, oleaje al tocarla y el mismo balanceo (wobble) del frasco de Cápsula. Publica en Panel Casa (hito «Agua · panel»: fecha del filtro, fecha del cambio y cantidad de filtros). Avisos a 14 días (ámbar) y a 7 días o vencido (rojo), también en «Hoy» de Panel Casa. GitHub Pages se activa a mano en Settings → Pages (rama main, raíz)."
+    },
+    {
+      "id": "cepillos",
+      "nombre": "Cepillos",
+      "repo": "pablocarvallo/cepillos",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/cepillos/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "casa"
+      ],
+      "diseno": "comun",
+      "capas": {
+        "tokens": true,
+        "elementos": true,
+        "componentes": "comunes",
+        "panel_casa": "publica",
+        "buzon": [
+          "fan-avisos"
+        ],
+        "widget": false,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "cepillos-registros",
+          "panel-casa"
+        ]
+      },
+      "cache_sw": "cepillos-v1-panel-sinzoom",
+      "icono": "Dos cepillos de dientes",
+      "notas": "Creada el 16 nov 2026. Dos cepillos (casa y oficina) vistos desde arriba, con cerdas que pasan del azul al blanco amarillento según los lavados. Cada cepillo dura 180 lavados; 3 lavados al día, y lunes, martes y jueves el del mediodía es de la oficina (casa ≈ 18 lavados por semana, oficina 3). El desgaste se calcula por calendario desde la fecha del cepillo, sin anotar cada lavado; los supuestos están en las constantes WASH_HOURS, OFFICE_DAYS y BRUSHES del script. Publica en Panel Casa (hito «Cepillos · panel»: por cepillo, fecha puesto y fecha del cambio). Avisos a 14 días (ámbar) y a 7 días o vencido (rojo), también en «Hoy» de Panel Casa. GitHub Pages se activa a mano en Settings → Pages (rama main, raíz)."
     },
     {
       "id": "indicadores",

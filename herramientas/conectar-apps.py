@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Conecta las apps de la casa con Panel Casa.
 
-A Pagos del mes (pagos), Balón de gas (gas), Mi cápsula diaria (receta), Filtro de agua (agua), Mesadas (hijas) y Sábanas (beds) les agrega:
+A Pagos del mes (pagos), Balón de gas (gas), Mi cápsula diaria (receta), Filtro de agua (agua), Cepillos (cepillos), Mesadas (hijas) y Sábanas (beds) les agrega:
   1. el módulo herramientas/panel-casa.js, que publica el resumen de la app en el buzón (marcas PANEL:START/END);
   2. los estilos de la tarjeta «Panel Casa» (marcas PANEL:CSS:START/END);
   3. el lugar de la tarjeta, al final de la pantalla (<div id="panel-casa">);
@@ -9,7 +9,7 @@ A Pagos del mes (pagos), Balón de gas (gas), Mi cápsula diaria (receta), Filtr
 
 Se puede ejecutar de nuevo: reemplaza lo que esté entre las marcas y no repite los avisos.
 
-    python3 herramientas/conectar-apps.py <carpeta con los repositorios pagos, gas, receta, agua, hijas y beds> [app ...]
+    python3 herramientas/conectar-apps.py <carpeta con los repositorios pagos, gas, receta, agua, cepillos, hijas y beds> [app ...]
 
 Si se indican nombres de app (por ejemplo «agua»), solo se conectan esas y no hace falta tener las demás.
 
@@ -95,6 +95,17 @@ if (window.PanelCasa) PanelCasa.init({ app: 'capsula', title: 'Cápsula · panel
   if (window.PanelCasa) PanelCasa.init({ app: 'agua', title: 'Agua · panel', mount: document.getElementById('panel-casa'), summary: function () {
     var f = filters[0];
     return f ? { date: f.date, due: addMonths(f.date, CICLO_MESES), n: filters.length } : { date: '' };
+  } });""",
+    },
+    'cepillos': {
+        'host_after': '</main>\n',
+        'save': ("function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(regs)); } catch (e) {} }",
+                 "function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(regs)); } catch (e) {} " + HOOK + " }"),
+        'init': """  // Panel Casa: por cada cepillo (casa y oficina), fecha en que se puso y fecha del cambio (el panel cuenta los días)
+  if (window.PanelCasa) PanelCasa.init({ app: 'cepillos', title: 'Cepillos · panel', mount: document.getElementById('panel-casa'), summary: function () {
+    var o = { n: regs.length };
+    ORDER.forEach(function (b) { var s = stats(b); o[b] = s ? { date: s.cur.date, due: s.due } : null; });
+    return o;
   } });""",
     },
     'hijas': {

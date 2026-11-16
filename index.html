@@ -1244,10 +1244,13 @@ const HOME = {
   gas: { title: 'Gas · panel', name: 'Balón de gas' },
   capsula: { title: 'Cápsula · panel', name: 'Mi cápsula diaria' },
   agua: { title: 'Agua · panel', name: 'Filtro de agua' },
+  cepillos: { title: 'Cepillos · panel', name: 'Cepillos de dientes' },
   mesadas: { title: 'Mesadas · panel', name: 'Mesadas' },
   sabanas: { title: 'Sábanas · panel', name: 'Sábanas' }
 };
-const HOME_ORDER = ['pagos', 'gas', 'capsula', 'agua', 'sabanas', 'mesadas'];
+const HOME_ORDER = ['pagos', 'gas', 'capsula', 'agua', 'cepillos', 'sabanas', 'mesadas'];
+const CEP = { casa: { name: 'Casa', det: 'de casa' }, oficina: { name: 'Oficina', det: 'de la oficina' } };
+const CEP_ORDER = ['casa', 'oficina'];
 const PEOPLE = { piti: 'Piti', emi: 'Emi' };
 // Sábanas: los miércoles, alternando. El miércoles 7 de octubre de 2026 le tocó a Piti.
 const SHEETS = { start: '2026-10-07', order: ['piti', 'emi'] };
@@ -1445,6 +1448,22 @@ function aguaInfo(a, today) {
   const total = Math.max(1, diffDays(a.date, due)), left = diffDays(today, due);
   return { date: a.date, due: due, left: left, total: total, frac: Math.max(0, Math.min(1, 1 - left / total)), n: Math.max(1, Math.round(+a.n || 1)), at: +a.at || 0 };
 }
+// Cepillos de dientes: la app publica, por cada cepillo, la fecha en que se puso y la del cambio (según sus lavados).
+// El avance se calcula aquí por días entre ambas fechas; el desgaste exacto, por lavados, está en la app.
+function cepInfo(c, today) {
+  if (!c) return null;
+  const out = { at: +c.at || 0, n: Math.max(0, Math.round(+c.n || 0)), list: [] };
+  CEP_ORDER.forEach(function (b) {
+    const r = c[b];
+    if (!r || !validDate(String(r.date || '')) || !validDate(String(r.due || ''))) return;
+    const total = Math.max(1, diffDays(r.date, r.due)), left = diffDays(today, r.due);
+    out.list.push({ b: b, date: r.date, due: r.due, left: left, total: total, frac: Math.max(0, Math.min(1, 1 - left / total)) });
+  });
+  if (!out.list.length) return { none: true, at: out.at };
+  out.first = out.list.slice().sort(function (a, b) { return a.left - b.left; })[0];
+  return out;
+}
+function cepTxt(r) { return CEP[r.b].name + (r.left > 0 ? ' ' + r.left + ' d' : r.left === 0 ? ' hoy' : ' vencido'); }
 function turnOf(k) { const w = Math.round(diffDays(SHEETS.start, k) / 7); return SHEETS.order[((w % 2) + 2) % 2]; }
 // Sábanas: el turno se calcula por fecha. Si la app Sábanas está conectada, además se sabe qué miércoles ya se marcaron.
 function sheetsInfo(today) {
@@ -1476,7 +1495,7 @@ function mesInfo(m, today) {
 // Lo que hay que atender hoy, de lo más urgente a lo menos
 function attention(today) {
   const out = [];
-  const p = pagosInfo(S.home.pagos), g = gasInfo(S.home.gas, today), c = capInfo(S.home.capsula, today), sh = sheetsInfo(today), w = aguaInfo(S.home.agua, today);
+  const p = pagosInfo(S.home.pagos), g = gasInfo(S.home.gas, today), c = capInfo(S.home.capsula, today), sh = sheetsInfo(today), w = aguaInfo(S.home.agua, today), cp = cepInfo(S.home.cepillos, today);
   ACC_ORDER.forEach(function (k) {
     const r = S.acc[k];
     if (r && (k === 'fan' || k === 'copec') && typeof r.total === 'number' && r.total < 0) out.push({ tone: 'neg', w: 0, text: 'El saldo de ' + ACC[k].name + ' está en negativo' });
@@ -1499,6 +1518,12 @@ function attention(today) {
     else if (w.left === 0) out.push({ tone: 'neg', w: 2, text: 'Hoy toca cambiar el filtro de agua' });
     else if (w.left <= 14) out.push({ tone: w.left <= 7 ? 'neg' : 'warn', w: w.left <= 7 ? 3 : 4, text: 'Al filtro de agua le ' + plural(w.left, 'falta', 'faltan') + ' ' + w.left + ' ' + plural(w.left, 'día', 'días') + ' para el cambio' });
   }
+  if (cp && !cp.none) cp.list.forEach(function (r) {
+    const who = 'cepillo ' + CEP[r.b].det;
+    if (r.left < 0) out.push({ tone: 'neg', w: 2, text: 'El ' + who + ' lleva ' + (-r.left) + ' ' + plural(-r.left, 'día', 'días') + ' vencido' });
+    else if (r.left === 0) out.push({ tone: 'neg', w: 2, text: 'Hoy toca cambiar el ' + who });
+    else if (r.left <= 14) out.push({ tone: r.left <= 7 ? 'neg' : 'warn', w: r.left <= 7 ? 3 : 4, text: 'Al ' + who + ' le ' + plural(r.left, 'falta', 'faltan') + ' ' + r.left + ' ' + plural(r.left, 'día', 'días') + ' para el cambio' });
+  });
   if (p && p.stale) out.push({ tone: 'warn', w: 3, text: 'Empieza el mes nuevo en Pagos del mes' });
   else if (p && p.pend.length) out.push({ tone: 'warn', w: 5, text: p.pend.length === 1 ? 'Falta 1 pago: ' + p.pend[0].t : 'Faltan ' + p.pend.length + ' pagos del mes' });
   if (sh.late) out.push({ tone: 'warn', w: 4, text: 'Sábanas atrasadas: le tocaba a ' + PEOPLE[sh.who] + ' el miércoles ' + fmtDay(sh.date) });
@@ -1626,6 +1651,16 @@ function renderHome(today) {
       h += homeRow(k, 'agua', HOME.agua.name, esc(sub), tone === 'neg' ? 'warn' : tone, a.left >= 0
         ? '<span class="r-big num ' + tone + '">' + a.left + '</span><span class="r-unit">' + plural(a.left, 'día', 'días') + '</span>'
         : '<span class="r-big num neg">' + (-a.left) + '</span><span class="r-unit">de atraso</span>', bar);
+    } else if (k === 'cepillos') {
+      const cp = cepInfo(S.home.cepillos, today);
+      if (!cp) { h += offRow(k, 'cepillos', HOME.cepillos.name); return; }
+      if (cp.none) { h += homeRow(k, 'cepillos', HOME.cepillos.name, 'Sin cepillos registrados', 'dim', ''); return; }
+      const f = cp.first, tone = f.left <= 7 ? 'neg' : f.left <= 14 ? 'warn' : '';
+      const sub = cp.list.map(cepTxt).join(' · ');
+      const bar = '<span class="r-bar ' + tone + '"><span style="width:' + Math.round(f.frac * 100) + '%"></span></span>';
+      h += homeRow(k, 'cepillos', HOME.cepillos.name, esc(sub), tone === 'neg' ? 'warn' : tone, f.left >= 0
+        ? '<span class="r-big num ' + tone + '">' + f.left + '</span><span class="r-unit">' + plural(f.left, 'día', 'días') + '</span>'
+        : '<span class="r-big num neg">' + (-f.left) + '</span><span class="r-unit">de atraso</span>', bar);
     } else if (k === 'sabanas') {
       const s = sheetsInfo(today);
       let sub = s.late ? 'Atrasado: miércoles ' + fmtDay(s.date)
@@ -1761,6 +1796,21 @@ function sheetBody(kind, arg) {
       h += kv('Filtros registrados', String(a.n));
       return h + '</ul>' + updated(a.at) + '<p class="hint">El filtro se cambia cada 3 meses. La fecha del filtro nuevo se anota en la app Filtro de agua.</p>';
     }
+    if (arg === 'cepillos') {
+      const cp = cepInfo(raw, today);
+      if (cp.none) return head('cepillos', HOME.cepillos.name, 'Sin cepillos registrados') + '<p class="hint">Registra un cepillo nuevo en la app Cepillos para verlo aquí.</p>';
+      const f = cp.first;
+      let h = head('cepillos', HOME.cepillos.name, f.left > 0 ? 'Faltan ' + f.left + ' ' + plural(f.left, 'día', 'días') + ' para cambiar el cepillo ' + CEP[f.b].det : f.left === 0 ? 'Hoy toca cambiar el cepillo ' + CEP[f.b].det : 'Cambio vencido hace ' + (-f.left) + ' ' + plural(-f.left, 'día', 'días') + ' (' + CEP[f.b].name.toLowerCase() + ')');
+      cp.list.forEach(function (r) {
+        h += '<h3 class="grp">' + CEP[r.b].name + '</h3><ul class="list">';
+        h += kv('Cepillo puesto el', fmtDay(r.date) + ' ' + r.date.slice(0, 4));
+        h += kv('Cambio', cap1(weekday(r.due)) + ' ' + fmtDay(r.due) + ' ' + r.due.slice(0, 4));
+        h += kv('Días de uso', Math.max(0, diffDays(r.date, today)) + ' de ' + r.total);
+        h += kv('Avance hacia el cambio', Math.round(r.frac * 100) + ' %');
+        h += '</ul>';
+      });
+      return h + updated(cp.at) + '<p class="hint">Cada cepillo dura 180 lavados: el de casa se gasta en unos 2 meses y el de la oficina, mucho más lento. La fecha del cepillo nuevo se anota en la app Cepillos.</p>';
+    }
     if (arg === 'mesadas') {
       const m = mesInfo(raw, today), mes = MESL[+today.slice(5, 7) - 1];
       let h = head('mesadas', HOME.mesadas.name, 'Aportes a Piti y Emi');
@@ -1798,7 +1848,7 @@ function settingsBody() {
   }).join('') + '</ul>';
   if (homeConn()) {
     h += '<button type="button" class="btn tonal block" data-act="copycode">Copiar código para las apps</button>';
-    h += '<p class="hint">Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria, Filtro de agua, Mesadas y Sábanas: baja hasta «Panel Casa», toca «Pegar código» y listo. Desde ahí, cada cambio se ve en el panel.</p>';
+    h += '<p class="hint">Luego, en Pagos del mes, Balón de gas, Mi cápsula diaria, Filtro de agua, Cepillos, Mesadas y Sábanas: baja hasta «Panel Casa», toca «Pegar código» y listo. Desde ahí, cada cambio se ve en el panel.</p>';
   } else {
     h += '<p class="hint">Cuando conectes FAN, aquí aparecerá el código para conectar las apps de la casa.</p>';
   }
