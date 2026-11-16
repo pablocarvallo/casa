@@ -1809,7 +1809,7 @@ function sheetBody(kind, arg) {
         h += kv('Avance hacia el cambio', Math.round(r.frac * 100) + ' %');
         h += '</ul>';
       });
-      return h + updated(cp.at) + '<p class="hint">Cada cepillo dura 180 lavados: el de casa se gasta en unos 2 meses y el de la oficina, mucho más lento. La fecha del cepillo nuevo se anota en la app Cepillos.</p>';
+      return h + updated(cp.at) + '<p class="hint">Cada cepillo se cambia a los 180 lavados o a su máximo de días: 70 días el de casa y 1 año el de la oficina. La fecha del cepillo nuevo se anota en la app Cepillos.</p>';
     }
     if (arg === 'mesadas') {
       const m = mesInfo(raw, today), mes = MESL[+today.slice(5, 7) - 1];

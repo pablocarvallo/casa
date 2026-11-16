@@ -107,7 +107,7 @@
         ],
         "nota": "No guarda datos propios; solo conexiones y caché."
       },
-      "cache_sw": "casa-v2-sinzoom-b3",
+      "cache_sw": "casa-v2-sinzoom-b4",
       "icono": "Casa con reloj en el frontón",
       "herramientas": [
         "herramientas/conectar-apps.py",
@@ -561,9 +561,9 @@
           "panel-casa"
         ]
       },
-      "cache_sw": "cepillos-v1-panel-sinzoom",
+      "cache_sw": "cepillos-v2-panel-sinzoom",
       "icono": "Dos cepillos de dientes",
-      "notas": "Creada el 16 nov 2026. Dos cepillos (casa y oficina) vistos desde arriba, con cerdas que pasan del azul al blanco amarillento según los lavados. Cada cepillo dura 180 lavados; 3 lavados al día, y lunes, martes y jueves el del mediodía es de la oficina (casa ≈ 18 lavados por semana, oficina 3). El desgaste se calcula por calendario desde la fecha del cepillo, sin anotar cada lavado; los supuestos están en las constantes WASH_HOURS, OFFICE_DAYS y BRUSHES del script. Publica en Panel Casa (hito «Cepillos · panel»: por cepillo, fecha puesto y fecha del cambio). Avisos a 14 días (ámbar) y a 7 días o vencido (rojo), también en «Hoy» de Panel Casa. GitHub Pages se activa a mano en Settings → Pages (rama main, raíz)."
+      "notas": "Creada el 16 nov 2026. Dos cepillos (casa y oficina) vistos desde arriba, con cerdas que pasan del azul al blanco amarillento según los lavados. Cada cepillo se cambia a los 180 lavados o a su máximo de días de uso, lo que ocurra primero: 70 días el de casa y 1 año el de la oficina (que por lavados duraría ~14 meses); 3 lavados al día, y lunes, martes y jueves el del mediodía es de la oficina (casa ≈ 18 lavados por semana, oficina 3). El desgaste se calcula por calendario desde la fecha del cepillo, sin anotar cada lavado; los supuestos están en las constantes WASH_HOURS, OFFICE_DAYS y BRUSHES (cap y maxDays) del script. El desgaste es el mayor entre lavados y días de uso. Publica en Panel Casa (hito «Cepillos · panel»: por cepillo, fecha puesto y fecha del cambio, la primera entre lavados y días máximos). Avisos a 14 días (ámbar) y a 7 días o vencido (rojo), también en «Hoy» de Panel Casa. GitHub Pages se activa a mano en Settings → Pages (rama main, raíz)."
     },
     {
       "id": "indicadores",
