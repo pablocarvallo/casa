@@ -58,6 +58,7 @@
         "gas",
         "receta",
         "agua",
+        "cepillos",
         "hijas",
         "beds"
       ]
@@ -106,7 +107,7 @@
         ],
         "nota": "No guarda datos propios; solo conexiones y caché."
       },
-      "cache_sw": "casa-v2-sinzoom-b2",
+      "cache_sw": "casa-v2-sinzoom-b3",
       "icono": "Casa con reloj en el frontón",
       "herramientas": [
         "herramientas/conectar-apps.py",
@@ -922,7 +923,7 @@
     },
     {
       "tema": "Módulo Panel Casa con dos variantes",
-      "detalle": "Sábanas tiene una versión del módulo panel_casa distinta de la de Pagos, Gas, Cápsula, Agua y Mesadas.",
+      "detalle": "Sábanas tiene una versión del módulo panel_casa distinta de la de Pagos, Gas, Cápsula, Agua, Cepillos y Mesadas.",
       "apps": [
         "beds"
       ]
