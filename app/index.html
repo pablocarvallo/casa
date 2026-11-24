@@ -230,6 +230,7 @@ button { -webkit-tap-highlight-color: transparent; }
 .c-acciones .d-boton { flex: 1 1 140px; padding: 0 16px; }
 .d-heroe { margin: 8px 16px 0; }
 .d-heroe .c-cifra-chica { font-size: 34px; line-height: 40px; }
+.d-heroe .c-cifra-texto { font: 700 26px/32px var(--font-sans); letter-spacing: -0.2px; margin-top: 6px; }
 .d-heroe .d-pie > div { min-width: 0; }
 
 /* Puntos de estado */
@@ -521,7 +522,7 @@ function fila({ icono, titulo, sub, valor, a, attrs = '', punto, chev, extra = '
   return a ? `<li><button class="d-fila c-fila" data-a="${a}" ${attrs}>${cuerpo}</button></li>` : `<li class="d-fila">${cuerpo}</li>`;
 }
 function heroe(etiqueta, cifra, pie, avance, chica) {
-  return `<section class="d-heroe"><span class="d-etiqueta">${etiqueta}</span><span class="d-cifra-grande${chica ? ' c-cifra-chica' : ''}">${cifra}</span>` +
+  return `<section class="d-heroe"><span class="d-etiqueta">${etiqueta}</span><span class="d-cifra-grande${chica === 'texto' ? ' c-cifra-texto' : chica ? ' c-cifra-chica' : ''}">${cifra}</span>` +
     (avance != null ? `<div class="d-barra-avance"><i style="width:${Math.round(Math.max(0, Math.min(1, avance)) * 100)}%"></i></div>` : '') +
     (pie && pie.length ? `<div class="d-pie">${pie.map(([t, b]) => `<div>${t}<b>${b}</b></div>`).join('')}</div>` : '') + '</section>';
 }
@@ -566,18 +567,21 @@ function tarjetasCiclos(D, h) {
 function vistaHoy() {
   const D = datos(), h = hoy();
   const { k, s } = resumenCiclos(D, h);
-  const avisos = C.avisosDeHoy(D.ciclos, D.rutinas, h, horaDecimal());
-  let html = heroe('Para atender', avisos.length ? avisos.length + ' ' + C.plural(avisos.length, 'aviso', 'avisos') : 'Todo al día', [
+  // Avisos: lo vencido o que falta poco (rojo y ámbar). Recordatorios: lo de hoy o mañana que solo hay que hacer.
+  const todos = C.avisosDeHoy(D.ciclos, D.rutinas, h, horaDecimal());
+  const avisos = todos.filter((x) => x.tono !== 'info'), recordatorios = todos.filter((x) => x.tono === 'info');
+  const cifra = avisos.length === 1 ? avisos[0].texto : avisos.length ? avisos.length + ' avisos' : 'Todo al día';
+  let html = heroe(avisos.length ? 'Para atender' : recordatorios.length ? 'Sin avisos · ' + recordatorios.length + ' ' + C.plural(recordatorios.length, 'recordatorio', 'recordatorios') : 'Sin avisos ni recordatorios', esc(cifra), [
     ['Cápsula', k.frasco ? (k.quedan === 1 ? '1 cápsula' : k.quedan + ' cápsulas') : 'Sin frasco'],
     ['Sábanas ' + (s.atrasado ? 'atrasadas' : cuando(s.proximo, h)), 'Le toca a ' + esc(s.turno)],
-  ]);
-  if (avisos.length) {
-    html += '<ul class="d-lista d-vidrio" style="margin-top:16px">' + avisos.map((x) => {
-      const boton = x.accion === 'tomar' ? `<button class="c-mini" data-a="tomar-hoy">Tomada</button>` : x.accion === 'sabanas' ? `<button class="c-mini" data-a="sabanas-hoy">Hecho</button>` : '';
-      return `<li class="d-fila"><span class="c-fila-punto"><span class="c-punto${x.tono === 'neg' ? ' c-punto--neg' : x.tono === 'aviso' ? ' c-punto--aviso' : ''}"></span></span>` +
-        `<button class="d-texto c-fila" data-a="ir-ciclo" data-c="${x.ir}" style="padding:0"><strong style="white-space:normal">${esc(x.texto)}</strong></button>${boton}</li>`;
-    }).join('') + '</ul>';
-  }
+  ], null, avisos.length === 1 ? 'texto' : cifra.length > 12);
+  const lista = (xs) => '<ul class="d-lista d-vidrio">' + xs.map((x) => {
+    const boton = x.accion === 'tomar' ? `<button class="c-mini" data-a="tomar-hoy">Tomada</button>` : x.accion === 'sabanas' ? `<button class="c-mini" data-a="sabanas-hoy">Hecho</button>` : '';
+    return `<li class="d-fila"><span class="c-fila-punto"><span class="c-punto${x.tono === 'neg' ? ' c-punto--neg' : x.tono === 'aviso' ? ' c-punto--aviso' : ''}"></span></span>` +
+      `<button class="d-texto c-fila" data-a="ir-ciclo" data-c="${x.ir}" style="padding:0"><strong style="white-space:normal">${esc(x.texto)}</strong></button>${boton}</li>`;
+  }).join('') + '</ul>';
+  if (avisos.length > 1) html += seccion('Avisos') + lista(avisos);
+  if (recordatorios.length) html += seccion('Recordatorios') + lista(recordatorios);
   html += seccion('Ciclos', '<a href="#" data-a="tab" data-t="ciclos">Detalle</a>') + tarjetasCiclos(D, h);
   html += seccion('Rutinas') + '<ul class="d-lista d-vidrio">' +
     fila({ icono: 'cama', titulo: 'Sábanas', sub: (s.atrasado ? 'Atrasado: ' : cap1(cuando(s.proximo, h)) + ' · ') + esc(s.turno), valor: s.atrasado ? '<span class="d-chip d-chip--aviso">Atrasado</span>' : s.esHoy ? '<span class="d-chip d-chip--aviso">Hoy</span>' : s.esManana ? '<span class="d-chip">Mañana</span>' : '', a: 'ir-ciclo', attrs: 'data-c="sabanas"', chev: true }) +
