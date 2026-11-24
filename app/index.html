@@ -1,0 +1,1186 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Casa</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Casa">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f2f4f8" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#05070c" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg?v=1">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png?v=1">
+<script>
+  // Tema antes de pintar, para que no parpadee: automático (el del iPhone), claro u oscuro
+  (function () {
+    var p = {}; try { p = JSON.parse(localStorage.getItem('casa27.prefs')) || {}; } catch (e) {}
+    var oscuro = p.tema === 'oscuro' || (p.tema !== 'claro' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+    document.documentElement.setAttribute('data-theme', oscuro ? 'dark' : 'light');
+  })();
+</script>
+<style>
+/*D27:TOKENS:START*/
+/* Domésticas 27 — tokens (generado de tokens.json del sistema de diseño). Tema con data-theme="light" | "dark" en <html>. */
+:root,[data-theme="light"]{--fondo:#f2f4f8;--superficie:#ffffff;--superficie-2:#f7f8fb;--vidrio:rgba(255,255,255,0.58);--vidrio-tintado:rgba(255,255,255,0.88);--vidrio-brillo:rgba(255,255,255,0.95);--vidrio-borde:rgba(10,18,40,0.12);--tinta:#0b1220;--tinta-2:#556074;--tinta-3:#8a93a6;--separador:rgba(11,18,32,0.09);--relleno:rgba(118,128,150,0.14);--finanzas-texto:#1f5eff;--finanzas-relleno:#1f5eff;--finanzas-sobre:#ffffff;--finanzas-hi:#2f62fa;--finanzas-lo:#1436b4;--finanzas-brillo:rgba(47,98,250,0.2);--casa-texto:#0a7c76;--casa-relleno:#0a827a;--casa-sobre:#ffffff;--casa-hi:#0a827a;--casa-lo:#065a55;--casa-brillo:rgba(16,163,155,0.2);--noche-texto:#5a4bda;--noche-relleno:#5a4bda;--noche-sobre:#ffffff;--noche-hi:#6a5cf0;--noche-lo:#3a2bb8;--noche-brillo:rgba(106,92,240,0.18);--reloj-rojo:#e5484d;--consulta-texto:#b45309;--consulta-relleno:#f5a00f;--consulta-sobre:#1a1205;--consulta-hi:#ffb547;--consulta-lo:#f59e0b;--consulta-brillo:rgba(245,158,11,0.2);--juegos-texto:#2a2e37;--juegos-relleno:#2a2e37;--juegos-sobre:#ffffff;--juegos-hi:#3a3f4a;--juegos-lo:#15171c;--juegos-brillo:rgba(42,46,55,0.1);--positivo:#0e7a42;--negativo:#d92d3a;--aviso:#9a5b00;--aviso-relleno:#ffb224;--sombra-vidrio:inset 0 1px 0 rgba(255,255,255,0.9), 0 0 0 0.5px rgba(10,18,40,0.12), 0 10px 30px rgba(10,18,40,0.1);--sombra-flotante:inset 0 1px 0 rgba(255,255,255,0.95), 0 0 0 0.5px rgba(10,18,40,0.14), 0 18px 40px rgba(10,18,40,0.18);--sombra-heroe:inset 0 1px 0 rgba(255,255,255,0.35), 0 16px 36px rgba(20,54,180,0.22)}
+[data-theme="dark"]{--fondo:#05070c;--superficie:#121826;--superficie-2:#1a2131;--vidrio:rgba(30,37,54,0.52);--vidrio-tintado:rgba(20,25,37,0.9);--vidrio-brillo:rgba(255,255,255,0.3);--vidrio-borde:rgba(0,0,0,0.6);--tinta:#f2f5fb;--tinta-2:#a3adc2;--tinta-3:#6e7891;--separador:rgba(255,255,255,0.1);--relleno:rgba(150,160,185,0.18);--finanzas-texto:#5b8bff;--finanzas-brillo:rgba(91,139,255,0.26);--casa-texto:#4fd6cc;--casa-brillo:rgba(79,214,204,0.2);--noche-texto:#9c92ff;--noche-brillo:rgba(156,146,255,0.18);--consulta-texto:#ffb547;--consulta-brillo:rgba(255,181,71,0.16);--juegos-texto:#e8eaee;--juegos-relleno:#e8eaee;--juegos-sobre:#0b1220;--juegos-brillo:rgba(232,234,238,0.08);--positivo:#3dd68c;--negativo:#ff6b6b;--aviso:#ffb224;--sombra-vidrio:inset 0 1px 0 rgba(255,255,255,0.18), 0 0 0 0.5px rgba(0,0,0,0.6), 0 12px 32px rgba(0,0,0,0.45);--sombra-flotante:inset 0 1px 0 rgba(255,255,255,0.22), 0 0 0 0.5px rgba(0,0,0,0.7), 0 18px 44px rgba(0,0,0,0.6);--sombra-heroe:inset 0 1px 0 rgba(255,255,255,0.25), 0 16px 40px rgba(0,0,0,0.5)}
+:root{--space-1:4px;--space-2:8px;--space-3:12px;--space-4:16px;--space-5:20px;--space-6:24px;--space-8:32px;--radius-s:10px;--radius-m:16px;--radius-tarjeta:26px;--radius-heroe:32px;--radius-icono:23%;--radius-capsula:999px;--desenfoque-vidrio:28px;--saturacion-vidrio:180%;--desenfoque-barra:20px;--font-sans:-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif;--font-rounded:ui-rounded, "SF Pro Rounded", -apple-system, system-ui, sans-serif}
+/*D27:TOKENS:END*/
+/*D27:COMP:START*/
+/* Domésticas 27 — componentes. Lee las variables de tokens.css (--fondo, --vidrio, --finanzas-texto…). */
+
+/* ---------- Acento por app ---------- */
+.d-app, [data-app] {
+  --acento: var(--finanzas-texto); --acento-relleno: var(--finanzas-relleno); --acento-sobre: var(--finanzas-sobre);
+  --acento-hi: var(--finanzas-hi); --acento-lo: var(--finanzas-lo); --acento-brillo: var(--finanzas-brillo);
+  --material: var(--vidrio);
+}
+[data-app="casa"] { --acento: var(--casa-texto); --acento-relleno: var(--casa-relleno); --acento-sobre: var(--casa-sobre); --acento-hi: var(--casa-hi); --acento-lo: var(--casa-lo); --acento-brillo: var(--casa-brillo); }
+[data-app="noche"] { --acento: var(--noche-texto); --acento-relleno: var(--noche-relleno); --acento-sobre: var(--noche-sobre); --acento-hi: var(--noche-hi); --acento-lo: var(--noche-lo); --acento-brillo: var(--noche-brillo); }
+[data-app="consulta"] { --acento: var(--consulta-texto); --acento-relleno: var(--consulta-relleno); --acento-sobre: var(--consulta-sobre); --acento-hi: var(--consulta-hi); --acento-lo: var(--consulta-lo); --acento-brillo: var(--consulta-brillo); }
+[data-app="juegos"] { --acento: var(--juegos-texto); --acento-relleno: var(--juegos-relleno); --acento-sobre: var(--juegos-sobre); --acento-hi: var(--juegos-hi); --acento-lo: var(--juegos-lo); --acento-brillo: var(--juegos-brillo); }
+
+/* Intensidad del vidrio, como el control de iOS 27: «claro» (por defecto) o «tintado». */
+[data-vidrio="tintado"] { --material: var(--vidrio-tintado); }
+
+/* ---------- Lienzo de la app ---------- */
+.d-app {
+  min-height: 100%;
+  color: var(--tinta);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(120% 55% at 0% -8%, var(--acento-brillo), transparent 62%),
+    radial-gradient(80% 45% at 105% 4%, var(--acento-brillo), transparent 58%),
+    var(--fondo);
+}
+
+/* ---------- Material de vidrio ---------- */
+.d-vidrio {
+  position: relative;
+  background: var(--material, var(--vidrio));
+  -webkit-backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio));
+  backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio));
+  border-radius: var(--radius-tarjeta);
+  box-shadow: var(--sombra-vidrio);
+}
+/* Borde de luz: reflejo arriba a la izquierda y abajo a la derecha. */
+.d-vidrio::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: linear-gradient(155deg, var(--vidrio-brillo), transparent 34%, transparent 70%, var(--vidrio-brillo));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: .75;
+}
+@media (prefers-reduced-transparency: reduce) {
+  .d-vidrio, .d-barra, .d-cabecera--fija, .d-boton--vidrio, .d-boton-circular { background: var(--superficie); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  .d-vidrio, .d-barra { background: var(--superficie); box-shadow: 0 0 0 1px var(--tinta-2); }
+}
+
+/* ---------- Barra superior ---------- */
+.d-cabecera { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) var(--space-4) var(--space-2); }
+.d-cabecera h1 { margin: 0; font: 700 34px/41px var(--font-sans); letter-spacing: -0.4px; }
+.d-cabecera .d-antetitulo { display: block; font: 600 13px/18px var(--font-sans); color: var(--tinta-2); }
+.d-cabecera .d-acciones { display: flex; gap: var(--space-2); }
+/* Al pasar contenido por debajo: barra uniforme y esmerilada (comportamiento de iOS 27). */
+.d-cabecera--fija {
+  position: sticky; top: 0; z-index: 5; align-items: center;
+  background: linear-gradient(to bottom, var(--material, var(--vidrio)) 60%, transparent);
+  -webkit-backdrop-filter: blur(var(--desenfoque-barra)) saturate(var(--saturacion-vidrio));
+  backdrop-filter: blur(var(--desenfoque-barra)) saturate(var(--saturacion-vidrio));
+}
+.d-cabecera--fija h1 { font-size: 17px; line-height: 22px; letter-spacing: 0; font-weight: 600; }
+
+/* ---------- Botones ---------- */
+.d-boton {
+  appearance: none; border: 0; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 50px; padding: 0 var(--space-6); border-radius: var(--radius-capsula);
+  font: 600 17px/22px var(--font-sans); color: var(--acento-sobre); background: var(--acento-relleno);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 8px 20px -8px var(--acento-relleno);
+  transition: transform .18s cubic-bezier(.3,.7,.4,1.4);
+}
+.d-boton:active { transform: scale(.96); }
+.d-boton--vidrio { color: var(--acento); background: var(--material, var(--vidrio)); box-shadow: var(--sombra-vidrio);
+  -webkit-backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio)); backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio)); }
+.d-boton--discreto { color: var(--acento); background: var(--relleno); box-shadow: none; }
+.d-boton--ancho { width: 100%; }
+.d-boton-circular {
+  appearance: none; border: 0; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center;
+  color: var(--tinta); background: var(--material, var(--vidrio)); box-shadow: var(--sombra-vidrio);
+  -webkit-backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio)); backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio));
+}
+.d-boton-circular svg, .d-boton svg { width: 20px; height: 20px; }
+.d-boton-circular--acento { color: var(--acento-sobre); background: var(--acento-relleno); }
+.d-boton:focus-visible, .d-boton-circular:focus-visible, .d-barra button:focus-visible { outline: 3px solid var(--acento); outline-offset: 2px; }
+
+/* ---------- Tarjeta principal ---------- */
+.d-heroe {
+  position: relative; overflow: hidden; border-radius: var(--radius-heroe); padding: var(--space-5);
+  color: var(--acento-sobre);
+  background: linear-gradient(150deg, var(--acento-hi), var(--acento-lo));
+  box-shadow: var(--sombra-heroe);
+}
+.d-heroe::after { /* brillo de vidrio en la esquina */
+  content: ""; position: absolute; width: 220px; height: 220px; right: -70px; top: -90px; border-radius: 50%;
+  background: radial-gradient(circle at 35% 65%, rgba(255,255,255,.34), rgba(255,255,255,0) 62%); pointer-events: none;
+}
+.d-heroe .d-etiqueta { font: 600 13px/18px var(--font-sans); opacity: .92; }
+.d-heroe .d-cifra-grande { display: block; margin-top: var(--space-1); font: 700 44px/48px var(--font-rounded); letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+.d-heroe .d-pie { display: flex; gap: var(--space-4); margin-top: var(--space-4); font: 400 15px/20px var(--font-sans); }
+.d-heroe .d-pie b { display: block; font: 600 17px/22px var(--font-rounded); }
+.d-heroe .d-barra-avance { height: 6px; margin-top: var(--space-4); border-radius: 3px; background: rgba(255,255,255,.28); overflow: hidden; }
+.d-heroe .d-barra-avance i { display: block; height: 100%; border-radius: 3px; background: currentColor; }
+
+/* ---------- Lista agrupada ---------- */
+.d-seccion { margin: var(--space-6) var(--space-4) var(--space-2); display: flex; justify-content: space-between; align-items: baseline; }
+.d-seccion h2 { margin: 0; font: 700 22px/28px var(--font-sans); }
+.d-seccion a { color: var(--acento); font: 400 17px/22px var(--font-sans); text-decoration: none; }
+.d-lista { margin: 0 var(--space-4); padding: 0; list-style: none; overflow: hidden; }
+.d-fila { display: flex; align-items: center; gap: var(--space-3); min-height: 44px; padding: var(--space-3) var(--space-4); position: relative; }
+.d-fila + .d-fila::before { content: ""; position: absolute; top: 0; left: 58px; right: 0; height: 0.5px; background: var(--separador); }
+.d-fila .d-cuadro { flex: none; width: 30px; height: 30px; border-radius: var(--radius-s); display: grid; place-items: center; color: #fff; background: linear-gradient(150deg, var(--acento-hi), var(--acento-lo)); box-shadow: inset 0 1px 0 rgba(255,255,255,.35); }
+.d-fila .d-cuadro svg { width: 18px; height: 18px; }
+.d-fila .d-texto { flex: 1; min-width: 0; }
+.d-fila .d-texto strong { display: block; font: 400 17px/22px var(--font-sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.d-fila .d-texto span { display: block; font: 400 15px/20px var(--font-sans); color: var(--tinta-2); }
+.d-fila .d-valor { font: 600 17px/22px var(--font-rounded); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.d-valor--positivo { color: var(--positivo); }
+.d-valor--negativo { color: var(--negativo); }
+
+/* ---------- Control segmentado ---------- */
+.d-segmentos { display: inline-flex; padding: 3px; gap: 2px; border-radius: var(--radius-capsula); background: var(--relleno); }
+.d-segmentos button { appearance: none; border: 0; cursor: pointer; padding: 7px 16px; border-radius: var(--radius-capsula); background: transparent; color: var(--tinta); font: 600 13px/18px var(--font-sans); }
+.d-segmentos button[aria-pressed="true"] { background: var(--superficie); box-shadow: 0 0 0 .5px var(--vidrio-borde), 0 3px 8px rgba(10,18,40,.12), inset 0 1px 0 var(--vidrio-brillo); }
+
+/* ---------- Barra de pestañas flotante ---------- */
+.d-barra-pie { position: sticky; bottom: 0; display: flex; gap: var(--space-2); align-items: center; padding: var(--space-3) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom)); }
+.d-barra {
+  flex: 1; display: flex; padding: 4px; border-radius: var(--radius-capsula);
+  background: var(--material, var(--vidrio)); box-shadow: var(--sombra-flotante);
+  -webkit-backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio)); backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio));
+}
+.d-barra button { appearance: none; border: 0; cursor: pointer; flex: 1; display: grid; justify-items: center; gap: 1px; padding: 6px 0 5px; border-radius: var(--radius-capsula); background: transparent; color: var(--tinta); font: 600 10px/12px var(--font-sans); }
+.d-barra button svg { width: 24px; height: 24px; }
+.d-barra button[aria-current="page"] { color: var(--acento); background: var(--relleno); box-shadow: inset 0 1px 0 var(--vidrio-brillo); }
+.d-barra-pie .d-boton-circular { width: 56px; height: 56px; box-shadow: var(--sombra-flotante); }
+
+/* ---------- Anillo de ciclo (gas, filtro, cepillos, cápsula) ---------- */
+.d-anillo { --avance: .6; --color: var(--acento); width: 64px; height: 64px; position: relative; display: grid; place-items: center; }
+.d-anillo svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.d-anillo .d-pista { stroke: var(--relleno); }
+.d-anillo .d-arco { stroke: var(--color); stroke-linecap: round; stroke-dasharray: calc(var(--avance) * 163.4) 163.4; }
+.d-anillo b { font: 600 17px/20px var(--font-rounded); }
+.d-anillo--aviso { --color: var(--aviso-relleno); }
+.d-anillo--vencido { --color: var(--negativo); }
+
+/* ---------- Chips y avisos ---------- */
+.d-chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: var(--radius-capsula); font: 600 12px/16px var(--font-sans); background: var(--relleno); color: var(--tinta-2); }
+.d-chip::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.d-chip--aviso { color: var(--aviso); }
+.d-chip--negativo { color: var(--negativo); }
+.d-chip--positivo { color: var(--positivo); }
+.d-aviso { display: flex; gap: var(--space-3); align-items: center; padding: var(--space-3) var(--space-4); border-radius: var(--radius-tarjeta); box-shadow: var(--sombra-flotante);
+  background: var(--material, var(--vidrio)); -webkit-backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio)); backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio)); }
+.d-aviso .d-punto { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--aviso-relleno); box-shadow: 0 0 0 4px color-mix(in srgb, var(--aviso-relleno) 25%, transparent); }
+.d-aviso strong { display: block; font: 600 15px/20px var(--font-sans); }
+.d-aviso span { display: block; font: 400 13px/18px var(--font-sans); color: var(--tinta-2); }
+
+/* ---------- Movimiento ---------- */
+@media (prefers-reduced-motion: reduce) { .d-boton { transition: none; } }
+/*D27:COMP:END*/
+/*APP:START*/
+/* Casa: Hoy, Ciclos (gas, filtro, cepillos, cápsula y sábanas), Maletas y Ajustes. Los componentes d-* son del
+   sistema Domésticas 27 (diseno27/ del repositorio casa); aquí van solo las piezas propias de esta app (c-*). */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; touch-action: pan-x pan-y; background: var(--fondo); }
+body { margin: 0; min-height: 100vh; }
+button, input, textarea { font: inherit; color: inherit; }
+button { -webkit-tap-highlight-color: transparent; }
+[hidden] { display: none !important; }
+.d-app { min-height: 100vh; }
+.d-cabecera { padding-top: calc(env(safe-area-inset-top) + 14px); }
+.c-contenido { padding-bottom: calc(130px + env(safe-area-inset-bottom)); }
+
+/* Barra superior compacta: aparece al desplazar, como en iOS 27 */
+.c-barra-sup { position: fixed; top: 0; left: 0; right: 0; z-index: 20; padding: calc(env(safe-area-inset-top) + 11px) 16px 11px; text-align: center;
+  font: 600 17px/22px var(--font-sans); background: var(--material, var(--vidrio)); box-shadow: 0 .5px 0 var(--separador);
+  -webkit-backdrop-filter: blur(var(--desenfoque-barra)) saturate(var(--saturacion-vidrio)); backdrop-filter: blur(var(--desenfoque-barra)) saturate(var(--saturacion-vidrio));
+  opacity: 0; pointer-events: none; transition: opacity .2s; }
+.c-barra-sup.ver { opacity: 1; }
+
+/* Barra de pestañas fija */
+.c-pie { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; }
+.c-desvanecer { position: fixed; left: 0; right: 0; bottom: 0; height: calc(120px + env(safe-area-inset-bottom)); z-index: 14; pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--fondo) 62%); }
+.c-pie .d-barra-pie { position: static; }
+
+/* Texto suelto */
+.c-texto { margin: 12px 20px 0; font: 400 15px/21px var(--font-sans); color: var(--tinta-2); }
+.c-texto b { color: var(--tinta); font-weight: 600; }
+.c-texto--alerta { color: var(--negativo); }
+.c-nota { margin: 8px 20px 0; font: 400 13px/18px var(--font-sans); color: var(--tinta-2); }
+.c-estado { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 22px 16px 0; font: 400 13px/18px var(--font-sans); color: var(--tinta-2); text-align: center; }
+.c-estado .c-punto { width: 8px; height: 8px; }
+.c-acciones { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 16px 0; }
+.c-acciones .d-boton { flex: 1 1 140px; padding: 0 16px; }
+.d-heroe { margin: 8px 16px 0; }
+.d-heroe .c-cifra-chica { font-size: 34px; line-height: 40px; }
+.d-heroe .d-pie > div { min-width: 0; }
+
+/* Puntos de estado */
+.c-punto { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--acento); }
+.c-punto--neg { background: var(--negativo); }
+.c-punto--aviso { background: var(--aviso-relleno); }
+
+/* Filas que son botones */
+.d-lista > li { list-style: none; position: relative; }
+.d-lista > li + li::before { content: ""; position: absolute; top: 0; left: 58px; right: 0; height: .5px; background: var(--separador); z-index: 1; }
+.d-lista > li > .d-fila::before { display: none; }
+.c-fila { appearance: none; border: 0; background: transparent; width: 100%; text-align: left; cursor: pointer; }
+.c-fila:active { background: var(--relleno); }
+.d-fila .c-chev { flex: none; color: var(--tinta-3); width: 18px; height: 18px; }
+.d-fila .d-valor small { font: 400 13px/18px var(--font-sans); color: var(--tinta-2); display: block; text-align: right; }
+.c-fila-punto { width: 30px; display: grid; place-items: center; flex: none; }
+.c-mini { appearance: none; border: 0; cursor: pointer; flex: none; min-height: 34px; padding: 0 14px; border-radius: var(--radius-capsula);
+  background: var(--acento-relleno); color: var(--acento-sobre); font: 600 15px/20px var(--font-sans); }
+.c-mini--discreto { background: var(--relleno); color: var(--acento); }
+
+/* Tarjetas de ciclo (Hoy) */
+.c-rejilla { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0 16px; }
+.c-ciclo { appearance: none; border: 0; text-align: left; cursor: pointer; padding: 14px; display: flex; flex-direction: column; gap: 10px; color: var(--tinta); }
+.c-ciclo:active { transform: scale(.98); }
+.c-ciclo .c-arriba { display: flex; justify-content: space-between; align-items: flex-start; color: var(--acento); }
+.c-ciclo .c-nombre { font: 600 17px/22px var(--font-sans); }
+.c-ciclo .c-detalle { font: 400 14px/19px var(--font-sans); color: var(--tinta-2); }
+.c-ciclo .c-detalle--aviso { color: var(--aviso); }
+.c-ciclo .c-detalle--neg { color: var(--negativo); }
+.d-anillo b { font-variant-numeric: tabular-nums; }
+
+/* Selector de ciclo */
+.c-segmentos { display: flex; margin: 8px 16px 0; }
+.c-segmentos button { flex: 1; padding: 8px 2px; min-width: 0; }
+
+/* Cepillos lado a lado */
+.c-dos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 12px 16px 0; }
+.c-cepillo { padding: 16px 14px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.c-cepillo .d-anillo { width: 76px; height: 76px; }
+.c-cepillo h3 { margin: 0; font: 600 17px/22px var(--font-sans); }
+.c-cepillo p { margin: 0; font: 400 14px/19px var(--font-sans); color: var(--tinta-2); }
+.c-cepillo p b { color: var(--tinta); font-weight: 600; }
+
+/* Insignia */
+.d-fila .d-texto .c-insignia, .c-insignia { display: inline-block; padding: 2px 8px; border-radius: var(--radius-capsula); font: 600 12px/16px var(--font-sans); background: var(--relleno); color: var(--tinta-2); margin-right: 6px; }
+.c-insignia--acento { color: var(--acento); }
+
+/* Marcar hecho (sábanas) */
+.c-check { appearance: none; flex: none; width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--separador); background: transparent; color: transparent; display: grid; place-items: center; cursor: pointer; }
+.c-check svg { width: 22px; height: 22px; }
+.c-check[aria-pressed="true"] { background: var(--positivo); border-color: var(--positivo); color: #fff; }
+.c-check:disabled { opacity: .35; cursor: default; }
+
+/* Hojas */
+.c-fondo-hoja { position: fixed; inset: 0; z-index: 40; background: rgba(5, 8, 15, .38); opacity: 0; transition: opacity .25s; }
+.c-fondo-hoja.abierta { opacity: 1; }
+.c-hoja { position: fixed; left: 0; right: 0; bottom: 0; z-index: 41; max-height: 92vh; overflow: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain;
+  border-radius: 32px 32px 0 0; padding: 6px 20px calc(24px + env(safe-area-inset-bottom));
+  background: var(--vidrio-tintado); box-shadow: var(--sombra-flotante);
+  -webkit-backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio)); backdrop-filter: blur(var(--desenfoque-vidrio)) saturate(var(--saturacion-vidrio));
+  transform: translateY(105%); transition: transform .38s cubic-bezier(.2, .9, .25, 1.06); }
+.c-hoja.abierta { transform: none; }
+.c-hoja::before { content: ""; display: block; width: 38px; height: 5px; border-radius: 3px; margin: 4px auto 6px; background: var(--tinta-3); opacity: .5; }
+.c-hoja h2 { margin: 10px 0 4px; font: 700 22px/28px var(--font-sans); }
+.c-hoja h3 { margin: 20px 0 4px; font: 600 17px/22px var(--font-sans); }
+.c-hoja p { margin: 6px 0; font: 400 15px/21px var(--font-sans); color: var(--tinta-2); }
+.c-hoja p b { color: var(--tinta); }
+.c-hoja .c-pila { display: grid; gap: 10px; margin-top: 18px; }
+.c-hoja .d-boton { width: 100%; }
+.c-hoja .d-lista { margin: 12px 0 0; }
+.c-peligro { color: var(--negativo) !important; }
+.c-boton-peligro { background: transparent; color: var(--negativo); box-shadow: none; }
+
+/* Campos */
+.c-campo { display: block; margin: 14px 0 0; }
+.c-campo > span, .c-campo > legend { display: block; margin: 0 0 6px 4px; padding: 0; font: 600 13px/18px var(--font-sans); color: var(--tinta-2); }
+fieldset.c-campo { border: 0; padding: 0; min-width: 0; }
+.c-campo input[type="date"], .c-campo input[type="text"], .c-campo input[type="number"], .c-campo textarea {
+  display: block; width: 100%; min-height: 50px; border: 0; border-radius: 14px; background: var(--relleno); color: var(--tinta);
+  font: 400 17px/22px var(--font-sans); padding: 13px 14px; -webkit-appearance: none; appearance: none; text-align: left; }
+.c-campo textarea { min-height: 110px; font: 400 13px/18px ui-monospace, Menlo, monospace; resize: vertical; }
+.c-campo input:focus, .c-campo textarea:focus { outline: 2px solid var(--acento); outline-offset: 1px; }
+.c-codigo { text-transform: uppercase; letter-spacing: 3px; font-family: var(--font-rounded) !important; font-size: 22px !important; text-align: center !important; }
+.c-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.c-chips input { position: absolute; opacity: 0; pointer-events: none; }
+.c-chips label { display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border-radius: var(--radius-capsula); background: var(--relleno); font: 600 15px/20px var(--font-sans); cursor: pointer; }
+.c-chips input:checked + label { background: var(--acento-relleno); color: var(--acento-sobre); }
+.c-chips input:focus-visible + label { outline: 2px solid var(--acento); outline-offset: 2px; }
+.c-interruptor { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; padding: 12px 14px; border-radius: 14px; background: var(--relleno); font: 400 17px/22px var(--font-sans); }
+.c-interruptor small { display: block; font: 400 13px/18px var(--font-sans); color: var(--tinta-2); }
+.c-interruptor input { width: 24px; height: 24px; accent-color: var(--acento-relleno); flex: none; }
+.c-error { margin: 10px 4px 0; font: 600 15px/20px var(--font-sans); color: var(--negativo); }
+.c-prefijo { position: relative; }
+.c-prefijo b { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--tinta-2); font-weight: 600; pointer-events: none; }
+.c-prefijo input { padding-left: 30px !important; }
+
+/* Aviso flotante */
+.c-toast { position: fixed; left: 16px; right: 16px; top: calc(env(safe-area-inset-top) + 10px); z-index: 60; transform: translateY(-160%); transition: transform .35s cubic-bezier(.2, .9, .25, 1.06); }
+.c-toast.ver { transform: none; }
+.c-toast.d-aviso { background: var(--vidrio-tintado); }
+.c-toast .d-punto { background: var(--positivo); box-shadow: 0 0 0 4px color-mix(in srgb, var(--positivo) 22%, transparent); }
+.c-toast--error .d-punto { background: var(--aviso-relleno); box-shadow: 0 0 0 4px color-mix(in srgb, var(--aviso-relleno) 25%, transparent); }
+
+/* Maletas: la app Maletas, con su propio estilo ilustrado */
+.c-maletas { position: fixed; left: 0; right: 0; top: 0; bottom: calc(88px + env(safe-area-inset-bottom)); z-index: 1; background: var(--fondo); }
+body.en-maletas .c-desvanecer { display: none; }
+.c-maletas iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+/* Ajustes */
+.c-ajuste-seg { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.c-pasos { margin: 10px 20px 0; padding-left: 20px; font: 400 15px/21px var(--font-sans); color: var(--tinta-2); }
+.c-pasos li { margin-top: 6px; }
+.c-pasos b { color: var(--tinta); }
+.c-tarjeta { margin: 0 16px; padding: 4px 16px 16px; }
+.c-tarjeta .c-campo:first-child { margin-top: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .c-hoja, .c-fondo-hoja, .c-toast, .c-barra-sup { transition: none; }
+}
+/*APP:END*/
+</style>
+</head>
+<body class="d-app" data-app="casa">
+<div class="c-barra-sup" id="barraSup" aria-hidden="true"></div>
+<header class="d-cabecera" id="cabecera"></header>
+<main class="c-contenido" id="vista"></main>
+<div class="c-maletas" id="maletas" hidden></div>
+<div class="c-desvanecer" aria-hidden="true"></div>
+<div class="c-pie">
+  <nav class="d-barra-pie" aria-label="Secciones">
+    <div class="d-barra" id="pestanas"></div>
+    <button class="d-boton-circular d-boton-circular--acento" data-a="registrar" aria-label="Registrar"></button>
+  </nav>
+</div>
+<div class="c-fondo-hoja" id="fondoHoja" data-a="cerrar" hidden></div>
+<div class="c-hoja" id="hoja" role="dialog" aria-modal="true" hidden></div>
+<div class="c-toast d-aviso" id="toast" role="status" aria-live="polite"><span class="d-punto"></span><div><strong id="toastT"></strong><span id="toastS"></span></div></div>
+
+<script type="module">
+import * as C from './calculos.js';
+
+const API = 'https://domesticas-api.vercel.app';
+const ARCHIVOS = ['ciclos.json', 'rutinas.json'];
+const CL = { llave: 'casa27.llave', datos: 'casa27.datos', cola: 'casa27.cola', prefs: 'casa27.prefs', sync: 'casa27.sync', ui: 'casa27.ui' };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const cap1 = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+function leerLS(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v == null ? d : v; } catch (e) { return d; } }
+function guardarLS(k, v) { try { if (v == null) localStorage.removeItem(k); else localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+/* ---------- Iconos (trazo de 2 px, cuadrícula de 24) ---------- */
+const I = {
+  mas: '<path d="M12 5v14M5 12h14"/>',
+  ayuda: '<circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.6"/><path d="M12 17h.01"/>',
+  casa: '<path d="M4 11l8-7 8 7v8a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19z"/><path d="M10 20.5V15h4v5.5"/>',
+  ciclos: '<path d="M20 12a8 8 0 1 1-3-6.2"/><path d="M20 4v4h-4"/>',
+  maleta: '<rect x="5" y="7" width="14" height="13" rx="2.5"/><path d="M9 7V5h6v2M5 12h14"/>',
+  ajustes: '<circle cx="12" cy="12" r="3"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>',
+  gota: '<path d="M12 3.5c3 3.6 6 6.8 6 10.2a6 6 0 0 1-12 0C6 10.3 9 7.1 12 3.5z"/>',
+  llama: '<path d="M12 3c1 3.5 5 5.3 5 10a5 5 0 0 1-10 0c0-2.5 1.4-3.6 2.4-5 .4 1.6 1.2 2.4 2.1 2.6C11 8.3 11.3 5.6 12 3z"/>',
+  capsula: '<rect x="3" y="8.5" width="18" height="7" rx="3.5" transform="rotate(-45 12 12)"/><path d="M9.5 9.5l5 5"/>',
+  cepillo: '<path d="M3.5 20.5 13 11"/><path d="M13 11l6-6a1.8 1.8 0 0 1 2.5 2.5l-6 6z"/><path d="M15.5 8.5l-2-2M18 6l-2-2M13 11l-2-2"/>',
+  cama: '<path d="M3 18V8M3 14h18v4M21 14v-2.5A2.5 2.5 0 0 0 18.5 9H11v5"/><circle cx="7" cy="11.5" r="1.6"/>',
+  bolsa: '<path d="M5.5 8.5h13l-.9 11H6.4z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  chev: '<path d="M9 5l7 7-7 7"/>',
+  nube: '<path d="M7 18h10a4 4 0 0 0 .7-7.94A6 6 0 0 0 6.1 9.6 4.2 4.2 0 0 0 7 18z"/>',
+  copiar: '<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6.5A2.5 2.5 0 0 0 13.5 4h-7A2.5 2.5 0 0 0 4 6.5v7A2.5 2.5 0 0 0 6.5 16H8"/>',
+  llave: '<circle cx="8" cy="15" r="4"/><path d="M11 12l8-8M16 7l2 2M14 9l2 2"/>',
+  traer: '<path d="M12 4v13"/><path d="M6.5 11.5 12 17l5.5-5.5"/><path d="M5 20h14"/>',
+  sol: '<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/>',
+  deshacer: '<path d="M9 7 5 11l4 4"/><path d="M5 11h9a5 5 0 0 1 0 10h-2"/>',
+  reloj: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+};
+const ico = (n, t = 24, g = 2) => `<svg viewBox="0 0 24 24" width="${t}" height="${t}" fill="none" stroke="currentColor" stroke-width="${g}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${I[n]}</svg>`;
+const ICONO_CICLO = { gas: 'llama', agua: 'gota', cepillos: 'cepillo', capsula: 'capsula', sabanas: 'cama' };
+const NOMBRE_CICLO = { gas: 'Gas', agua: 'Filtro', cepillos: 'Cepillos', capsula: 'Cápsula', sabanas: 'Sábanas' };
+
+/* ---------- Estado ---------- */
+let llave = leerLS(CL.llave, null);          // { llave, nombre, id }
+let srv = leerLS(CL.datos, {});              // copia de lo que hay en GitHub: { archivo: { contenido, sha, leido } }
+let cola = leerLS(CL.cola, []);              // cambios aún sin guardar en GitHub: [{ archivo, cambio, mensaje }]
+let prefs = leerLS(CL.prefs, { tema: 'auto', vidrio: 'claro' });
+let sync = leerLS(CL.sync, { at: 0 });
+let ui = Object.assign({ tab: 'hoy', ciclo: 'gas' }, leerLS(CL.ui, {}));
+if (ui.tab === 'maletas') ui.tab = 'hoy';
+let hoja = null;                             // { tipo, … }
+
+function hoy() { return C.diaDe(new Date()); }
+function horaDecimal() { const d = new Date(); return d.getHours() + d.getMinutes() / 60; }
+function vista(archivo) {
+  let d = (srv[archivo] && srv[archivo].contenido) || C.PLANTILLAS[archivo];
+  for (const p of cola) if (p.archivo === archivo) d = C.aplicar(archivo, d, p.cambio);
+  return d;
+}
+function datos() { return { ciclos: vista('ciclos.json'), rutinas: vista('rutinas.json') }; }
+
+/* ---------- Guardado en GitHub a través de domesticas-api ---------- */
+async function api(metodo, ruta, cuerpo) {
+  const r = await fetch(API + ruta, {
+    method: metodo, cache: 'no-store',
+    headers: Object.assign({ Authorization: 'Bearer ' + llave.llave }, cuerpo ? { 'Content-Type': 'application/json' } : {}),
+    body: cuerpo ? JSON.stringify(cuerpo) : undefined,
+  });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) { const e = new Error(d.error || 'Error ' + r.status); e.status = r.status; throw e; }
+  return d;
+}
+async function leerServidor(archivo) {
+  const d = await api('GET', '/api/datos?archivo=' + encodeURIComponent(archivo));
+  srv[archivo] = { contenido: d.contenido || C.PLANTILLAS[archivo], sha: d.sha || null, leido: Date.now() };
+  guardarLS(CL.datos, srv);
+}
+function hacer(archivo, cambio, mensaje) {
+  cambio.id = cambio.id || C.nuevoId('k');
+  try { C.aplicar(archivo, vista(archivo), cambio); } catch (e) { avisar('No se pudo registrar', e.message); return false; }
+  cola.push({ archivo, cambio, mensaje });
+  guardarLS(CL.cola, cola);
+  render();
+  sincronizar(false);
+  return true;
+}
+let enCurso = null, otraVez = false;
+function sincronizar(releer) {
+  if (!llave) return Promise.resolve();
+  if (enCurso) { otraVez = true; return enCurso; }
+  enCurso = (async () => {
+    try {
+      for (const archivo of ARCHIVOS) {
+        const mios = () => cola.filter((p) => p.archivo === archivo);
+        if (releer || !srv[archivo] || !srv[archivo].sha) await leerServidor(archivo);
+        for (let intento = 0; mios().length && intento < 4; intento++) {
+          const lote = mios();
+          let d = srv[archivo].contenido;
+          lote.forEach((p) => { d = C.aplicar(archivo, d, p.cambio); });
+          const quitar = () => { const ids = lote.map((p) => p.cambio.id); cola = cola.filter((p) => !ids.includes(p.cambio.id)); guardarLS(CL.cola, cola); };
+          if (JSON.stringify(d) === JSON.stringify(srv[archivo].contenido)) { quitar(); continue; }   // ya estaban guardados
+          const mensaje = lote.length === 1 ? lote[0].mensaje : lote.length + ' cambios: ' + lote.map((p) => p.mensaje).join('; ');
+          try {
+            const r = await api('PUT', '/api/datos?archivo=' + encodeURIComponent(archivo), { contenido: d, sha: srv[archivo].sha, mensaje: 'Casa · ' + mensaje });
+            srv[archivo] = { contenido: d, sha: r.sha, leido: Date.now() };
+            guardarLS(CL.datos, srv);
+            quitar();
+          } catch (e) {
+            if (e.status === 409) { await leerServidor(archivo); continue; }   // otro dispositivo guardó antes
+            throw e;
+          }
+        }
+      }
+      sync = { at: Date.now() };
+    } catch (e) {
+      sync = { at: sync.at || 0, error: e.status === 401 ? 'La llave de este iPhone ya no es válida. Conéctalo de nuevo en Ajustes.' : e.status ? e.message : 'Sin conexión', status: e.status || 0, intento: Date.now() };
+    } finally {
+      guardarLS(CL.sync, sync);
+      enCurso = null;
+      render();
+      if (otraVez) { otraVez = false; sincronizar(false); }
+    }
+  })();
+  return enCurso;
+}
+function releerSiHaceFalta() {
+  const viejo = ARCHIVOS.some((a) => !srv[a] || Date.now() - (srv[a].leido || 0) > 30000);
+  if (llave && (viejo || cola.length)) sincronizar(viejo);
+}
+
+/* ---------- Textos de fecha ---------- */
+function cuando(k, h) {
+  const d = C.dias(h, k);
+  return d === 0 ? 'hoy' : d === 1 ? 'mañana' : d === -1 ? 'ayer' : C.nombreDia(k) + ' ' + C.fechaCorta(k);
+}
+function hace(ms) {
+  const s = Math.round((Date.now() - ms) / 1000);
+  if (s < 60) return 'recién';
+  if (s < 3600) return 'hace ' + Math.round(s / 60) + ' min';
+  if (s < 86400) return 'hace ' + Math.round(s / 3600) + ' h';
+  return 'el ' + C.fechaCorta(C.diaDe(new Date(ms)));
+}
+const diasTxt = (n) => n + ' ' + C.plural(n, 'día', 'días');
+
+/* ---------- Piezas ---------- */
+function anillo(avance, cifra, tono, tam) {
+  const cls = tono === 'neg' ? ' d-anillo--vencido' : tono === 'aviso' ? ' d-anillo--aviso' : '';
+  return `<div class="d-anillo${cls}" style="--avance:${Math.max(0, Math.min(1, avance || 0)).toFixed(3)}${tam ? ';width:' + tam + 'px;height:' + tam + 'px' : ''}"><svg viewBox="0 0 64 64" aria-hidden="true"><circle class="d-pista" cx="32" cy="32" r="26" fill="none" stroke-width="7"/>${avance > 0.004 ? '<circle class="d-arco" cx="32" cy="32" r="26" fill="none" stroke-width="7"/>' : ''}</svg><b>${esc(cifra)}</b></div>`;
+}
+function fila({ icono, titulo, sub, valor, a, attrs = '', punto, chev, extra = '' }) {
+  const cuadro = punto ? `<span class="c-fila-punto"><span class="c-punto${punto === 'neg' ? ' c-punto--neg' : punto === 'aviso' ? ' c-punto--aviso' : ''}"></span></span>` : icono ? `<span class="d-cuadro">${ico(icono, 18)}</span>` : '';
+  const cuerpo = `${cuadro}<span class="d-texto"><strong>${titulo}</strong>${sub ? `<span>${sub}</span>` : ''}</span>${valor != null ? `<span class="d-valor">${valor}</span>` : ''}${extra}${chev ? `<span class="c-chev">${ico('chev', 18)}</span>` : ''}`;
+  return a ? `<li><button class="d-fila c-fila" data-a="${a}" ${attrs}>${cuerpo}</button></li>` : `<li class="d-fila">${cuerpo}</li>`;
+}
+function heroe(etiqueta, cifra, pie, avance, chica) {
+  return `<section class="d-heroe"><span class="d-etiqueta">${etiqueta}</span><span class="d-cifra-grande${chica ? ' c-cifra-chica' : ''}">${cifra}</span>` +
+    (avance != null ? `<div class="d-barra-avance"><i style="width:${Math.round(Math.max(0, Math.min(1, avance)) * 100)}%"></i></div>` : '') +
+    (pie && pie.length ? `<div class="d-pie">${pie.map(([t, b]) => `<div>${t}<b>${b}</b></div>`).join('')}</div>` : '') + '</section>';
+}
+const seccion = (t, enlace) => `<div class="d-seccion"><h2>${t}</h2>${enlace || ''}</div>`;
+
+/* ---------- Hoy ---------- */
+function resumenCiclos(D, h) {
+  const g = C.estadoGas(C.ciclo(D.ciclos, 'gas'), h);
+  const a = C.estadoAgua(C.ciclo(D.ciclos, 'agua'), h);
+  const cp = C.estadoCepillos(C.ciclo(D.ciclos, 'cepillos'), h, horaDecimal());
+  const k = C.estadoCapsula(C.ciclo(D.ciclos, 'capsula'), h);
+  const s = C.estadoSabanas(D.rutinas.sabanas, h);
+  return { g, a, cp, k, s };
+}
+function tarjetasCiclos(D, h) {
+  const { g, a, cp, k } = resumenCiclos(D, h);
+  const t = [];
+  // Gas
+  if (g.activo) {
+    const tono = g.quedan != null && g.quedan <= 3 ? (g.reservas.length ? 'aviso' : 'neg') : '';
+    t.push(['gas', 'Balón de gas', anillo(g.avance != null ? g.avance : 0, g.enUso, tono), diasTxt(g.enUso) + ' en uso · ' + (g.reservas.length ? 'reserva lista' : 'sin reserva'), tono]);
+  } else t.push(['gas', 'Balón de gas', anillo(0, '–'), g.hay ? 'Sin balón en uso' : 'Sin registros', g.hay ? 'aviso' : '']);
+  // Filtro
+  if (a.actual) {
+    const tono = a.quedan <= 7 ? 'neg' : a.quedan <= 14 ? 'aviso' : '';
+    t.push(['agua', 'Filtro de agua', anillo(a.avance, a.quedan < 0 ? '!' : a.quedan, tono), a.quedan > 0 ? 'Faltan ' + diasTxt(a.quedan) : a.quedan === 0 ? 'Hoy toca cambiarlo' : 'Vencido hace ' + diasTxt(-a.quedan), tono]);
+  } else t.push(['agua', 'Filtro de agua', anillo(0, '–'), 'Sin registros', '']);
+  // Cepillos: el que se cambia primero
+  if (cp.primero) {
+    const r = cp.por[cp.primero], tono = r.quedan <= 7 ? 'neg' : r.quedan <= 14 ? 'aviso' : '';
+    t.push(['cepillos', 'Cepillos', anillo(r.avance, r.quedan < 0 ? '!' : r.quedan, tono), C.NOMBRE_CEPILLO[cp.primero] + ': ' + (r.quedan > 0 ? 'faltan ' + diasTxt(r.quedan) : r.quedan === 0 ? 'cambiar hoy' : 'vencido'), tono]);
+  } else t.push(['cepillos', 'Cepillos', anillo(0, '–'), 'Sin registros', '']);
+  // Cápsula
+  if (k.frasco) {
+    const tono = k.nivel === 'vacio' || k.nivel === 'critico' ? 'neg' : k.nivel === 'aviso' ? 'aviso' : '';
+    const txt = k.quedan <= 0 ? 'Frasco vacío' : (k.quedan === 1 ? 'Queda 1' : 'Quedan ' + k.quedan) + (k.nivel !== 'ok' ? (k.pedida ? ' · receta pedida' : ': pedir receta') : '');
+    t.push(['capsula', 'Mi cápsula', anillo(k.avance, k.quedan, k.pedida && tono === 'aviso' ? '' : tono), txt, k.pedida ? '' : tono]);
+  } else t.push(['capsula', 'Mi cápsula', anillo(0, '–'), 'Sin frasco registrado', '']);
+  return '<div class="c-rejilla">' + t.map(([id, nombre, an, det, tono]) =>
+    `<button class="d-vidrio c-ciclo" data-a="ir-ciclo" data-c="${id}" aria-label="${nombre}: ${esc(det)}"><div class="c-arriba">${an}${ico(ICONO_CICLO[id], 22)}</div><div><div class="c-nombre">${nombre}</div><div class="c-detalle${tono ? ' c-detalle--' + tono : ''}">${esc(det)}</div></div></button>`).join('') + '</div>';
+}
+function vistaHoy() {
+  const D = datos(), h = hoy();
+  const { k, s } = resumenCiclos(D, h);
+  const avisos = C.avisosDeHoy(D.ciclos, D.rutinas, h, horaDecimal());
+  let html = heroe('Para atender', avisos.length ? avisos.length + ' ' + C.plural(avisos.length, 'aviso', 'avisos') : 'Todo al día', [
+    ['Cápsula', k.frasco ? (k.quedan === 1 ? '1 cápsula' : k.quedan + ' cápsulas') : 'Sin frasco'],
+    ['Sábanas ' + (s.atrasado ? 'atrasadas' : cuando(s.proximo, h)), 'Le toca a ' + esc(s.turno)],
+  ]);
+  if (avisos.length) {
+    html += '<ul class="d-lista d-vidrio" style="margin-top:16px">' + avisos.map((x) => {
+      const boton = x.accion === 'tomar' ? `<button class="c-mini" data-a="tomar-hoy">Tomada</button>` : x.accion === 'sabanas' ? `<button class="c-mini" data-a="sabanas-hoy">Hecho</button>` : '';
+      return `<li class="d-fila"><span class="c-fila-punto"><span class="c-punto${x.tono === 'neg' ? ' c-punto--neg' : x.tono === 'aviso' ? ' c-punto--aviso' : ''}"></span></span>` +
+        `<button class="d-texto c-fila" data-a="ir-ciclo" data-c="${x.ir}" style="padding:0"><strong style="white-space:normal">${esc(x.texto)}</strong></button>${boton}</li>`;
+    }).join('') + '</ul>';
+  }
+  html += seccion('Ciclos', '<a href="#" data-a="tab" data-t="ciclos">Detalle</a>') + tarjetasCiclos(D, h);
+  html += seccion('Rutinas') + '<ul class="d-lista d-vidrio">' +
+    fila({ icono: 'cama', titulo: 'Sábanas', sub: (s.atrasado ? 'Atrasado: ' : cap1(cuando(s.proximo, h)) + ' · ') + esc(s.turno), valor: s.atrasado ? '<span class="d-chip d-chip--aviso">Atrasado</span>' : s.esHoy ? '<span class="d-chip d-chip--aviso">Hoy</span>' : s.esManana ? '<span class="d-chip">Mañana</span>' : '', a: 'ir-ciclo', attrs: 'data-c="sabanas"', chev: true }) +
+    fila({ icono: 'maleta', titulo: 'Maletas', sub: textoMaletas(), a: 'tab', attrs: 'data-t="maletas"', chev: true }) + '</ul>';
+  html += estadoSync();
+  return html;
+}
+function textoMaletas() {
+  try {
+    const m = JSON.parse(localStorage.getItem('maletas.v1'));
+    if (m && Array.isArray(m.cases)) return m.cases.length + ' maletas · ' + m.items.length + ' ' + C.plural(m.items.length, 'objeto', 'objetos');
+  } catch (e) {}
+  return 'Dónde está cada cosa';
+}
+function estadoSync() {
+  let punto = '', txt;
+  if (!llave) { punto = 'aviso'; txt = 'Sin conectar: los registros quedan solo en este iPhone. Conéctalo en Ajustes.'; }
+  else if (sync.error) { punto = sync.status === 401 ? 'neg' : 'aviso'; txt = sync.error + (cola.length ? ' · ' + cola.length + ' ' + C.plural(cola.length, 'cambio', 'cambios') + ' por guardar' : ''); }
+  else if (cola.length) txt = 'Guardando ' + cola.length + ' ' + C.plural(cola.length, 'cambio', 'cambios') + '…';
+  else txt = 'Guardado en GitHub' + (sync.at ? ' · ' + hace(sync.at) : '');
+  return `<p class="c-estado"><span class="c-punto${punto ? ' c-punto--' + punto : ''}"></span>${esc(txt)}</p>`;
+}
+
+/* ---------- Ciclos ---------- */
+function vistaCiclos() {
+  const segs = Object.keys(NOMBRE_CICLO).map((c) => `<button data-a="ciclo" data-c="${c}" aria-pressed="${ui.ciclo === c}">${NOMBRE_CICLO[c]}</button>`).join('');
+  const D = datos(), h = hoy();
+  const f = { gas: vistaGas, agua: vistaAgua, cepillos: vistaCepillos, capsula: vistaCapsula, sabanas: vistaSabanas }[ui.ciclo] || vistaGas;
+  return `<div class="d-segmentos c-segmentos" role="group" aria-label="Ciclo">${segs}</div>` + f(D, h) + estadoSync();
+}
+
+function vistaGas(D, h) {
+  const g = C.estadoGas(C.ciclo(D.ciclos, 'gas'), h);
+  const res = g.reservas.length, prom = g.promedio != null ? String(Math.round(g.promedio * 10) / 10).replace('.', ',') : null;
+  let html;
+  if (g.activo) {
+    html = heroe('Balón en uso' + (g.activo.kg ? ' · ' + g.activo.kg + ' kg' : ''), diasTxt(g.enUso), [
+      ['Abierto', C.fechaCorta(g.activo.apertura)], ['Promedio', prom ? prom + ' días' : 'Aún no hay'], ['Reserva', res ? (res > 1 ? res + ' llenos' : 'Lleno') : 'Sin reserva'],
+    ], g.avance != null ? g.avance : null);
+    if (g.quedan == null) html += '<p class="c-texto">El promedio se calcula cuando se cierra el primer balón.</p>';
+    else if (g.quedan > 0) html += `<p class="c-texto">Con tu promedio de ${prom} días, duraría hasta el <b>${C.fechaLarga(g.fin, h)}</b> (faltan unos ${diasTxt(g.quedan)}).</p>`;
+    else if (g.quedan === 0) html += `<p class="c-texto">Hoy llega a tu promedio de ${prom} días.</p>`;
+    else html += `<p class="c-texto c-texto--alerta">Lleva ${diasTxt(-g.quedan)} sobre tu promedio de ${prom} días.</p>`;
+  } else {
+    html = heroe(res ? 'Reserva lista' : 'Sin balón en uso', res ? 'Abre la reserva' : 'Registra el balón', [['Reserva', res ? 'Lleno, sin abrir' : 'Sin reserva']], null, true);
+    html += `<p class="c-texto">${res ? 'Cuando lo abras, se cuentan los días de uso desde esa fecha.' : 'Indica cuándo abriste el balón que estás usando y la app cuenta los días hasta que lo reemplaces.'}</p>`;
+  }
+  html += `<div class="c-acciones"><button class="d-boton" data-a="hoja" data-h="gas-abrir">${res ? 'Abrir reserva' : 'Abrir balón'}</button><button class="d-boton d-boton--discreto" data-a="hoja" data-h="gas-comprar">Registrar compra</button></div>`;
+  if (g.n) {
+    html += seccion('Estadísticas') + '<ul class="d-lista d-vidrio">' +
+      fila({ titulo: 'Promedio', valor: prom + ' días' }) +
+      fila({ titulo: 'Más corto y más largo', valor: g.min + ' y ' + g.max + ' días' }) +
+      fila({ titulo: 'Balones cerrados', valor: g.n }) +
+      (g.porDia != null ? fila({ titulo: 'Gasto por día', valor: C.pesos(g.porDia) }) : '') +
+      (g.porBalon != null ? fila({ titulo: 'Precio por balón', valor: C.pesos(g.porBalon) }) : '') + '</ul>';
+  }
+  html += seccion('Historial', '<a href="#" data-a="hoja" data-h="gas-anterior">Agregar anterior</a>');
+  if (!g.historial.length) html += '<p class="c-texto">Sin balones registrados. Si tienes el respaldo de la app Balón de gas, tráelo desde Ajustes.</p>';
+  else html += '<ul class="d-lista d-vidrio">' + g.historial.map((t) => {
+    const kg = t.kg ? t.kg + ' kg' : '';
+    if (!t.apertura) return fila({ icono: 'bolsa', titulo: 'Reserva', sub: 'Comprado el ' + C.fechaCorta(t.compra) + (kg ? ' · ' + kg : ''), valor: t.precio ? C.pesos(t.precio) : '', a: 'hoja', attrs: `data-h="gas-editar" data-id="${esc(t.id)}"`, chev: true });
+    if (!t.cierre) return fila({ icono: 'llama', titulo: 'En uso', sub: 'Desde el ' + C.fechaCorta(t.apertura) + (kg ? ' · ' + kg : ''), valor: diasTxt(Math.max(0, C.dias(t.apertura, h))), a: 'hoja', attrs: `data-h="gas-editar" data-id="${esc(t.id)}"`, chev: true });
+    return fila({ icono: 'check', titulo: C.fechaCorta(t.apertura) + ' – ' + C.fechaCorta(t.cierre) + (t.cierre.slice(0, 4) !== h.slice(0, 4) ? ' ' + t.cierre.slice(0, 4) : ''), sub: [kg, t.precio ? C.pesos(t.precio) : ''].filter(Boolean).join(' · ') || null, valor: diasTxt(C.dias(t.apertura, t.cierre)), a: 'hoja', attrs: `data-h="gas-editar" data-id="${esc(t.id)}"`, chev: true });
+  }).join('') + '</ul>';
+  return html;
+}
+
+function vistaAgua(D, h) {
+  const a = C.estadoAgua(C.ciclo(D.ciclos, 'agua'), h);
+  let html;
+  if (!a.actual) {
+    html = heroe('Filtro de agua', 'Sin registro', [['Ciclo', '3 meses']], null, true) + '<p class="c-texto">Anota la fecha en que pusiste el filtro para empezar la cuenta de 3 meses.</p>';
+  } else {
+    const et = a.quedan > 0 ? 'Faltan' : a.quedan === 0 ? 'Cambio' : 'Vencido hace';
+    html = heroe(et, a.quedan === 0 ? 'Hoy' : diasTxt(Math.abs(a.quedan)), [['Cambiar el', C.fechaCorta(a.cambio)], ['Puesto el', C.fechaCorta(a.actual.fecha)]], a.avance);
+    if (a.quedan <= 14) html += `<p class="c-texto${a.quedan <= 7 ? ' c-texto--alerta' : ''}">${a.quedan > 0 ? 'Ten listo el filtro de repuesto.' : 'Cambia el filtro y registra la fecha del nuevo.'}</p>`;
+  }
+  html += '<div class="c-acciones"><button class="d-boton" data-a="hoja" data-h="agua-nuevo">Cambié el filtro</button></div>';
+  html += seccion('Historial');
+  if (!a.regs.length) html += '<p class="c-texto">Sin filtros registrados. Si tienes el respaldo de la app Filtro de agua, tráelo desde Ajustes.</p>';
+  else html += '<ul class="d-lista d-vidrio">' + a.regs.map((f, i) => {
+    const sig = i > 0 ? a.regs[i - 1].fecha : null;
+    return fila({ icono: 'gota', titulo: 'Puesto el ' + C.fechaLarga(f.fecha, h), sub: i === 0 ? 'En uso · cambio el ' + C.fechaCorta(a.cambio) : 'Duró ' + diasTxt(C.dias(f.fecha, sig)), a: 'hoja', attrs: `data-h="agua-editar" data-id="${esc(f.id)}"`, chev: true });
+  }).join('') + '</ul>';
+  return html;
+}
+
+function vistaCepillos(D, h) {
+  const c = C.ciclo(D.ciclos, 'cepillos'), e = C.estadoCepillos(c, h, horaDecimal());
+  let html = '<div class="c-dos">' + e.ids.map((id) => {
+    const r = e.por[id];
+    if (!r) return `<article class="d-vidrio c-cepillo">${anillo(0, '–', '', 76)}<h3>${C.NOMBRE_CEPILLO[id]}</h3><p>Sin registrar</p></article>`;
+    const tono = r.quedan <= 7 ? 'neg' : r.quedan <= 14 ? 'aviso' : '';
+    const cifra = Math.round(r.avance * 100) + '%';
+    return `<article class="d-vidrio c-cepillo">${anillo(r.avance, cifra, tono, 76)}<h3>${C.NOMBRE_CEPILLO[id]}</h3>` +
+      `<p class="${tono === 'neg' ? 'c-peligro' : ''}"><b>${r.quedan > 0 ? 'Faltan ' + diasTxt(r.quedan) : r.quedan === 0 ? 'Cambiar hoy' : 'Vencido hace ' + diasTxt(-r.quedan)}</b></p>` +
+      `<p>Cambio el ${C.fechaCorta(r.cambio)}${r.porDias ? ' (' + r.maxDias + ' días)' : ''}</p><p>${r.hechos} de ${r.max} lavados</p>` +
+      `<p>Hoy: ${r.hoyHechos} de ${r.hoyTotal} ${C.plural(r.hoyTotal, 'lavado', 'lavados')}</p></article>`;
+  }).join('') + '</div>';
+  html += '<div class="c-acciones"><button class="d-boton" data-a="hoja" data-h="cep-nuevo">Cambié un cepillo</button></div>';
+  html += '<p class="c-nota" style="text-align:center">El desgaste es el mayor entre los lavados (180) y los días de uso. Detalle en «?».</p>';
+  html += seccion('Historial');
+  if (!e.regs.length) html += '<p class="c-texto">Sin cepillos registrados. Si tienes el respaldo de la app Cepillos, tráelo desde Ajustes.</p>';
+  else {
+    const actuales = new Set(e.ids.map((id) => e.por[id] && e.por[id].actual.id));
+    html += '<ul class="d-lista d-vidrio">' + e.regs.map((r) => {
+      const sig = e.regs.filter((x) => x.cepillo === r.cepillo && x.fecha > r.fecha).sort((a, b) => (a.fecha < b.fecha ? -1 : 1))[0];
+      const sub = actuales.has(r.id) ? 'En uso' : sig ? 'Duró ' + diasTxt(C.dias(r.fecha, sig.fecha)) : '';
+      return fila({ icono: 'cepillo', titulo: `<span class="c-insignia${r.cepillo === 'oficina' ? ' c-insignia--acento' : ''}">${C.NOMBRE_CEPILLO[r.cepillo]}</span>${C.fechaLarga(r.fecha, h)}`, sub, a: 'hoja', attrs: `data-h="cep-editar" data-id="${esc(r.id)}"`, chev: true });
+    }).join('') + '</ul>';
+  }
+  return html;
+}
+
+function vistaCapsula(D, h) {
+  const c = C.ciclo(D.ciclos, 'capsula'), k = C.estadoCapsula(c, h);
+  let html;
+  if (!k.frasco) {
+    html = heroe('Mi cápsula diaria', 'Sin frasco', [['Una al día', 'Avisos a 12 y 10']], null, true);
+    html += '<p class="c-texto">Registra el frasco que estás usando con las cápsulas que le quedan. La app descuenta una cada vez que marcas la de hoy.</p>';
+    html += '<div class="c-acciones"><button class="d-boton" data-a="hoja" data-h="cap-frasco">Registrar frasco</button></div>';
+    return html;
+  }
+  const toma = C.tomaDel(c, h);
+  html = heroe(k.quedan === 1 ? 'Queda' : 'Quedan', k.quedan + ' ' + C.plural(k.quedan, 'cápsula', 'cápsulas'), [
+    ['Alcanza hasta', k.ultimo ? C.fechaCorta(k.ultimo) : 'Se acabó'], ['Frasco de', k.total + ''], ['Receta', k.pedida ? 'Pedida' : 'Sin pedir'],
+  ], k.avance);
+  if (k.nivel !== 'ok' && !k.pedida) html += `<p class="c-texto${k.nivel !== 'aviso' ? ' c-texto--alerta' : ''}">${k.nivel === 'vacio' ? 'Se acabaron las cápsulas.' : k.nivel === 'critico' ? 'Manda a hacer la receta hoy para no interrumpir el tratamiento.' : 'Es momento de mandar a hacer la receta del preparado magistral.'}</p>`;
+  html += '<div class="c-acciones">' + (toma
+    ? `<button class="d-boton d-boton--discreto" data-a="quitar-hoy">${ico('deshacer')}Tomada a las ${String(new Date(toma).getHours()).padStart(2, '0')}:${String(new Date(toma).getMinutes()).padStart(2, '0')} · deshacer</button>`
+    : `<button class="d-boton" data-a="tomar-hoy" ${k.quedan <= 0 ? 'disabled' : ''}>${ico('check')}Tomé la de hoy</button>`) + '</div>';
+  html += '<ul class="d-lista d-vidrio" style="margin-top:16px">' +
+    fila({ icono: 'reloj', titulo: 'Otro día', sub: 'Registrar o quitar la cápsula de un día anterior', a: 'hoja', attrs: 'data-h="cap-dia"', chev: true }) +
+    fila({ icono: 'check', titulo: k.pedida ? 'Receta mandada a hacer' : 'Marcar receta como pedida', sub: k.pedida ? 'El ' + C.fechaCorta(C.diaDe(k.pedida)) + ' · toca para desmarcar' : 'Detiene el aviso de la receta', a: 'pedida', chev: false, valor: k.pedida ? '<span class="d-chip d-chip--positivo">Pedida</span>' : '' }) +
+    fila({ icono: 'capsula', titulo: 'Frasco nuevo', sub: 'Al empezar otro frasco', a: 'hoja', attrs: 'data-h="cap-frasco"', chev: true }) +
+    fila({ icono: 'ajustes', titulo: 'Corregir cantidad', sub: 'Si el conteo no coincide con el frasco', a: 'hoja', attrs: 'data-h="cap-corregir"', chev: true }) + '</ul>';
+  const ult = [];
+  for (let i = 0; i < 7; i++) { const d = C.sumarDias(h, -i); ult.push([d, C.tomaDel(c, d)]); }
+  html += seccion('Últimos 7 días') + '<ul class="d-lista d-vidrio">' + ult.map(([d, t]) =>
+    fila({ titulo: cap1(cuando(d, h)), sub: t ? 'Tomada a las ' + String(new Date(t).getHours()).padStart(2, '0') + ':' + String(new Date(t).getMinutes()).padStart(2, '0') : 'Sin registro', valor: t ? '<span class="d-chip d-chip--positivo">Tomada</span>' : '<span class="d-chip">Falta</span>' })).join('') + '</ul>';
+  if ((c.historial || []).length) {
+    html += seccion('Frascos anteriores') + '<ul class="d-lista d-vidrio">' + c.historial.map((x) =>
+      fila({ titulo: C.fechaCorta(C.diaDe(x.inicio)) + ' – ' + C.fechaCorta(C.diaDe(x.fin)), sub: 'Frasco de ' + x.total + (x.quedaron ? ' · quedaban ' + x.quedaron : ''), valor: diasTxt(Math.max(0, C.dias(C.diaDe(x.inicio), C.diaDe(x.fin)))) })).join('') + '</ul>';
+  }
+  return html;
+}
+
+function vistaSabanas(D, h) {
+  const r = D.rutinas.sabanas, s = C.estadoSabanas(r, h);
+  const et = s.atrasado ? 'Atrasado' : s.esHoy ? 'Hoy' : s.esManana ? 'Mañana' : 'Próximo cambio';
+  let html = heroe(et, cap1(C.nombreDia(s.proximo)) + ' ' + (+s.proximo.slice(8)), [['Le toca a', esc(s.turno)], ['Registrados', s.total + '']], null, true);
+  if (s.atrasados.length > 1) html += `<p class="c-texto">Hay ${s.atrasados.length} miércoles sin marcar desde el ${C.fechaCorta(s.atrasados[0])}. Si ya estaban hechos, márcalos todos de una vez.</p><div class="c-acciones"><button class="d-boton d-boton--discreto" data-a="sabanas-todos">Marcar los ${s.atrasados.length} como hechos</button></div>`;
+  else if (s.atrasado || s.hoyPendiente) html += `<div class="c-acciones"><button class="d-boton" data-a="sabanas-marcar" data-f="${s.proximo}">${ico('check')}Marcar hecho</button></div>`;
+  html += seccion('Miércoles') + '<ul class="d-lista d-vidrio">' + s.lista.slice().reverse().map((x) => {
+    const estado = x.hecho ? 'Hecho' : x.futuro ? (x.fecha === s.proximo ? 'Próximo' : 'Pendiente') : x.fecha === h ? 'Hoy' : 'Atrasado';
+    return `<li class="d-fila"><span class="d-cuadro">${ico('cama', 18)}</span><span class="d-texto"><strong>${cap1(C.nombreDia(x.fecha))} ${C.fechaCorta(x.fecha)}</strong><span>${esc(x.turno)} · ${estado}</span></span>` +
+      `<button class="c-check" data-a="sabanas-alternar" data-f="${x.fecha}" aria-pressed="${x.hecho}" aria-label="${x.hecho ? 'Desmarcar' : 'Marcar'} el cambio del ${C.fechaCorta(x.fecha)}" ${x.futuro ? 'disabled' : ''}>${ico('check', 22, 3)}</button></li>`;
+  }).join('') + '</ul>';
+  html += '<p class="c-nota">Un miércoles le toca a Piti y el siguiente a Emi, desde el 7 de octubre de 2026.</p>';
+  return html;
+}
+
+/* ---------- Maletas ---------- */
+function mostrarMaletas(ver) {
+  const box = $('maletas');
+  if (ver && !box.firstChild) box.innerHTML = '<iframe src="../../maletas/" title="Maletas"></iframe>';
+  box.hidden = !ver;
+}
+
+/* ---------- Ajustes ---------- */
+function vistaAjustes() {
+  const h = hoy();
+  let html = seccion('Conexión');
+  if (!llave) {
+    html += '<div class="d-vidrio c-tarjeta"><form data-f="conectar"><label class="c-campo"><span>Código de 8 letras y números</span><input type="text" name="codigo" class="c-codigo" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" maxlength="9" placeholder="ABCD2345" required></label>' +
+      '<p class="c-error" id="errConectar" hidden></p><div class="c-pila" style="display:grid;margin-top:14px"><button class="d-boton d-boton--ancho">Conectar este iPhone</button></div></form></div>' +
+      '<ol class="c-pasos"><li>En GitHub, abre <b>pablocarvallo/datos → Actions → Llaves → Run workflow</b>.</li><li>Elige acción <b>crear</b>, tipo <b>dispositivo</b> y un nombre (por ejemplo, «iPhone Casa»).</li><li>Abre la ejecución terminada: el código está en su resumen y vale 15 minutos.</li><li>Escríbelo aquí. Lo que ya registraste en este iPhone se guarda en GitHub al conectar.</li></ol>';
+  } else {
+    html += '<ul class="d-lista d-vidrio">' +
+      fila({ icono: 'nube', titulo: esc(llave.nombre || 'Este iPhone'), sub: sync.error ? esc(sync.error) : 'Conectado a pablocarvallo/datos' + (sync.at ? ' · ' + hace(sync.at) : ''), valor: sync.error ? '<span class="d-chip d-chip--aviso">Revisar</span>' : '<span class="d-chip d-chip--positivo">Al día</span>' }) +
+      fila({ icono: 'ciclos', titulo: 'Actualizar ahora', sub: cola.length ? cola.length + ' ' + C.plural(cola.length, 'cambio', 'cambios') + ' por guardar' : 'Trae lo último desde GitHub', a: 'actualizar', chev: true }) +
+      fila({ icono: 'llave', titulo: '<span class="c-peligro">Desconectar este iPhone</span>', sub: 'Los datos quedan en GitHub; para volver necesitas un código nuevo', a: 'desconectar', attrs: 'data-confirmar="Toca de nuevo para desconectar"' }) + '</ul>';
+  }
+  const s = C.estadoSabanas(vista('rutinas.json').sabanas, h);
+  html += seccion('Traer datos de las apps antiguas') +
+    '<p class="c-texto" style="margin-top:0">En Balón de gas, Filtro de agua, Cepillos o Maletas, abre <b>Respaldo de datos → Copiar respaldo</b> y pégalo aquí. Reemplaza lo que haya en Casa para esa app.</p>' +
+    '<div class="d-vidrio c-tarjeta" style="margin-top:12px"><form data-f="importar"><label class="c-campo"><span>Respaldo copiado</span><textarea name="texto" spellcheck="false" autocapitalize="off" placeholder="Pega aquí el texto del respaldo"></textarea></label>' +
+    '<p class="c-error" id="errImportar" hidden></p><div style="display:grid;margin-top:14px"><button class="d-boton d-boton--ancho">Revisar respaldo</button></div></form></div>' +
+    '<ul class="d-lista d-vidrio" style="margin-top:12px">' +
+    fila({ icono: 'capsula', titulo: 'Mi cápsula diaria', sub: 'No tiene respaldo: registra el frasco con las cápsulas que quedan', a: 'ir-ciclo', attrs: 'data-c="capsula"', chev: true }) +
+    fila({ icono: 'cama', titulo: 'Sábanas', sub: s.atrasados.length ? s.atrasados.length + ' miércoles sin marcar: márcalos si ya estaban hechos' : 'Al día', a: 'ir-ciclo', attrs: 'data-c="sabanas"', chev: true }) + '</ul>';
+  const seg = (nombre, op, val) => `<div class="d-segmentos" role="group" aria-label="${nombre}">${op.map(([v, t]) => `<button data-a="pref" data-k="${nombre === 'Tema' ? 'tema' : 'vidrio'}" data-v="${v}" aria-pressed="${val === v}">${t}</button>`).join('')}</div>`;
+  html += seccion('Apariencia') + '<ul class="d-lista d-vidrio">' +
+    `<li class="d-fila c-ajuste-seg"><span class="d-texto"><strong>Tema</strong></span>${seg('Tema', [['auto', 'Automático'], ['claro', 'Claro'], ['oscuro', 'Oscuro']], prefs.tema)}</li>` +
+    `<li class="d-fila c-ajuste-seg"><span class="d-texto"><strong>Vidrio</strong></span>${seg('Vidrio', [['claro', 'Claro'], ['tintado', 'Tintado']], prefs.vidrio)}</li></ul>`;
+  html += seccion('Respaldo') + '<ul class="d-lista d-vidrio">' +
+    fila({ icono: 'copiar', titulo: 'Copiar respaldo de Casa', sub: 'Gas, filtro, cepillos, cápsula y sábanas en un texto', a: 'respaldo', chev: true }) + '</ul>' +
+    '<p class="c-nota">Cada cambio queda además en el historial de GitHub, desde donde se puede recuperar cualquier versión.</p>';
+  html += `<p class="c-estado">Casa ${C.VERSION} · Domésticas 27</p>`;
+  return html;
+}
+
+/* ---------- Hojas ---------- */
+const kgChips = (val) => {
+  const tam = [5, 11, 15, 45]; if (val && !tam.includes(+val)) tam.push(+val);
+  return '<fieldset class="c-campo"><legend>Tamaño (opcional)</legend><div class="c-chips">' +
+    `<input type="radio" name="kg" id="kg0" value=""${!val ? ' checked' : ''}><label for="kg0">Sin dato</label>` +
+    tam.map((n) => `<input type="radio" name="kg" id="kg${n}" value="${n}"${+val === n ? ' checked' : ''}><label for="kg${n}">${n} kg</label>`).join('') + '</div></fieldset>';
+};
+const campoFecha = (nombre, etiqueta, valor, min) => `<label class="c-campo"><span>${etiqueta}</span><input type="date" name="${nombre}" value="${valor || ''}" max="${hoy()}"${min ? ` min="${min}"` : ''} required></label>`;
+const campoPrecio = (v) => `<label class="c-campo"><span>Precio pagado (opcional)</span><div class="c-prefijo"><b>$</b><input type="text" name="precio" inputmode="numeric" autocomplete="off" placeholder="Ej. 24.500" value="${v ? String(v).replace(/\B(?=(\d{3})+(?!\d))/g, '.') : ''}"></div></label>`;
+const pie = (enviar, extra = '') => `<p class="c-error" data-error hidden></p><div class="c-pila"><button class="d-boton">${enviar}</button>${extra}<button type="button" class="d-boton d-boton--discreto" data-a="cerrar">Cancelar</button></div>`;
+const borrarBtn = (que) => `<button type="button" class="d-boton c-boton-peligro" data-a="borrar" data-confirmar="Toca de nuevo para eliminar">Eliminar ${que}</button>`;
+
+function contenidoHoja() {
+  const D = datos(), h = hoy();
+  const t = hoja.tipo;
+  if (t === 'registrar') {
+    const k = C.estadoCapsula(C.ciclo(D.ciclos, 'capsula'), h), s = C.estadoSabanas(D.rutinas.sabanas, h);
+    const g = C.estadoGas(C.ciclo(D.ciclos, 'gas'), h);
+    return '<h2>Registrar</h2><ul class="d-lista d-vidrio">' +
+      (k.frasco && !k.tomoHoy && k.quedan > 0 ? fila({ icono: 'capsula', titulo: 'Tomé la cápsula de hoy', a: 'tomar-hoy' }) : '') +
+      fila({ icono: 'llama', titulo: g.reservas.length ? 'Abrí el balón de reserva' : 'Abrí un balón de gas', a: 'hoja', attrs: 'data-h="gas-abrir"', chev: true }) +
+      fila({ icono: 'bolsa', titulo: 'Compré un balón de gas', a: 'hoja', attrs: 'data-h="gas-comprar"', chev: true }) +
+      fila({ icono: 'gota', titulo: 'Cambié el filtro de agua', a: 'hoja', attrs: 'data-h="agua-nuevo"', chev: true }) +
+      fila({ icono: 'cepillo', titulo: 'Cambié un cepillo', a: 'hoja', attrs: 'data-h="cep-nuevo"', chev: true }) +
+      (s.atrasado || s.hoyPendiente ? fila({ icono: 'cama', titulo: 'Cambiaron las sábanas', sub: cap1(C.nombreDia(s.proximo)) + ' ' + C.fechaCorta(s.proximo) + ' · ' + esc(s.turno), a: 'sabanas-marcar', attrs: `data-f="${s.proximo}"` }) : '') +
+      fila({ icono: 'capsula', titulo: 'Frasco nuevo de cápsulas', a: 'hoja', attrs: 'data-h="cap-frasco"', chev: true }) + '</ul>' +
+      '<div class="c-pila"><button class="d-boton d-boton--discreto" data-a="cerrar">Cerrar</button></div>';
+  }
+  if (t === 'gas-abrir' || t === 'gas-comprar' || t === 'gas-anterior' || t === 'gas-editar') {
+    const g = C.estadoGas(C.ciclo(D.ciclos, 'gas'), h), res = g.reservas[0] || null, act = g.activo;
+    const conocido = (g.historial.find((x) => x.kg) || {}).kg || '';
+    if (t === 'gas-abrir') return `<form data-f="gas-abrir"><h2>${res ? 'Abrir balón de reserva' : 'Abrir nuevo balón'}</h2><p>${res ? 'Se usará el balón comprado el ' + C.fechaLarga(res.compra, h) + '.' : 'Desde esa fecha se cuentan los días de uso.'}${act ? ' El balón actual se cierra en la misma fecha.' : ''}</p>` +
+      campoFecha('apertura', 'Fecha de apertura', h) + kgChips(res ? res.kg || conocido : conocido) + campoPrecio(res ? res.precio : '') + pie('Abrir balón') + '</form>';
+    if (t === 'gas-comprar') return '<form data-f="gas-comprar"><h2>Registrar compra</h2><p>Queda como balón de reserva, lleno y sin abrir.</p>' + campoFecha('compra', 'Fecha de compra', h) + kgChips(conocido) + campoPrecio('') + pie('Guardar compra') + '</form>';
+    if (t === 'gas-anterior') return '<form data-f="gas-anterior"><h2>Balón anterior</h2><p>Agrega un balón que ya usaste, con sus fechas de apertura y cierre.</p>' + campoFecha('apertura', 'Fecha de apertura', '') + campoFecha('cierre', 'Fecha de cierre', '') + kgChips(conocido) + campoPrecio('') + pie('Guardar') + '</form>';
+    const x = g.historial.find((r) => r.id === hoja.id);
+    if (!x) return '<h2>Registro no encontrado</h2>' + pie('Cerrar');
+    if (!x.apertura) return '<form data-f="gas-editar"><h2>Balón de reserva</h2>' + campoFecha('compra', 'Fecha de compra', x.compra) + kgChips(x.kg) + campoPrecio(x.precio) + pie('Guardar cambios', borrarBtn('registro')) + '</form>';
+    return `<form data-f="gas-editar"><h2>${x.cierre ? 'Balón usado' : 'Balón en uso'}</h2>` + campoFecha('apertura', 'Fecha de apertura', x.apertura) + (x.cierre ? campoFecha('cierre', 'Fecha de cierre', x.cierre) : '') + kgChips(x.kg) + campoPrecio(x.precio) +
+      pie('Guardar cambios', (x.cierre ? '' : '<button type="button" class="d-boton d-boton--discreto" data-a="gas-cerrar-hoy">Cerrar hoy sin abrir otro</button>') + borrarBtn('registro')) + '</form>';
+  }
+  if (t === 'agua-nuevo' || t === 'agua-editar') {
+    const a = C.estadoAgua(C.ciclo(D.ciclos, 'agua'), h);
+    const x = t === 'agua-editar' ? a.regs.find((r) => r.id === hoja.id) : null;
+    const v = x ? x.fecha : h;
+    return `<form data-f="${t}"><h2>${x ? 'Editar filtro' : 'Filtro nuevo'}</h2><p>${x ? 'Fecha en que se puso este filtro.' : 'Fecha en que pusiste el filtro nuevo. El cambio siguiente queda 3 meses después.'}</p>` +
+      campoFecha('fecha', 'Fecha del cambio', v) + `<p data-nota>Próximo cambio: <b>${C.fechaLarga(C.sumarMeses(v, 3), h)}</b></p>` + pie(x ? 'Guardar cambios' : 'Registrar filtro', x ? borrarBtn('filtro') : '') + '</form>';
+  }
+  if (t === 'cep-nuevo' || t === 'cep-editar') {
+    const c = C.ciclo(D.ciclos, 'cepillos'), e = C.estadoCepillos(c, h, horaDecimal());
+    const x = t === 'cep-editar' ? e.regs.find((r) => r.id === hoja.id) : null;
+    const cual = x ? x.cepillo : hoja.cepillo || e.primero || 'casa', v = x ? x.fecha : h;
+    const est = C.cambioCepillo(c, cual, v);
+    return `<form data-f="${t}"><h2>${x ? 'Editar cepillo' : 'Cepillo nuevo'}</h2>` +
+      '<fieldset class="c-campo"><legend>Cepillo</legend><div class="c-chips">' + e.ids.map((id) => `<input type="radio" name="cepillo" id="cp-${id}" value="${id}"${id === cual ? ' checked' : ''}><label for="cp-${id}">${C.NOMBRE_CEPILLO[id]}</label>`).join('') + '</div></fieldset>' +
+      campoFecha('fecha', 'Fecha en que se puso', v) + `<p data-nota>Cambio estimado: <b>${C.fechaLarga(est.cambio, h)}</b></p>` + pie(x ? 'Guardar cambios' : 'Registrar cepillo', x ? borrarBtn('registro') : '') + '</form>';
+  }
+  if (t === 'cap-frasco') {
+    const c = C.ciclo(D.ciclos, 'capsula'), f = c.frasco;
+    const base = (f && (f.base || f.total)) || ((c.historial || [])[0] || {}).total || 30;
+    return '<form data-f="cap-frasco"><h2>' + (f ? 'Frasco nuevo' : 'Frasco actual') + '</h2><p>' + (f ? '¿Cuántas cápsulas trae el frasco?' : '¿Cuántas cápsulas quedan en el frasco que estás usando?') + '</p>' +
+      `<label class="c-campo"><span>Cápsulas</span><input type="number" name="cantidad" inputmode="numeric" min="1" max="999" value="${base}" required></label>` +
+      '<div class="c-chips" style="margin-top:10px">' + [30, 60, 90].map((n) => `<button type="button" class="c-mini c-mini--discreto" data-a="cantidad" data-v="${n}">${n}</button>`).join('') + '</div>' +
+      (f && f.quedan > 0 ? `<label class="c-interruptor"><span>Sumar ${f.quedan === 1 ? 'la que queda' : 'las ' + f.quedan + ' que quedan'}<small>Si no, el frasco anterior se archiva con ellas</small></span><input type="checkbox" name="sumar" checked></label>` : '') +
+      (!f ? `<label class="c-interruptor"><span>Ya tomé la de hoy<small>Se descuenta una de las que quedan</small></span><input type="checkbox" name="tomada"></label>` : '') +
+      pie(f ? 'Registrar frasco' : 'Guardar') + '</form>';
+  }
+  if (t === 'cap-corregir') {
+    const f = C.ciclo(D.ciclos, 'capsula').frasco;
+    return `<form data-f="cap-corregir"><h2>Corregir cantidad</h2><p>¿Cuántas cápsulas quedan en el frasco?</p><label class="c-campo"><span>Cápsulas</span><input type="number" name="cantidad" inputmode="numeric" min="0" max="999" value="${f ? f.quedan : 0}" required></label>` + pie('Guardar cantidad') + '</form>';
+  }
+  if (t === 'cap-dia') {
+    const min = C.sumarDias(h, -60), v = hoja.dia || C.sumarDias(h, -1), c = C.ciclo(D.ciclos, 'capsula'), toma = C.tomaDel(c, v);
+    return `<form data-f="cap-dia"><h2>Cápsula de otro día</h2>` + campoFecha('dia', 'Día', v, min) +
+      `<p data-nota>${toma ? 'Ese día ya está registrado.' : 'Sin registro: se descuenta una cápsula del frasco.'}</p>` + pie(toma ? 'Quitar registro' : 'Registrar cápsula') + '</form>';
+  }
+  if (t === 'importar') {
+    const r = hoja.respaldo;
+    return `<h2>Traer ${esc(r.nombre)}</h2><p>El respaldo trae <b>${esc(r.resumen)}</b>.</p><p>${r.app === 'maletas' ? 'Reemplaza las maletas guardadas en Casa en este iPhone.' : 'Reemplaza los registros de ' + esc(r.nombre) + ' en Casa y se guarda en GitHub.'}</p>` +
+      `<div class="c-pila"><button class="d-boton" data-a="importar">Traer ${esc(r.nombre)}</button><button type="button" class="d-boton d-boton--discreto" data-a="cerrar">Cancelar</button></div>`;
+  }
+  if (t === 'ayuda') return ayuda();
+  return '';
+}
+function ayuda() {
+  return '<h2>Cómo funciona Casa</h2>' +
+    '<h3>Balón de gas</h3><p>Cuenta los días desde que se abrió el balón en uso y los compara con el promedio de los balones ya cerrados. Al abrir la reserva, el balón actual se cierra en esa misma fecha. Avisa cuando faltan 3 días o menos para el promedio.</p>' +
+    '<h3>Filtro de agua</h3><p>Se cambia cada 3 meses calendario desde la fecha en que se puso. Avisa a 14 días y, con más urgencia, a 7.</p>' +
+    '<h3>Cepillos</h3><p>Tres lavados al día (7, 13 y 21 h). Lunes, martes y jueves el del mediodía es con el cepillo de la oficina. Cada cepillo se cambia a los 180 lavados o a su máximo de días (70 el de casa, un año el de la oficina), lo que ocurra primero. No hay que anotar cada lavado.</p>' +
+    '<h3>Mi cápsula diaria</h3><p>Una cápsula al día. Avisa al quedar 12 y 10 si la receta no está pedida, y con urgencia al quedar 5. «Alcanza hasta» es el último día con cápsula.</p>' +
+    '<h3>Sábanas</h3><p>Cada miércoles, alternando Piti y Emi desde el 7 de octubre de 2026. Un miércoles pasado sin marcar queda como atrasado.</p>' +
+    '<h3>Dónde se guarda</h3><p>Cada registro se guarda en GitHub (pablocarvallo/datos) a través de la función domesticas-api, con la llave de este iPhone. Sin conexión, los cambios esperan en el iPhone y se guardan al volver la señal.</p>' +
+    '<div class="c-pila"><button class="d-boton d-boton--discreto" data-a="cerrar">Cerrar</button></div>';
+}
+function abrirHoja(tipo, extra) {
+  hoja = Object.assign({ tipo }, extra || {});
+  const el = $('hoja'), fondo = $('fondoHoja');
+  el.innerHTML = contenidoHoja();
+  el.hidden = false; fondo.hidden = false;
+  el.scrollTop = 0;
+  requestAnimationFrame(() => requestAnimationFrame(() => { el.classList.add('abierta'); fondo.classList.add('abierta'); }));
+}
+function cerrarHoja() {
+  const el = $('hoja'), fondo = $('fondoHoja');
+  if (el.hidden) return;
+  hoja = null;
+  el.classList.remove('abierta'); fondo.classList.remove('abierta');
+  setTimeout(() => { if (!hoja) { el.hidden = true; fondo.hidden = true; el.innerHTML = ''; } }, 320);
+}
+function errorHoja(msg) { const e = $('hoja').querySelector('[data-error]'); if (e) { e.textContent = msg; e.hidden = !msg; } }
+
+/* ---------- Aviso flotante ---------- */
+let tToast = 0;
+function avisar(titulo, sub, error) {
+  $('toastT').textContent = titulo; $('toastS').textContent = sub || '';
+  $('toast').classList.toggle('c-toast--error', !!error || /^No se pudo/.test(titulo));
+  $('toast').classList.add('ver');
+  clearTimeout(tToast); tToast = setTimeout(() => $('toast').classList.remove('ver'), 2800);
+}
+
+/* ---------- Acciones ---------- */
+const precioDe = (v) => { const s = String(v || '').replace(/[.\s$]/g, ''); return /^\d+$/.test(s) && +s > 0 ? +s : null; };
+const kgDe = (v) => (+v > 0 ? +v : null);
+function tomarHoy() {
+  const h = hoy();
+  if (hacer('ciclos.json', { tipo: 'tomar', dia: h, momento: new Date().toISOString() }, 'cápsula del ' + h)) avisar('Cápsula registrada', 'Se descontó una del frasco');
+}
+const ACCIONES = {
+  tab(el) { ui.tab = el.dataset.t; guardarLS(CL.ui, ui); window.scrollTo(0, 0); render(); },
+  'ir-ciclo'(el) { ui.tab = 'ciclos'; ui.ciclo = el.dataset.c; guardarLS(CL.ui, ui); cerrarHoja(); window.scrollTo(0, 0); render(); },
+  ciclo(el) { ui.ciclo = el.dataset.c; guardarLS(CL.ui, ui); render(); },
+  registrar() { abrirHoja('registrar'); },
+  ayuda() { abrirHoja('ayuda'); },
+  hoja(el) { abrirHoja(el.dataset.h, { id: el.dataset.id || null }); },
+  cerrar() { cerrarHoja(); },
+  'tomar-hoy'() { cerrarHoja(); tomarHoy(); },
+  'quitar-hoy'() { const h = hoy(); if (hacer('ciclos.json', { tipo: 'quitarToma', dia: h }, 'quita cápsula del ' + h)) avisar('Registro quitado', 'La cápsula volvió al frasco'); },
+  pedida() {
+    const f = C.ciclo(vista('ciclos.json'), 'capsula').frasco;
+    if (!f) return;
+    hacer('ciclos.json', { tipo: 'pedida', si: !f.pedida, momento: new Date().toISOString() }, f.pedida ? 'receta sin pedir' : 'receta pedida');
+  },
+  cantidad(el) { const i = $('hoja').querySelector('input[name="cantidad"]'); if (i) i.value = el.dataset.v; },
+  'sabanas-hoy'() { const h = hoy(); hacer('rutinas.json', { tipo: 'sabanas', fecha: h, hecho: true }, 'sábanas del ' + h); avisar('Sábanas registradas'); },
+  'sabanas-marcar'(el) { cerrarHoja(); hacer('rutinas.json', { tipo: 'sabanas', fecha: el.dataset.f, hecho: true }, 'sábanas del ' + el.dataset.f); avisar('Sábanas registradas'); },
+  'sabanas-alternar'(el) { const on = el.getAttribute('aria-pressed') !== 'true'; hacer('rutinas.json', { tipo: 'sabanas', fecha: el.dataset.f, hecho: on }, (on ? 'sábanas del ' : 'desmarca sábanas del ') + el.dataset.f); },
+  'sabanas-todos'() {
+    const s = C.estadoSabanas(vista('rutinas.json').sabanas, hoy()), hasta = s.atrasados[s.atrasados.length - 1];
+    hacer('rutinas.json', { tipo: 'sabanasHasta', hasta }, 'sábanas hechas hasta el ' + hasta);
+    avisar('Miércoles marcados', s.atrasados.length + ' cambios de sábanas');
+  },
+  'gas-cerrar-hoy'() {
+    const x = C.estadoGas(C.ciclo(vista('ciclos.json'), 'gas'), hoy()).historial.find((r) => r.id === hoja.id);
+    if (!x) return;
+    hacer('ciclos.json', { tipo: 'guardar', ciclo: 'gas', registros: [Object.assign({}, x, { cierre: hoy() })] }, 'cierra balón de gas');
+    cerrarHoja(); avisar('Balón cerrado');
+  },
+  borrar() {
+    const ciclo = { gas: 'gas', agua: 'agua', cep: 'cepillos' }[hoja.tipo.split('-')[0]];
+    hacer('ciclos.json', { tipo: 'borrar', ciclo, ids: [hoja.id] }, 'elimina registro de ' + ciclo);
+    cerrarHoja(); avisar('Registro eliminado');
+  },
+  pref(el) {
+    prefs[el.dataset.k] = el.dataset.v; guardarLS(CL.prefs, prefs); aplicarPrefs(); render();
+  },
+  actualizar() { sincronizar(true).then(() => avisar(sync.error ? 'No se pudo actualizar' : 'Al día', sync.error || 'Datos traídos desde GitHub')); },
+  desconectar() { llave = null; guardarLS(CL.llave, null); sync = { at: 0 }; guardarLS(CL.sync, sync); render(); avisar('iPhone desconectado'); },
+  respaldo() {
+    const texto = JSON.stringify({ app: 'casa', version: 1, fecha: new Date().toISOString(), archivos: { 'ciclos.json': vista('ciclos.json'), 'rutinas.json': vista('rutinas.json') } });
+    const ok = () => avisar('Respaldo copiado', 'Pégalo en Notas para guardarlo');
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(texto).then(ok, () => avisar('No se pudo copiar'));
+    else avisar('No se pudo copiar');
+  },
+  importar() {
+    const r = hoja.respaldo;
+    if (r.app === 'maletas') {
+      try { localStorage.setItem('maletas.v1', JSON.stringify(r.datos)); } catch (e) { avisar('No se pudo guardar', 'El respaldo de Maletas es muy grande'); return; }
+      const box = $('maletas'); box.innerHTML = '';
+    } else if (r.app === 'casa') {
+      Object.keys(r.archivos).forEach((a) => {
+        if (!ARCHIVOS.includes(a)) return;
+        const d = r.archivos[a];
+        if (a === 'ciclos.json') ['gas', 'agua', 'cepillos'].forEach((id) => { const c = C.ciclo(d, id); if (c) hacer(a, { tipo: 'reemplazar', ciclo: id, registros: c.registros || [] }, 'restaura ' + id); });
+        if (a === 'ciclos.json') { const c = C.ciclo(d, 'capsula'); if (c && c.frasco) hacer(a, { tipo: 'capsulaImportada', frasco: c.frasco, tomas: c.tomas, historial: c.historial }, 'restaura cápsula'); }
+        if (a === 'rutinas.json' && d.sabanas) (d.sabanas.hechos || []).forEach((f) => hacer(a, { tipo: 'sabanas', fecha: f, hecho: true }, 'restaura sábanas'));
+      });
+    } else {
+      hacer('ciclos.json', r.cambio, 'trae el respaldo de ' + r.nombre);
+    }
+    cerrarHoja();
+    const t = document.querySelector('form[data-f="importar"] textarea'); if (t) t.value = '';
+    avisar(r.nombre + ' traído', r.resumen);
+    render();
+  },
+};
+
+const FORMULARIOS = {
+  async conectar(f) {
+    const codigo = String(f.codigo.value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const err = $('errConectar');
+    const mostrar = (m) => { err.textContent = m; err.hidden = !m; };
+    if (codigo.length !== 8) { mostrar('El código tiene 8 letras y números.'); return; }
+    mostrar('');
+    const b = f.querySelector('button'); b.disabled = true; b.textContent = 'Conectando…';
+    try {
+      const r = await fetch(API + '/api/emparejar', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ codigo }) });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'Error ' + r.status);
+      if (d.tipo !== 'dispositivo') throw new Error('Ese código es de tipo «' + d.tipo + '». Crea uno de tipo «dispositivo».');
+      llave = { llave: d.llave, nombre: d.nombre, id: d.id };
+      guardarLS(CL.llave, llave);
+      sync = { at: 0 };
+      await sincronizar(true);
+      render();
+      avisar('iPhone conectado', sync.error || 'Los datos se guardan en GitHub');
+    } catch (e) {
+      mostrar(e.message === 'Failed to fetch' || e.message === 'Load failed' ? 'Sin conexión con domesticas-api. Revisa la señal e intenta de nuevo.' : e.message);
+      b.disabled = false; b.textContent = 'Conectar este iPhone';
+    }
+  },
+  importar(f) {
+    const err = $('errImportar');
+    const r = C.leerRespaldo(f.texto.value);
+    if (r.error) { err.textContent = r.error; err.hidden = false; return; }
+    err.hidden = true;
+    abrirHoja('importar', { respaldo: r });
+  },
+  'gas-abrir'(f) {
+    const h = hoy(), ap = f.apertura.value, g = C.estadoGas(C.ciclo(vista('ciclos.json'), 'gas'), h), act = g.activo, res = g.reservas[0] || null;
+    if (!C.esFecha(ap) || ap > h) return errorHoja('Indica una fecha de apertura que no sea futura.');
+    if (act && ap < act.apertura) return errorHoja('El balón actual se abrió el ' + C.fechaLarga(act.apertura, h) + '. La nueva apertura no puede ser anterior.');
+    if (res && ap < res.compra) return errorHoja('La reserva se compró el ' + C.fechaLarga(res.compra, h) + '. La apertura no puede ser anterior.');
+    const kg = kgDe(f.kg.value), precio = precioDe(f.precio.value), regs = [];
+    if (act) regs.push(Object.assign({}, act, { cierre: ap }));
+    regs.push(res ? Object.assign({}, res, { apertura: ap, kg, precio }) : { id: C.nuevoId('g'), compra: null, apertura: ap, cierre: null, kg, precio });
+    hacer('ciclos.json', { tipo: 'guardar', ciclo: 'gas', registros: regs }, (res ? 'abre la reserva de gas ' : 'abre balón de gas ') + ap);
+    cerrarHoja(); avisar(res ? 'Reserva abierta' : 'Balón abierto', act ? 'El anterior quedó cerrado el ' + C.fechaCorta(ap) : '');
+  },
+  'gas-comprar'(f) {
+    const h = hoy(), co = f.compra.value;
+    if (!C.esFecha(co) || co > h) return errorHoja('Indica una fecha de compra que no sea futura.');
+    hacer('ciclos.json', { tipo: 'guardar', ciclo: 'gas', registros: [{ id: C.nuevoId('g'), compra: co, apertura: null, cierre: null, kg: kgDe(f.kg.value), precio: precioDe(f.precio.value) }] }, 'compra balón de gas ' + co);
+    cerrarHoja(); avisar('Compra registrada', 'Queda como reserva');
+  },
+  'gas-anterior'(f) {
+    const h = hoy(), ap = f.apertura.value, ci = f.cierre.value, act = C.estadoGas(C.ciclo(vista('ciclos.json'), 'gas'), h).activo;
+    if (!C.esFecha(ap) || !C.esFecha(ci) || ci > h) return errorHoja('Indica las fechas de apertura y de cierre.');
+    if (ci < ap) return errorHoja('El cierre no puede ser anterior a la apertura.');
+    if (act && ci > act.apertura) return errorHoja('Ese balón termina después de la apertura del actual (' + C.fechaCorta(act.apertura) + ').');
+    hacer('ciclos.json', { tipo: 'guardar', ciclo: 'gas', registros: [{ id: C.nuevoId('g'), compra: null, apertura: ap, cierre: ci, kg: kgDe(f.kg.value), precio: precioDe(f.precio.value) }] }, 'agrega balón de gas anterior');
+    cerrarHoja(); avisar('Balón agregado');
+  },
+  'gas-editar'(f) {
+    const h = hoy(), x = C.estadoGas(C.ciclo(vista('ciclos.json'), 'gas'), h).historial.find((r) => r.id === hoja.id);
+    if (!x) return cerrarHoja();
+    const n = Object.assign({}, x, { kg: kgDe(f.kg.value), precio: precioDe(f.precio.value) });
+    if (!x.apertura) {
+      if (!C.esFecha(f.compra.value) || f.compra.value > h) return errorHoja('Indica una fecha de compra que no sea futura.');
+      n.compra = f.compra.value;
+    } else {
+      if (!C.esFecha(f.apertura.value) || f.apertura.value > h) return errorHoja('Indica una fecha de apertura que no sea futura.');
+      n.apertura = f.apertura.value;
+      if (x.cierre) {
+        if (!C.esFecha(f.cierre.value) || f.cierre.value > h) return errorHoja('Indica una fecha de cierre que no sea futura.');
+        if (f.cierre.value < n.apertura) return errorHoja('El cierre no puede ser anterior a la apertura.');
+        n.cierre = f.cierre.value;
+      }
+    }
+    hacer('ciclos.json', { tipo: 'guardar', ciclo: 'gas', registros: [n] }, 'corrige balón de gas');
+    cerrarHoja(); avisar('Cambios guardados');
+  },
+  'agua-nuevo'(f) { guardarAgua(f, null); },
+  'agua-editar'(f) { guardarAgua(f, hoja.id); },
+  'cep-nuevo'(f) { guardarCepillo(f, null); },
+  'cep-editar'(f) { guardarCepillo(f, hoja.id); },
+  'cap-frasco'(f) {
+    const n = parseInt(f.cantidad.value, 10);
+    if (!(n >= 1 && n <= 999)) return errorHoja('Indica cuántas cápsulas, de 1 a 999.');
+    const ahora = new Date().toISOString(), habia = !!C.ciclo(vista('ciclos.json'), 'capsula').frasco;
+    hacer('ciclos.json', { tipo: 'frasco', cantidad: n, sumarQuedan: !!(f.sumar && f.sumar.checked), momento: ahora }, (habia ? 'frasco nuevo de ' : 'frasco actual con ') + n + ' cápsulas');
+    if (f.tomada && f.tomada.checked) hacer('ciclos.json', { tipo: 'tomar', dia: hoy(), momento: ahora }, 'cápsula del ' + hoy());
+    cerrarHoja(); avisar(habia ? 'Frasco nuevo registrado' : 'Frasco registrado');
+  },
+  'cap-corregir'(f) {
+    const n = parseInt(f.cantidad.value, 10);
+    if (!(n >= 0 && n <= 999)) return errorHoja('Indica cuántas cápsulas quedan, de 0 a 999.');
+    hacer('ciclos.json', { tipo: 'corregir', cantidad: n }, 'corrige cápsulas a ' + n);
+    cerrarHoja(); avisar('Cantidad corregida');
+  },
+  'cap-dia'(f) {
+    const h = hoy(), d = f.dia.value, c = C.ciclo(vista('ciclos.json'), 'capsula');
+    if (!C.esFecha(d) || d > h || d < C.sumarDias(h, -60)) return errorHoja('Elige un día de los últimos 60.');
+    if (C.tomaDel(c, d)) { hacer('ciclos.json', { tipo: 'quitarToma', dia: d }, 'quita cápsula del ' + d); avisar('Registro quitado'); }
+    else {
+      if (!c.frasco || c.frasco.quedan <= 0) return errorHoja('El frasco está vacío. Registra un frasco nuevo para anotar tomas.');
+      const m = d === h ? new Date() : new Date(+d.slice(0, 4), +d.slice(5, 7) - 1, +d.slice(8, 10), 12);
+      hacer('ciclos.json', { tipo: 'tomar', dia: d, momento: m.toISOString() }, 'cápsula del ' + d);
+      avisar('Cápsula registrada', cap1(C.nombreDia(d)) + ' ' + C.fechaCorta(d));
+    }
+    cerrarHoja();
+  },
+};
+function guardarAgua(f, id) {
+  const h = hoy(), v = f.fecha.value, a = C.estadoAgua(C.ciclo(vista('ciclos.json'), 'agua'), h);
+  if (!C.esFecha(v) || v > h) return errorHoja('Indica una fecha que no sea futura.');
+  if (a.regs.some((r) => r.fecha === v && r.id !== id)) return errorHoja('Ya hay un filtro registrado en esa fecha.');
+  hacer('ciclos.json', { tipo: 'guardar', ciclo: 'agua', registros: [{ id: id || C.nuevoId('f'), fecha: v }] }, (id ? 'corrige filtro de agua ' : 'filtro de agua nuevo ') + v);
+  cerrarHoja(); avisar(id ? 'Cambios guardados' : 'Filtro registrado', 'Próximo cambio: ' + C.fechaCorta(C.sumarMeses(v, 3)));
+}
+function guardarCepillo(f, id) {
+  const h = hoy(), v = f.fecha.value, cual = f.cepillo.value, e = C.estadoCepillos(C.ciclo(vista('ciclos.json'), 'cepillos'), h, horaDecimal());
+  if (!C.esFecha(v) || v > h) return errorHoja('Indica una fecha que no sea futura.');
+  if (e.regs.some((r) => r.cepillo === cual && r.fecha === v && r.id !== id)) return errorHoja('Ese cepillo ya tiene un registro en esa fecha.');
+  hacer('ciclos.json', { tipo: 'guardar', ciclo: 'cepillos', registros: [{ id: id || C.nuevoId('c'), cepillo: cual, fecha: v }] }, (id ? 'corrige cepillo ' : 'cepillo nuevo ') + cual + ' ' + v);
+  cerrarHoja(); avisar(id ? 'Cambios guardados' : 'Cepillo registrado', C.NOMBRE_CEPILLO[cual]);
+}
+
+document.addEventListener('click', (ev) => {
+  const el = ev.target.closest('[data-a]');
+  if (!el) return;
+  if (el.tagName === 'A') ev.preventDefault();
+  if (el.dataset.confirmar && !el.dataset.armado) {
+    el.dataset.armado = '1'; el.dataset.texto = el.innerHTML;
+    const strong = el.querySelector('strong');
+    if (strong) strong.textContent = el.dataset.confirmar; else el.textContent = el.dataset.confirmar;
+    setTimeout(() => { if (el.isConnected && el.dataset.armado) { el.innerHTML = el.dataset.texto; delete el.dataset.armado; } }, 4000);
+    return;
+  }
+  const f = ACCIONES[el.dataset.a];
+  if (f) f(el, ev);
+});
+document.addEventListener('submit', (ev) => {
+  const f = ev.target.closest('form[data-f]');
+  if (!f) return;
+  ev.preventDefault();
+  const fn = FORMULARIOS[f.dataset.f];
+  if (fn) fn(f);
+});
+// Notas que cambian con la fecha elegida en las hojas (en iOS el selector de fecha avisa con «change»)
+function alCambiarCampo(ev) {
+  const f = ev.target.closest('#hoja form'); if (!f) return;
+  const nota = f.querySelector('[data-nota]'); if (!nota) return;
+  const D = vista('ciclos.json'), h = hoy();
+  if (f.dataset.f.startsWith('agua') && C.esFecha(f.fecha.value)) nota.innerHTML = 'Próximo cambio: <b>' + C.fechaLarga(C.sumarMeses(f.fecha.value, 3), h) + '</b>';
+  if (f.dataset.f.startsWith('cep') && C.esFecha(f.fecha.value)) nota.innerHTML = 'Cambio estimado: <b>' + C.fechaLarga(C.cambioCepillo(C.ciclo(D, 'cepillos'), f.cepillo.value, f.fecha.value).cambio, h) + '</b>';
+  if (f.dataset.f === 'cap-dia' && C.esFecha(f.dia.value)) {
+    const toma = C.tomaDel(C.ciclo(D, 'capsula'), f.dia.value);
+    nota.textContent = toma ? 'Ese día ya está registrado.' : 'Sin registro: se descuenta una cápsula del frasco.';
+    f.querySelector('.c-pila .d-boton').textContent = toma ? 'Quitar registro' : 'Registrar cápsula';
+  }
+}
+document.addEventListener('input', alCambiarCampo);
+document.addEventListener('change', alCambiarCampo);
+document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') cerrarHoja(); });
+
+/* ---------- Pintar ---------- */
+const PESTANAS = [['hoy', 'casa', 'Hoy'], ['ciclos', 'ciclos', 'Ciclos'], ['maletas', 'maleta', 'Maletas'], ['ajustes', 'ajustes', 'Ajustes']];
+function cabecera() {
+  const h = hoy();
+  const t = { hoy: [cap1(C.nombreDia(h)) + ' ' + (+h.slice(8)) + ' de ' + C.fechaLarga(h, h).split(' de ')[1], 'Casa'], ciclos: ['Gas, filtro, cepillos, cápsula y sábanas', 'Ciclos'], ajustes: ['Casa ' + C.VERSION, 'Ajustes'] }[ui.tab];
+  if (!t) return '';
+  return `<div><span class="d-antetitulo">${t[0]}</span><h1>${t[1]}</h1></div><div class="d-acciones"><button class="d-boton-circular" data-a="ayuda" aria-label="Ayuda">${ico('ayuda', 20)}</button></div>`;
+}
+function render() {
+  const maletas = ui.tab === 'maletas';
+  mostrarMaletas(maletas);
+  document.body.classList.toggle('en-maletas', maletas);
+  $('cabecera').hidden = maletas; $('vista').hidden = maletas;
+  if (!maletas) {
+    $('cabecera').innerHTML = cabecera();
+    $('vista').innerHTML = ui.tab === 'ciclos' ? vistaCiclos() : ui.tab === 'ajustes' ? vistaAjustes() : vistaHoy();
+    $('barraSup').textContent = { hoy: 'Casa', ciclos: 'Ciclos', ajustes: 'Ajustes' }[ui.tab];
+  }
+  $('pestanas').innerHTML = PESTANAS.map(([id, ic, t]) => `<button data-a="tab" data-t="${id}"${ui.tab === id ? ' aria-current="page"' : ''}>${ico(ic)}${t}</button>`).join('');
+}
+function aplicarPrefs() {
+  const oscuro = prefs.tema === 'oscuro' || (prefs.tema !== 'claro' && matchMedia('(prefers-color-scheme: dark)').matches);
+  document.documentElement.setAttribute('data-theme', oscuro ? 'dark' : 'light');
+  if (prefs.vidrio === 'tintado') document.body.setAttribute('data-vidrio', 'tintado'); else document.body.removeAttribute('data-vidrio');
+}
+
+/* ---------- Arranque ---------- */
+document.querySelector('[data-a="registrar"]').innerHTML = ico('mas', 22, 2.4);
+aplicarPrefs();
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { aplicarPrefs(); });
+render();
+releerSiHaceFalta();
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { render(); releerSiHaceFalta(); } });
+window.addEventListener('online', () => sincronizar(false));
+setInterval(() => { if (document.visibilityState === 'visible' && !hoja) render(); }, 60000);
+let ultimoY = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY, ver = y > 46;
+  if (ver !== ultimoY) { $('barraSup').classList.toggle('ver', ver); ultimoY = ver; }
+}, { passive: true });
+
+// Sin zoom con los dedos en la app instalada
+['gesturestart', 'gesturechange', 'gestureend'].forEach((t) => document.addEventListener(t, (e) => e.preventDefault(), { passive: false }));
+document.addEventListener('touchmove', (e) => { if (e.touches && e.touches.length > 1) e.preventDefault(); }, { passive: false });
+
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>

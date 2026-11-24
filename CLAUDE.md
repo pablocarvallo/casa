@@ -14,6 +14,8 @@ la base común de diseño y las herramientas que la copian a cada app.
   antes y después de un cambio.
 - `herramientas/conectar-apps.py`, `panel-casa.js`, `armar-lectores.py`: conexión con Panel Casa
   (ver README.md).
+- `app/`: la app Casa nueva del plan de 5 apps (ver app/README.md), con el diseño Domésticas 27 de `diseno27/`
+  (se copia con `herramientas/aplicar-diseno27.py`). Pruebas: `TZ=America/Santiago node --test app/pruebas/*.test.js`.
 
 ## Alcance de una instrucción
 

@@ -38,6 +38,8 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+  // La app Casa nueva (app/) tiene su propio service worker: Panel Casa no responde por ella
+  if (url.pathname.startsWith(new URL('app/', self.registration.scope).pathname)) return;
 
   // Páginas: red primero (para recibir siempre la versión más nueva), con copia guardada si no hay conexión.
   if (req.mode === 'navigate') {

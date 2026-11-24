@@ -1024,7 +1024,12 @@
           "cepillos",
           "beds",
           "maletas"
-        ]
+        ],
+        "url": "https://pablocarvallo.github.io/casa/app/",
+        "carpeta": "app/",
+        "estado": "Versión 1.0.0 publicada el 24 nov 2026; convive un mes con Panel Casa y las apps de la casa.",
+        "datos": "ciclos.json y rutinas.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. Maletas sigue con sus datos en el iPhone (la app Maletas va dentro de Casa).",
+        "diseno": "Domésticas 27 (diseno27/ en este repositorio; herramientas/aplicar-diseno27.py)."
       },
       {
         "id": "noche",

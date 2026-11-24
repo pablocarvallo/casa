@@ -1,5 +1,8 @@
 # Panel Casa
 
+> La app **Casa** nueva (plan de 5 apps, diseño Domésticas 27) vive en `app/` y se publica en
+> https://pablocarvallo.github.io/casa/app/. Ver `app/README.md`. Panel Casa convive con ella un mes.
+
 Portada de las apps de la casa: en una sola pantalla, lo que hay que atender hoy, las cuatro cuentas y la lista de la casa.
 
 Es un panel de lectura. No guarda datos propios: muestra lo que cada app publica en el buzón privado de GitHub.
