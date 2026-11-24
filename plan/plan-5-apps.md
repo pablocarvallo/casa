@@ -8,13 +8,17 @@ Diseño: sistema «Domésticas 27» (vidrio estilo iOS 27, un acento por app). R
 
 | App | Repositorio | Reúne | Pestañas |
 | --- | --- | --- | --- |
-| Finanzas | pablocarvallo/finanzas (por crear) | FAN, Master, LiderBCI, Copec, Mis créditos, Mesadas, Pagos del mes, Gastos médicos (lectura) y el dashboard de ingresos y gastos | Resumen, Cuentas, Pagos, Más |
+| Finanzas | pablocarvallo/finanzas (por crear) | FAN, Master, LiderBCI, Copec, Mis créditos (manual), Mesadas, Pagos del mes, Gastos médicos (manual) y el dashboard de ingresos y gastos | Resumen, Cuentas, Pagos, Más |
 | Casa | pablocarvallo/casa | Panel Casa, Balón de gas, Mi cápsula, Filtro de agua, Cepillos, Sábanas, Maletas | Hoy, Ciclos, Maletas, Ajustes |
 | Noche | pablocarvallo/despertador | Despertador con ronquidos | Sin pestañas |
 | Consulta | pablocarvallo/consulta (por crear) | Indicadores, Lecturas, Cartelera, Calendario | Indicadores, Lecturas, Cartelera, Calendario |
 | Juegos | pablocarvallo/royal-study | The Royal Study | Sin pestañas |
 
-Noche y Juegos mantienen su repositorio y su URL: no hay que reinstalarlas. Noche debe seguir funcionando en el iPhone 7 con iOS 15.8. Mini Planilla queda fuera de las cinco (decisión pendiente: mantenerla o usar Numbers).
+Noche y Juegos mantienen su repositorio y su URL: no hay que reinstalarlas. Noche debe seguir funcionando en el iPhone 7 con iOS 15.8.
+
+Mini Planilla queda fuera de las cinco y funciona de manera independiente: no comparte datos ni se conecta con las demás apps.
+
+Cada app nueva convive un mes con las antiguas que reemplaza; recién después se retiran.
 
 ## Cómo viajan los datos
 
@@ -37,7 +41,8 @@ El token de GitHub vive solo como secreto de la función y de las tareas. El iPh
 | `cuentas.json` | Cuentas: id, nombre, tipo (débito, crédito, prepago), cupo o saldo inicial, reglas (puntos LiderBCI, Titular ****9908 y Adicional ****4526 de Master) |
 | `movimientos/AAAA-MM.json` | Un archivo por mes: id, fecha, hora, cuenta, comercio, monto, tipo (compra, abono, cuota, devolución, aporte), categoría, origen (aviso o a mano), número del aviso |
 | `pagos.json` | Plantilla de pagos del mes («A inicios de mes», «A mitad de mes») y estado por mes; un pago se marca solo si llega el cargo que coincide |
-| `creditos.json` | Créditos de consumo y cuotas pagadas; hipotecario aparte, en UF |
+| `creditos.json` | Créditos de consumo y cuotas pagadas, ingresados a mano; hipotecario aparte, en UF |
+| `gastos-medicos.json` | Gastos y reembolsos Cigna ingresados a mano; boletas en `boletas/` |
 | `ciclos.json` | Gas, filtro, cepillos y cápsula: inicio, regla (días o consumo), umbrales de aviso e historial |
 | `rutinas.json` | Sábanas (miércoles alternados desde el 7 oct 2026, Piti) |
 | `maletas.json` | Maletas y objetos (los dibujos e imágenes quedan en `maletas/`) |
@@ -71,7 +76,7 @@ Repositorio aparte del de datos, para que cada escritura de datos no publique la
 
 1. **Fase 0 (ahora)**: rotar y limitar el token actual; borrar el repositorio ronquidos; catálogo al día (hecho el 24 nov); respaldo en Cápsula y Sábanas; reparar los avisos de Master.
 2. **Fase 1**: crear `datos` y `api`; lector único con pruebas; migrar los datos actuales de cada app con su respaldo en texto; salud del buzón.
-3. **Fase 2**: Casa primero (sin datos bancarios, menor riesgo), luego Finanzas, luego Consulta; cada una convive un mes con las apps que reemplaza. Notificaciones push y widgets de solo lectura.
+3. **Fase 2**: Casa primero (sin datos bancarios, menor riesgo), luego Finanzas, luego Consulta; cada una convive un mes con las apps que reemplaza antes de retirarlas. Notificaciones push y widgets de solo lectura.
 4. **Fase 3**: base compartida con módulos, pruebas, versión visible y registro de cambios.
 
 ## Lo que debe hacer Pablo
