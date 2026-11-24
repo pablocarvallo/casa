@@ -998,7 +998,7 @@
       {
         "id": "finanzas",
         "nombre": "Finanzas",
-        "repo": "pablocarvallo/finanzas (por crear)",
+        "repo": "pablocarvallo/finanzas",
         "reune": [
           "fan",
           "master",
@@ -1010,7 +1010,11 @@
           "cigna",
           "dashboard ingresos y gastos (artifact)"
         ],
-        "nota": "Mis créditos y Gastos médicos siguen siendo de ingreso manual."
+        "nota": "Mis créditos y Gastos médicos siguen siendo de ingreso manual.",
+        "url": "https://pablocarvallo.github.io/finanzas/",
+        "estado": "Versión 1.0.0 publicada el 24 nov 2026 con Resumen, Cuentas (FAN, Master, LiderBCI, Copec) y Pagos del mes; Mesadas, Mis créditos y Gastos médicos siguen en sus apps hasta las próximas versiones. Convive un mes con las apps antiguas.",
+        "datos": "cuentas.json, movimientos/AAAA-MM.json y pagos.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. datos/herramientas/finanzas-calculos.mjs es copia de calculos.js para resumen.json.",
+        "diseno": "Domésticas 27 (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py)."
       },
       {
         "id": "casa",
@@ -1063,7 +1067,7 @@
     "fuera_de_las_5": [
       "miniexcel: herramienta independiente, fuera de las 5 apps y sin datos compartidos"
     ],
-    "datos": "Repositorio privado pablocarvallo/datos (por crear): cuentas, movimientos por mes, pagos, créditos, ciclos, rutinas y maletas en JSON. Lo escriben la tarea de GitHub que lee los avisos y la función de Vercel pablocarvallo/api (por crear), que guarda el token como secreto. Detalle en plan/plan-5-apps.md.",
+    "datos": "Repositorio privado pablocarvallo/datos: cuentas, movimientos por mes, pagos, créditos, ciclos, rutinas y maletas en JSON. Lo escriben la tarea de GitHub que lee los avisos y la función de Vercel pablocarvallo/api, que guarda el token como secreto. Detalle en plan/plan-5-apps.md.",
     "documento": "plan/plan-5-apps.md"
   },
   "retiradas": [
