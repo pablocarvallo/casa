@@ -8,10 +8,10 @@ Diseño: sistema «Domésticas 27» (vidrio estilo iOS 27, un acento por app). R
 
 | App | Repositorio | Reúne | Pestañas |
 | --- | --- | --- | --- |
-| Finanzas | pablocarvallo/finanzas | FAN, Master, LiderBCI, Copec, Mis créditos (manual), Mesadas, Pagos del mes y el dashboard de ingresos y gastos | Resumen, Cuentas, Pagos, Más |
+| Finanzas | pablocarvallo/finanzas | FAN, Master, LiderBCI, Copec, Mis créditos (manual), Mesadas, Pagos del mes y el dashboard de ingresos y gastos | Resumen, Cuentas, Pagos, Ajustes |
 | Casa | pablocarvallo/casa | Panel Casa, Balón de gas, Mi cápsula, Filtro de agua, Cepillos, Sábanas, Maletas | Hoy, Ciclos, Maletas, Ajustes |
 | Noche | pablocarvallo/despertador | Despertador con ronquidos | Sin pestañas |
-| Consulta | pablocarvallo/consulta (por crear) | Indicadores, Lecturas, Cartelera, Calendario | Indicadores, Lecturas, Cartelera, Calendario |
+| Consulta | pablocarvallo/consulta | Indicadores, Lecturas, Cartelera | Indicadores, Lecturas, Cartelera, Ajustes |
 | Juegos | pablocarvallo/royal-study | The Royal Study | Sin pestañas |
 
 Noche y Juegos mantienen su repositorio y su URL: no hay que reinstalarlas. Noche debe seguir funcionando en el iPhone 7 con iOS 15.8.
@@ -19,6 +19,8 @@ Noche y Juegos mantienen su repositorio y su URL: no hay que reinstalarlas. Noch
 Mini Planilla queda fuera de las cinco y funciona de manera independiente: no comparte datos ni se conecta con las demás apps.
 
 Gastos médicos también queda como app independiente, fuera de Finanzas (decisión del 24 nov 2026): sigue con sus datos cifrados en pablocarvallo/cigna.
+
+Calendario también queda como app independiente, fuera de Consulta (decisión del 24 nov 2026): conserva su diseño propio de hoja de calendario.
 
 Cada app nueva convive un mes con las antiguas que reemplaza; recién después se retiran.
 
@@ -88,3 +90,4 @@ Repositorio aparte del de datos, para que cada escritura de datos no publique la
 - [ ] Borrar los repositorios de Prex y Suguru si existen, y quitar sus iconos del iPhone (los datos guardados en Prex se pierden al quitar el icono).
 - [ ] Crear los repositorios pablocarvallo/datos (privado), pablocarvallo/api, pablocarvallo/finanzas y pablocarvallo/consulta.
 - [ ] Crear el proyecto de Vercel para pablocarvallo/api.
+- [ ] Activar GitHub Pages en pablocarvallo/consulta (Settings → Pages → rama main, carpeta raíz).

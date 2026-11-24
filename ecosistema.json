@@ -14,7 +14,8 @@
     "convivencia": "Cada app nueva convive un mes con las antiguas que reemplaza antes de retirarlas (decidido el 24 nov 2026).",
     "manuales": "Mis créditos y Gastos médicos son de ingreso manual: no toman datos de admincasa.xlsx.",
     "mini_planilla": "Mini Planilla funciona de manera independiente: no se integra a ninguna de las 5 apps ni comparte datos con ellas.",
-    "gastos_medicos": "Gastos médicos queda como app independiente, fuera de Finanzas y de las 5 apps (decidido el 24 nov 2026)."
+    "gastos_medicos": "Gastos médicos queda como app independiente, fuera de Finanzas y de las 5 apps (decidido el 24 nov 2026).",
+    "calendario": "Calendario queda como app independiente, fuera de Consulta y de las 5 apps, igual que Gastos médicos y Mini Planilla (decidido el 24 nov 2026)."
   },
   "como_usar": [
     "Una instrucción indica su alcance: «todas», un grupo («las de cuentas») o una app («solo FAN»).",
@@ -1047,12 +1048,22 @@
       {
         "id": "consulta",
         "nombre": "Consulta",
-        "repo": "pablocarvallo/consulta (por crear)",
+        "repo": "pablocarvallo/consulta",
         "reune": [
           "indicadores",
           "lecturas",
-          "cartelera",
-          "calendario"
+          "cartelera"
+        ],
+        "nota": "Calendario queda fuera (app independiente). Los datos del Banco Central siguen viniendo de la tarea del repositorio pablocarvallo/indicadores, que debe mantenerse aunque se retire la app Indicadores.",
+        "url": "https://pablocarvallo.github.io/consulta/",
+        "estado": "Versión 1.0.0 (24 nov 2026): Indicadores (destacado, gráfico en la portada, tarjetas y detalle), Ajustes; Lecturas y Cartelera llegan en las próximas versiones. Convive un mes con las apps antiguas.",
+        "datos": "Sin datos en pablocarvallo/datos por ahora: los indicadores vienen de fuentes públicas (findic.cl o mindicador.cl y los archivos datos/*.json del repositorio indicadores) y quedan guardados en el iPhone.",
+        "diseno": "Domésticas 27, acento ámbar (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py).",
+        "pestanas": [
+          "Indicadores",
+          "Lecturas",
+          "Cartelera",
+          "Ajustes"
         ]
       },
       {
@@ -1066,7 +1077,8 @@
     ],
     "fuera_de_las_5": [
       "miniexcel: herramienta independiente, fuera de las 5 apps y sin datos compartidos",
-      "cigna: Gastos médicos, app independiente fuera de Finanzas (decisión del 24 nov 2026); datos cifrados en su repositorio"
+      "cigna: Gastos médicos, app independiente fuera de Finanzas (decisión del 24 nov 2026); datos cifrados en su repositorio",
+      "calendario: Calendario, app independiente fuera de Consulta (decisión del 24 nov 2026); conserva su diseño propio"
     ],
     "datos": "Repositorio privado pablocarvallo/datos: cuentas, movimientos por mes, pagos, créditos, ciclos, rutinas y maletas en JSON. Lo escriben la tarea de GitHub que lee los avisos y la función de Vercel pablocarvallo/api, que guarda el token como secreto. Detalle en plan/plan-5-apps.md.",
     "documento": "plan/plan-5-apps.md"
