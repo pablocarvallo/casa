@@ -3,7 +3,7 @@
 // Filtro de agua, Cepillos y Sábanas, para que los números coincidan durante el mes de convivencia.
 // Los datos viven en pablocarvallo/datos: ciclos.json (gas, filtro, cepillos y cápsula) y rutinas.json (sábanas).
 
-export const VERSION = '1.0.2';
+export const VERSION = '1.0.3';
 
 /* ---------- Fechas: claves «AAAA-MM-DD» en la hora del iPhone (Chile) ---------- */
 const pad = (n) => (n < 10 ? '0' : '') + n;

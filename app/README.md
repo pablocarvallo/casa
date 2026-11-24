@@ -57,4 +57,6 @@ original):
 - Diseño: Domésticas 27, en `diseno27/` del repositorio. Se copia dentro de `index.html` con
   `python3 herramientas/aplicar-diseno27.py`; lo propio de la app va entre `/*APP:START*/` y `/*APP:END*/`.
 - Pruebas: `TZ=America/Santiago node --test app/pruebas/*.test.js`.
-- Al publicar un cambio de aspecto o de código, subir `CACHE` en `sw.js` y `VERSION` en `calculos.js`.
+- Al publicar un cambio, subir `VERSION` en `calculos.js` (y `CACHE` en `sw.js`). Al abrir o volver a Casa, la app
+  compara su versión con la publicada y se recarga sola una vez: no hay que reinstalarla. Borrar el icono del iPhone
+  borra la llave y las maletas guardadas en él; los demás datos siguen en GitHub.

@@ -344,6 +344,7 @@ body.en-maletas .c-desvanecer { display: none; }
 .c-pasos { margin: 10px 20px 0; padding-left: 20px; font: 400 15px/21px var(--font-sans); color: var(--tinta-2); }
 .c-pasos li { margin-top: 6px; }
 .c-pasos b { color: var(--tinta); }
+.c-pasos a { color: var(--acento); text-decoration: none; }
 .c-tarjeta { margin: 0 16px; padding: 4px 16px 16px; }
 .c-tarjeta .c-campo:first-child { margin-top: 12px; }
 
@@ -758,10 +759,10 @@ function vistaAjustes() {
   if (!llave) {
     html += '<div class="d-vidrio c-tarjeta"><form data-f="conectar"><label class="c-campo"><span>Código de 8 letras y números</span><input type="text" name="codigo" class="c-codigo" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" maxlength="9" placeholder="ABCD2345" required></label>' +
       '<p class="c-error" id="errConectar" hidden></p><div class="c-pila" style="display:grid;margin-top:14px"><button class="d-boton d-boton--ancho">Conectar este iPhone</button></div></form></div>' +
-      '<ol class="c-pasos"><li>En GitHub, abre <b>pablocarvallo/datos → Actions → Llaves → Run workflow</b>.</li><li>Elige acción <b>crear</b>, tipo <b>dispositivo</b> y un nombre (por ejemplo, «iPhone Casa»).</li><li>Abre la ejecución terminada: el código está en su resumen y vale 15 minutos.</li><li>Escríbelo aquí. Lo que ya registraste en este iPhone se guarda en GitHub al conectar.</li></ol>';
+      '<ol class="c-pasos"><li>Abre la tarea <a href="https://github.com/pablocarvallo/datos/actions/workflows/llaves.yml" target="_blank" rel="noopener"><b>Llaves</b></a> de pablocarvallo/datos y toca <b>Run workflow</b>.</li><li>Elige acción <b>crear</b>, tipo <b>dispositivo</b> y un nombre (por ejemplo, «iPhone Casa»).</li><li>Abre la ejecución terminada: el código está en su resumen y vale 15 minutos.</li><li>Escríbelo aquí. Lo que ya registraste en este iPhone se guarda en GitHub al conectar.</li></ol>';
   } else {
     html += '<ul class="d-lista d-vidrio">' +
-      fila({ icono: 'nube', titulo: esc(llave.nombre || 'Este iPhone'), sub: sync.error ? esc(sync.error) : 'Conectado a pablocarvallo/datos' + (sync.at ? ' · ' + hace(sync.at) : ''), valor: sync.error ? '<span class="d-chip d-chip--aviso">Revisar</span>' : '<span class="d-chip d-chip--positivo">Al día</span>' }) +
+      fila({ icono: 'nube', titulo: esc(llave.nombre || 'Este iPhone'), sub: sync.error ? esc(sync.error) : 'Conectado a pablocarvallo/datos' + (sync.at ? ' · ' + hace(sync.at) : '') + (llave.id ? ' · llave ' + esc(llave.id) : ''), valor: sync.error ? '<span class="d-chip d-chip--aviso">Revisar</span>' : '<span class="d-chip d-chip--positivo">Al día</span>' }) +
       fila({ icono: 'ciclos', titulo: 'Actualizar ahora', sub: cola.length ? cola.length + ' ' + C.plural(cola.length, 'cambio', 'cambios') + ' por guardar' : 'Trae lo último desde GitHub', a: 'actualizar', chev: true }) +
       fila({ icono: 'llave', titulo: '<span class="c-peligro">Desconectar este iPhone</span>', sub: 'Los datos quedan en GitHub; para volver necesitas un código nuevo', a: 'desconectar', attrs: 'data-confirmar="Toca de nuevo para desconectar"' }) + '</ul>';
   }
@@ -780,6 +781,7 @@ function vistaAjustes() {
   html += seccion('Respaldo') + '<ul class="d-lista d-vidrio">' +
     fila({ icono: 'copiar', titulo: 'Copiar respaldo de Casa', sub: 'Gas, filtro, cepillos, cápsula y sábanas en un texto', a: 'respaldo', chev: true }) + '</ul>' +
     '<p class="c-nota">Cada cambio queda además en el historial de GitHub, desde donde se puede recuperar cualquier versión.</p>';
+  html += `<p class="c-nota">Las versiones nuevas llegan solas al abrir Casa: no hace falta volver a agregarla a la pantalla de inicio. Si borras el icono, se borran la llave y las maletas guardadas en este iPhone (los demás datos siguen en GitHub).</p>`;
   html += `<p class="c-estado">Casa ${C.VERSION} · Domésticas 27</p>`;
   return html;
 }
@@ -1171,7 +1173,25 @@ aplicarPrefs();
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { aplicarPrefs(); });
 render();
 releerSiHaceFalta();
-document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { render(); releerSiHaceFalta(); } });
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') { render(); releerSiHaceFalta(); buscarVersionNueva(); } });
+
+// Actualización sin reinstalar: al abrir o volver a Casa se compara la versión publicada con la que está corriendo.
+// Si cambió, se recarga la página (los cambios sin guardar quedan en la cola del iPhone). Una vez por versión, para
+// no recargar en círculo si GitHub Pages todavía entrega la copia anterior.
+async function buscarVersionNueva() {
+  try {
+    const t = await (await fetch('calculos.js?v=' + Date.now(), { cache: 'no-store' })).text();
+    const m = /VERSION = '([^']+)'/.exec(t);
+    if (!m || m[1] === C.VERSION || sessionStorage.getItem('casa27.recargada') === m[1]) return;
+    const reg = navigator.serviceWorker && await navigator.serviceWorker.getRegistration();
+    if (reg) await reg.update().catch(() => {});
+    const escribiendo = document.activeElement && document.activeElement.matches('input, textarea');
+    if (hoja || escribiendo) return;   // se actualiza la próxima vez
+    sessionStorage.setItem('casa27.recargada', m[1]);
+    location.reload();
+  } catch (e) {}
+}
+buscarVersionNueva();
 window.addEventListener('online', () => sincronizar(false));
 setInterval(() => { if (document.visibilityState === 'visible' && !hoja) render(); }, 60000);
 let ultimoY = 0;
