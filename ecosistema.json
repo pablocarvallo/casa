@@ -1093,7 +1093,7 @@
     "datos": {
       "repo": "pablocarvallo/datos",
       "privado": true,
-      "notas": "Datos de las 5 apps en JSON y buzón de avisos (issues). Tareas: Leer avisos, Resumen, Llaves y Pruebas del lector. El lector único de avisos vive en lector/ (copiado de copec/widget/panel-widget.js el 24 nov 2026)."
+      "notas": "Datos de las 5 apps en JSON y buzón de avisos en avisos/AAAA-MM/<huella>.json (desde el 24 nov 2026; los primeros avisos quedaron como issues). Tareas: Leer avisos, Resumen, Llaves y Pruebas del lector. El lector único de avisos vive en lector/ (copiado de copec/widget/panel-widget.js el 24 nov 2026)."
     }
   }
 }

@@ -25,8 +25,9 @@ Cada app nueva convive un mes con las antiguas que reemplaza; recién después s
 ```
 Mail (avisos Banco de Chile, Copec Pay)
   → Atajos envía el aviso a la función /api/aviso (llave de Atajos: solo enviar avisos)
-  → la función lo guarda como issue en pablocarvallo/datos (registro original)
-  → la tarea de GitHub «leer-avisos» lo lee con el lector único, agrega el movimiento y cierra el issue
+  → la función lo guarda en avisos/AAAA-MM/<huella>.json de pablocarvallo/datos (registro original; el mismo
+    correo enviado por las dos automatizaciones se guarda una vez; sin issues, para que GitHub no mande correos)
+  → la tarea de GitHub «leer-avisos» lo lee con el lector único, agrega el movimiento y marca el aviso leído
   → pablocarvallo/datos (JSON)
   → las apps leen y escriben a través de la función /api (llave del dispositivo)
   → la tarea «resumen» calcula resumen.json y envía las notificaciones push
@@ -55,7 +56,7 @@ Los cierres de periodo (LiderBCI, extracto de Master) archivan; nunca borran mov
 
 ## Función en Vercel: pablocarvallo/api (por crear)
 
-Repositorio aparte del de datos, para que cada escritura de datos no publique la función de nuevo. Secretos en Vercel: `GITHUB_TOKEN` (token de grano fino solo para pablocarvallo/datos, permisos Contents e Issues) y `VAPID_PUBLIC` / `VAPID_PRIVATE`.
+Repositorio aparte del de datos, para que cada escritura de datos no publique la función de nuevo. Secretos en Vercel: `GITHUB_TOKEN` (token de grano fino solo para pablocarvallo/datos, permiso Contents) y `VAPID_PUBLIC` / `VAPID_PRIVATE`.
 
 | Ruta | Uso | Llave |
 | --- | --- | --- |
@@ -68,7 +69,7 @@ Repositorio aparte del de datos, para que cada escritura de datos no publique la
 
 ## Tareas de GitHub en pablocarvallo/datos
 
-- `leer-avisos.yml`: al abrirse un issue; lector único con pruebas sobre correos reales anonimizados.
+- `leer-avisos.yml`: al llegar un aviso a `avisos/` o cambiar el lector; lector único con pruebas sobre correos reales anonimizados.
 - `resumen.yml`: cada mañana y cada tarde; recalcula `resumen.json` y `salud.json` y envía notificaciones push (cápsula 12, 10 y 5; filtro y cepillos a 14 y 7 días; gas sin reserva; pagos a inicio y mitad de mes; fuente sin avisos 48 horas).
 - `respaldo.yml`: semanal; copia comprimida de todo el repositorio como artefacto descargable.
 
