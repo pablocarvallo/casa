@@ -1,9 +1,17 @@
 {
   "nombre": "Apps domésticas",
-  "version_catalogo": 1,
-  "revisado": "2026-11-16",
+  "version_catalogo": 2,
+  "revisado": "2026-11-24",
   "propietario_github": "pablocarvallo",
   "documento_diseno": "claude/sistema-de-diseno-domesticas.md (Project App Domésticas)",
+  "decisiones": {
+    "fecha": "2026-11-24",
+    "apps_destino": "El ecosistema se consolida en 5 apps: Finanzas, Casa, Noche, Consulta y Juegos.",
+    "datos": "Los datos se guardan en GitHub (repositorio privado de datos), con el token fuera del iPhone.",
+    "plataforma": "Web apps instaladas en la pantalla de inicio (sin Mac, no hay app nativa).",
+    "retiradas": "Ronquidos (vive dentro de Despertador), Prex y Suguru.",
+    "diseno": "Nuevo sistema de diseño estilo iOS 27 en preparación; reemplazará base/ cuando se apruebe."
+  },
   "como_usar": [
     "Una instrucción indica su alcance: «todas», un grupo («las de cuentas») o una app («solo FAN»).",
     "«Todas» abarca las apps con diseno = comun o comun-con-excepcion. Las de diseno = propio reciben cambios de comportamiento (zoom, respaldo, actualización), no de diseño, salvo que la instrucción las nombre.",
@@ -65,10 +73,17 @@
     },
     "copec-avisos": {
       "privado": true,
-      "recibe": "Avisos de Copec Pay (mensajeria@copecpay.cl) con asunto que contiene «bip»",
+      "recibe": "Todos los correos de mensajeria@copecpay.cl (cargas bip! y compras con la Tarjeta digital Copec Pay Mastercard), enviados por Atajos",
       "usado_por": [
         "copec",
         "casa"
+      ]
+    },
+    "ronquidos-datos": {
+      "privado": true,
+      "recibe": "Noches de ronquidos sincronizadas desde Despertador",
+      "usado_por": [
+        "despertador"
       ]
     }
   },
@@ -253,7 +268,7 @@
       },
       "cache_sw": "copec-v4-ds1-sinzoom",
       "icono": "Bus",
-      "notas": "Cargos de bip! que llegan en la mañana (iPhone apagado de noche): relee el buzón cada minuto los primeros diez minutos. widget/panel-widget.js es la fuente de los lectores de las cuatro cuentas que usa Panel Casa."
+      "notas": "Cargos de bip! que llegan en la mañana (iPhone apagado de noche): relee el buzón cada minuto los primeros diez minutos. widget/panel-widget.js es la fuente de los lectores de las cuatro cuentas que usa Panel Casa. Desde el 17 nov lee todos los correos de mensajeria@copecpay.cl y desde el 18 nov también las compras con la Tarjeta digital Copec Pay Mastercard."
     },
     {
       "id": "mis-creditos",
@@ -699,9 +714,11 @@
         "elementos": false,
         "componentes": null,
         "panel_casa": false,
-        "buzon": [],
+        "buzon": [
+          "ronquidos-datos"
+        ],
         "widget": false,
-        "respaldo": null,
+        "respaldo": true,
         "sin_zoom": true,
         "sin_conexion": true
       },
@@ -716,42 +733,7 @@
       ],
       "cache_sw": "reposo-v3-ds1-b1",
       "icono": "Despertador",
-      "notas": "Colores escritos directamente en el código, sin marcas DS."
-    },
-    {
-      "id": "ronquidos",
-      "nombre": "Ronquidos",
-      "repo": "pablocarvallo/ronquidos",
-      "rama": "main",
-      "url": "https://pablocarvallo.github.io/ronquidos/",
-      "alojamiento": "GitHub Pages",
-      "grupos": [
-        "noche"
-      ],
-      "diseno": "comun-con-excepcion",
-      "excepciones": [
-        "Pantalla de la noche negra (#000), hora en azul tenue #7F98D4; se atenúa a los 20 s y se desplaza cada minuto."
-      ],
-      "capas": {
-        "tokens": true,
-        "elementos": true,
-        "componentes": "propios",
-        "panel_casa": false,
-        "buzon": [],
-        "widget": false,
-        "respaldo": false,
-        "sin_zoom": true,
-        "sin_conexion": true
-      },
-      "datos": {
-        "almacen": "IndexedDB (noches y grabaciones) y localStorage",
-        "claves": [
-          "ronquidos-ajustes"
-        ]
-      },
-      "cache_sw": "ronquidos-v1",
-      "icono": "Luna creciente con dos zetas",
-      "notas": "Motor de detección entre /*MOTOR:START*/ y /*MOTOR:END*/. Datos solo en el iPhone."
+      "notas": "Colores escritos directamente en el código, sin marcas DS. Incluye todas las funciones de Ronquidos desde el 8 nov 2026 (motor de detección, gráfico por hora, historial); sincroniza las noches con el repositorio privado ronquidos-datos y permite exportar e importar."
     },
     {
       "id": "royal-study",
@@ -859,6 +841,41 @@
       "cache_sw": "miniexcel-v4-b1",
       "icono": "Propio, colores de Excel",
       "notas": "Sin menús ni opción de guardar; los datos persisten hasta que se borran."
+    },
+    {
+      "id": "maletas",
+      "nombre": "Maletas",
+      "repo": "pablocarvallo/maletas",
+      "rama": "main",
+      "url": "https://pablocarvallo.github.io/maletas/",
+      "alojamiento": "GitHub Pages",
+      "grupos": [
+        "casa"
+      ],
+      "diseno": "propio",
+      "excepciones": [
+        "Estilo visual propio e ilustrado, no la paleta de las apps domésticas, por pedido expreso."
+      ],
+      "capas": {
+        "tokens": false,
+        "elementos": false,
+        "componentes": null,
+        "panel_casa": false,
+        "buzon": [],
+        "widget": false,
+        "respaldo": true,
+        "sin_zoom": true,
+        "sin_conexion": true
+      },
+      "datos": {
+        "almacen": "localStorage",
+        "claves": [
+          "maletas.v1"
+        ]
+      },
+      "cache_sw": "maletas-v7-registro",
+      "icono": "Propio",
+      "notas": "Creada el 15 nov 2026. Maletas grandes (23 kg) y chicas (cabina) editables; objetos dibujados (frazadas, quilts, mantas, almohadas, cojines, mochilas) o tomados de una foto; listado de cada objeto con su maleta."
     }
   ],
   "fuera_del_ecosistema": [
@@ -872,10 +889,9 @@
   "pendientes_detectados": [
     {
       "tema": "Apps con componentes propios",
-      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas, Sábanas, Pagos del mes, Filtro de agua, Indicadores y Panel Casa (estas tres desde el 31 oct 2026). Las otras seis tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Lecturas 258 diferencias, Ronquidos 308, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
+      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas, Sábanas, Pagos del mes, Filtro de agua, Indicadores y Panel Casa (estas tres desde el 31 oct 2026). Las otras seis tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Lecturas 258 diferencias, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
       "apps": [
         "lecturas",
-        "ronquidos",
         "cigna",
         "mis-creditos",
         "receta",
@@ -895,8 +911,7 @@
       "detalle": "Guardan datos solo en el iPhone y no permiten copiarlos ni restaurarlos.",
       "apps": [
         "receta",
-        "beds",
-        "ronquidos"
+        "beds"
       ]
     },
     {
@@ -947,6 +962,113 @@
         "calendario",
         "miniexcel"
       ]
+    },
+    {
+      "tema": "Token de GitHub en el iPhone",
+      "detalle": "El token se guarda en el almacenamiento local de 12 apps y en texto plano en los widgets de Scriptable; el código CASA1 lo lleva en base64. Rotarlo, limitarlo a los repositorios de buzón con permiso de Issues y fecha de vencimiento, y sacarlo del iPhone en la fase 1.",
+      "apps": [
+        "fan",
+        "master",
+        "liderbci",
+        "copec",
+        "casa",
+        "pagos",
+        "gas",
+        "receta",
+        "hijas",
+        "beds",
+        "agua",
+        "cepillos"
+      ]
+    }
+  ],
+  "plan_5_apps": {
+    "estado": "Propuesta del 24 nov 2026. Las apps actuales siguen funcionando hasta que su reemplazo lleve un mes en uso.",
+    "apps": [
+      {
+        "id": "finanzas",
+        "nombre": "Finanzas",
+        "repo": "pablocarvallo/finanzas (por crear)",
+        "reune": [
+          "fan",
+          "master",
+          "liderbci",
+          "copec",
+          "mis-creditos",
+          "hijas",
+          "pagos",
+          "cigna",
+          "dashboard ingresos y gastos (artifact)"
+        ]
+      },
+      {
+        "id": "casa",
+        "nombre": "Casa",
+        "repo": "pablocarvallo/casa",
+        "reune": [
+          "casa",
+          "gas",
+          "receta",
+          "agua",
+          "cepillos",
+          "beds",
+          "maletas"
+        ]
+      },
+      {
+        "id": "noche",
+        "nombre": "Noche",
+        "repo": "pablocarvallo/despertador",
+        "reune": [
+          "despertador"
+        ],
+        "nota": "Se mantiene el repositorio y la URL para no reinstalar en el iPhone 7 (iOS 15.8)."
+      },
+      {
+        "id": "consulta",
+        "nombre": "Consulta",
+        "repo": "pablocarvallo/consulta (por crear)",
+        "reune": [
+          "indicadores",
+          "lecturas",
+          "cartelera",
+          "calendario"
+        ]
+      },
+      {
+        "id": "juegos",
+        "nombre": "Juegos",
+        "repo": "pablocarvallo/royal-study",
+        "reune": [
+          "royal-study"
+        ]
+      }
+    ],
+    "fuera_de_las_5": [
+      "miniexcel (herramienta suelta; decisión pendiente)"
+    ],
+    "datos": "Repositorio privado pablocarvallo/datos (por crear): movimientos, cuentas, ciclos y rutinas en JSON; lo escribe la tarea de GitHub que lee los avisos y una función en Vercel con el token como secreto."
+  },
+  "retiradas": [
+    {
+      "id": "ronquidos",
+      "nombre": "Ronquidos",
+      "repo": "pablocarvallo/ronquidos",
+      "fecha": "2026-11-24",
+      "motivo": "Sus funciones viven en Despertador desde el 8 nov 2026. Borrar el repositorio en GitHub (Settings → Danger Zone). No borrar pablocarvallo/ronquidos-datos: Despertador lo usa para sincronizar las noches."
+    },
+    {
+      "id": "prex",
+      "nombre": "Prex",
+      "fecha": "2026-11-24",
+      "motivo": "Retirada por decisión del usuario; Finanzas no incluye la cuenta Prex."
+    },
+    {
+      "id": "suguru",
+      "nombre": "Suguru",
+      "repo": "pablocarvallo/suguru",
+      "fecha": "2026-11-24",
+      "motivo": "Retirada por decisión del usuario."
     }
   ]
 }
