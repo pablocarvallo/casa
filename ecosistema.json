@@ -88,6 +88,13 @@
       "usado_por": [
         "despertador"
       ]
+    },
+    "datos": {
+      "privado": true,
+      "recibe": "Avisos de Banco de Chile y Copec Pay enviados por Atajos a /api/aviso (durante el mes de convivencia, además de fan-avisos y copec-avisos)",
+      "usado_por": [
+        "api"
+      ]
     }
   },
   "apps": [
@@ -1075,5 +1082,18 @@
       "fecha": "2026-11-24",
       "motivo": "Retirada por decisión del usuario."
     }
-  ]
+  ],
+  "servicios": {
+    "api": {
+      "repo": "pablocarvallo/api",
+      "url": "https://domesticas-api.vercel.app",
+      "alojamiento": "Vercel (proyecto domesticas-api)",
+      "notas": "Función creada el 24 nov 2026. Guarda el token de GitHub como variable GITHUB_TOKEN (vence el 23/11/2027). Rutas /api/aviso, /api/datos, /api/resumen, /api/emparejar y /api/estado; llaves por dispositivo de tipo dispositivo, atajos o widget."
+    },
+    "datos": {
+      "repo": "pablocarvallo/datos",
+      "privado": true,
+      "notas": "Datos de las 5 apps en JSON y buzón de avisos (issues). Tareas: Leer avisos, Resumen, Llaves y Pruebas del lector. El lector único de avisos vive en lector/ (copiado de copec/widget/panel-widget.js el 24 nov 2026)."
+    }
+  }
 }
