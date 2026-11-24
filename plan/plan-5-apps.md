@@ -8,7 +8,7 @@ Diseño: sistema «Domésticas 27» (vidrio estilo iOS 27, un acento por app). R
 
 | App | Repositorio | Reúne | Pestañas |
 | --- | --- | --- | --- |
-| Finanzas | pablocarvallo/finanzas (por crear) | FAN, Master, LiderBCI, Copec, Mis créditos (manual), Mesadas, Pagos del mes, Gastos médicos (manual) y el dashboard de ingresos y gastos | Resumen, Cuentas, Pagos, Más |
+| Finanzas | pablocarvallo/finanzas | FAN, Master, LiderBCI, Copec, Mis créditos (manual), Mesadas, Pagos del mes y el dashboard de ingresos y gastos | Resumen, Cuentas, Pagos, Más |
 | Casa | pablocarvallo/casa | Panel Casa, Balón de gas, Mi cápsula, Filtro de agua, Cepillos, Sábanas, Maletas | Hoy, Ciclos, Maletas, Ajustes |
 | Noche | pablocarvallo/despertador | Despertador con ronquidos | Sin pestañas |
 | Consulta | pablocarvallo/consulta (por crear) | Indicadores, Lecturas, Cartelera, Calendario | Indicadores, Lecturas, Cartelera, Calendario |
@@ -17,6 +17,8 @@ Diseño: sistema «Domésticas 27» (vidrio estilo iOS 27, un acento por app). R
 Noche y Juegos mantienen su repositorio y su URL: no hay que reinstalarlas. Noche debe seguir funcionando en el iPhone 7 con iOS 15.8.
 
 Mini Planilla queda fuera de las cinco y funciona de manera independiente: no comparte datos ni se conecta con las demás apps.
+
+Gastos médicos también queda como app independiente, fuera de Finanzas (decisión del 24 nov 2026): sigue con sus datos cifrados en pablocarvallo/cigna.
 
 Cada app nueva convive un mes con las antiguas que reemplaza; recién después se retiran.
 
@@ -43,7 +45,6 @@ El token de GitHub vive solo como secreto de la función y de las tareas. El iPh
 | `movimientos/AAAA-MM.json` | Un archivo por mes: id, fecha, hora, cuenta, comercio, monto, tipo (compra, abono, cuota, devolución, aporte), categoría, origen (aviso o a mano), número del aviso |
 | `pagos.json` | Plantilla de pagos del mes («A inicios de mes», «A mitad de mes») y estado por mes; un pago se marca solo si llega el cargo que coincide |
 | `creditos.json` | Créditos de consumo y cuotas pagadas, ingresados a mano; hipotecario aparte, en UF |
-| `gastos-medicos.json` | Gastos y reembolsos Cigna ingresados a mano; boletas en `boletas/` |
 | `ciclos.json` | Gas, filtro, cepillos y cápsula: inicio, regla (días o consumo), umbrales de aviso e historial |
 | `rutinas.json` | Sábanas (miércoles alternados desde el 7 oct 2026, Piti) |
 | `maletas.json` | Maletas y objetos (los dibujos e imágenes quedan en `maletas/`) |

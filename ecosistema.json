@@ -13,7 +13,8 @@
     "diseno": "Nuevo sistema de diseño «Domésticas 27» estilo iOS 27 (https://claude.ai/artifact/QQ6qGbKmzcKnR9Z894HkH4), con maquetas de las 5 apps (https://claude.ai/artifact/GmoadBTm8dYNLBUVhk1thH); reemplazará base/ cuando se apruebe.",
     "convivencia": "Cada app nueva convive un mes con las antiguas que reemplaza antes de retirarlas (decidido el 24 nov 2026).",
     "manuales": "Mis créditos y Gastos médicos son de ingreso manual: no toman datos de admincasa.xlsx.",
-    "mini_planilla": "Mini Planilla funciona de manera independiente: no se integra a ninguna de las 5 apps ni comparte datos con ellas."
+    "mini_planilla": "Mini Planilla funciona de manera independiente: no se integra a ninguna de las 5 apps ni comparte datos con ellas.",
+    "gastos_medicos": "Gastos médicos queda como app independiente, fuera de Finanzas y de las 5 apps (decidido el 24 nov 2026)."
   },
   "como_usar": [
     "Una instrucción indica su alcance: «todas», un grupo («las de cuentas») o una app («solo FAN»).",
@@ -343,7 +344,7 @@
       },
       "cache_sw": "cigna-v1",
       "icono": "Escudo con cruz",
-      "notas": "El artifact de escritorio debe verse completo sin desplazarse en el navegador de Windows. Ingreso manual de gastos y reembolsos; no toma datos de admincasa.xlsx."
+      "notas": "El artifact de escritorio debe verse completo sin desplazarse en el navegador de Windows. Ingreso manual de gastos y reembolsos; no toma datos de admincasa.xlsx. Queda como app independiente, fuera de Finanzas (decisión del 24 nov 2026)."
     },
     {
       "id": "pagos",
@@ -1007,12 +1008,11 @@
           "mis-creditos",
           "hijas",
           "pagos",
-          "cigna",
           "dashboard ingresos y gastos (artifact)"
         ],
-        "nota": "Mis créditos y Gastos médicos siguen siendo de ingreso manual.",
+        "nota": "Mis créditos sigue siendo de ingreso manual. Gastos médicos queda fuera (app independiente).",
         "url": "https://pablocarvallo.github.io/finanzas/",
-        "estado": "Versión 1.1.0 (24 nov 2026): Resumen, Cuentas (FAN, Master, LiderBCI, Copec), Pagos del mes, Mesadas, Mis créditos y Ajustes. Gastos médicos sigue en su app hasta la próxima versión. Convive un mes con las apps antiguas.",
+        "estado": "Versión 1.1.1 (24 nov 2026): Resumen, Cuentas (FAN, Master, LiderBCI, Copec), Pagos del mes, Mesadas, Mis créditos y Ajustes. Convive un mes con las apps antiguas.",
         "datos": "cuentas.json, movimientos/AAAA-MM.json, pagos.json, mesadas.json y creditos.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. datos/herramientas/finanzas-calculos.mjs es copia de calculos.js para resumen.json.",
         "diseno": "Domésticas 27 (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py)."
       },
@@ -1065,7 +1065,8 @@
       }
     ],
     "fuera_de_las_5": [
-      "miniexcel: herramienta independiente, fuera de las 5 apps y sin datos compartidos"
+      "miniexcel: herramienta independiente, fuera de las 5 apps y sin datos compartidos",
+      "cigna: Gastos médicos, app independiente fuera de Finanzas (decisión del 24 nov 2026); datos cifrados en su repositorio"
     ],
     "datos": "Repositorio privado pablocarvallo/datos: cuentas, movimientos por mes, pagos, créditos, ciclos, rutinas y maletas en JSON. Lo escriben la tarea de GitHub que lee los avisos y la función de Vercel pablocarvallo/api, que guarda el token como secreto. Detalle en plan/plan-5-apps.md.",
     "documento": "plan/plan-5-apps.md"
