@@ -1012,8 +1012,8 @@
         ],
         "nota": "Mis créditos y Gastos médicos siguen siendo de ingreso manual.",
         "url": "https://pablocarvallo.github.io/finanzas/",
-        "estado": "Versión 1.0.0 publicada el 24 nov 2026 con Resumen, Cuentas (FAN, Master, LiderBCI, Copec) y Pagos del mes; Mesadas, Mis créditos y Gastos médicos siguen en sus apps hasta las próximas versiones. Convive un mes con las apps antiguas.",
-        "datos": "cuentas.json, movimientos/AAAA-MM.json y pagos.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. datos/herramientas/finanzas-calculos.mjs es copia de calculos.js para resumen.json.",
+        "estado": "Versión 1.1.0 (24 nov 2026): Resumen, Cuentas (FAN, Master, LiderBCI, Copec), Pagos del mes, Mesadas, Mis créditos y Ajustes. Gastos médicos sigue en su app hasta la próxima versión. Convive un mes con las apps antiguas.",
+        "datos": "cuentas.json, movimientos/AAAA-MM.json, pagos.json, mesadas.json y creditos.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. datos/herramientas/finanzas-calculos.mjs es copia de calculos.js para resumen.json.",
         "diseno": "Domésticas 27 (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py)."
       },
       {
