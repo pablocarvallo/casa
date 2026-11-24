@@ -10,7 +10,7 @@
     "datos": "Los datos se guardan en GitHub (repositorio privado de datos), con el token fuera del iPhone.",
     "plataforma": "Web apps instaladas en la pantalla de inicio (sin Mac, no hay app nativa).",
     "retiradas": "Ronquidos (vive dentro de Despertador), Prex y Suguru.",
-    "diseno": "Nuevo sistema de diseño estilo iOS 27 en preparación; reemplazará base/ cuando se apruebe."
+    "diseno": "Nuevo sistema de diseño «Domésticas 27» estilo iOS 27 (https://claude.ai/artifact/QQ6qGbKmzcKnR9Z894HkH4), con maquetas de las 5 apps (https://claude.ai/artifact/GmoadBTm8dYNLBUVhk1thH); reemplazará base/ cuando se apruebe."
   },
   "como_usar": [
     "Una instrucción indica su alcance: «todas», un grupo («las de cuentas») o una app («solo FAN»).",
@@ -889,7 +889,7 @@
   "pendientes_detectados": [
     {
       "tema": "Apps con componentes propios",
-      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas, Sábanas, Pagos del mes, Filtro de agua, Indicadores y Panel Casa (estas tres desde el 31 oct 2026). Las otras seis tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Lecturas 258 diferencias, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
+      "detalle": "Usan los componentes comunes FAN, Master, LiderBCI, Copec, Balón de gas, Mesadas, Sábanas, Pagos del mes, Filtro de agua, Indicadores y Panel Casa (estas tres desde el 31 oct 2026). Las otras cinco tienen sus propios componentes dentro de DS:APP. Pasarlas a los comunes cambia su aspecto; medido el 31 oct 2026 en estilos calculados, de menor a mayor: Lecturas 258 diferencias, Gastos médicos 608, Mis créditos 1042, Cápsula 1158 y Royal Study 3478. Se migran de a una, con capturas para aprobar.",
       "apps": [
         "lecturas",
         "cigna",
@@ -1047,7 +1047,8 @@
     "fuera_de_las_5": [
       "miniexcel (herramienta suelta; decisión pendiente)"
     ],
-    "datos": "Repositorio privado pablocarvallo/datos (por crear): movimientos, cuentas, ciclos y rutinas en JSON; lo escribe la tarea de GitHub que lee los avisos y una función en Vercel con el token como secreto."
+    "datos": "Repositorio privado pablocarvallo/datos (por crear): cuentas, movimientos por mes, pagos, créditos, ciclos, rutinas y maletas en JSON. Lo escriben la tarea de GitHub que lee los avisos y la función de Vercel pablocarvallo/api (por crear), que guarda el token como secreto. Detalle en plan/plan-5-apps.md.",
+    "documento": "plan/plan-5-apps.md"
   },
   "retiradas": [
     {
