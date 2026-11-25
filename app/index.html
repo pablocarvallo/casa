@@ -895,6 +895,48 @@ function cerrarHoja() {
   el.classList.remove('abierta'); fondo.classList.remove('abierta');
   setTimeout(() => { if (!hoja) { el.hidden = true; fondo.hidden = true; el.innerHTML = ''; } }, 320);
 }
+// Gesto de iOS para cerrar la hoja: arrastrarla hacia abajo desde el asa, o desde cualquier parte cuando su contenido
+// está arriba del todo. Se decide con el primer movimiento del dedo, que es el único que Safari deja cancelar.
+(function () {
+  const el = $('hoja'), fondo = $('fondoHoja');
+  let t = null;
+  function soltar(cerrar) {
+    el.style.transition = ''; fondo.style.transition = '';
+    el.style.transform = ''; fondo.style.opacity = '';
+    if (cerrar) cerrarHoja();
+  }
+  el.addEventListener('touchstart', (e) => {
+    t = null;
+    if (e.touches.length !== 1 || !el.classList.contains('abierta')) return;
+    const p = e.touches[0], asa = p.clientY - el.getBoundingClientRect().top < 44;
+    if (!asa && e.target.closest && e.target.closest('.c-grafico, input[type="range"]')) return;   // gestos propios
+    t = { x: p.clientX, y: p.clientY, puede: asa || el.scrollTop <= 0, arrastre: false, dy: 0, v: 0, ultY: p.clientY, ultT: e.timeStamp };
+  }, { passive: true });
+  el.addEventListener('touchmove', (e) => {
+    if (!t) return;
+    if (e.touches.length !== 1) { if (t.arrastre) soltar(false); t = null; return; }
+    const p = e.touches[0], dy = p.clientY - t.y;
+    if (!t.arrastre) {
+      if (!t.puede || dy <= 0 || Math.abs(p.clientX - t.x) > dy || !e.cancelable) { t = null; return; }
+      t.arrastre = true;
+      el.style.transition = 'none'; fondo.style.transition = 'none';
+    }
+    e.preventDefault();
+    t.dy = Math.max(0, dy);
+    el.style.transform = 'translateY(' + t.dy + 'px)';
+    fondo.style.opacity = String(Math.max(0, 1 - t.dy / (el.offsetHeight || 1)));
+    const dt = e.timeStamp - t.ultT;
+    if (dt > 0) t.v = (p.clientY - t.ultY) / dt;
+    t.ultY = p.clientY; t.ultT = e.timeStamp;
+  }, { passive: false });
+  el.addEventListener('touchend', (e) => {
+    if (!t || !t.arrastre) { t = null; return; }
+    const v = e.timeStamp - t.ultT > 120 ? 0 : t.v;   // si el dedo se detuvo antes de soltar, no hay impulso
+    soltar(t.dy > Math.min(140, el.offsetHeight * 0.3) || (v > 0.5 && t.dy > 30));
+    t = null;
+  });
+  el.addEventListener('touchcancel', () => { if (t && t.arrastre) soltar(false); t = null; });
+})();
 function errorHoja(msg) { const e = $('hoja').querySelector('[data-error]'); if (e) { e.textContent = msg; e.hidden = !msg; } }
 
 /* ---------- Aviso flotante ---------- */

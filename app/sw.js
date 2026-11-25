@@ -1,7 +1,7 @@
 // Casa · guarda la app para abrirla sin conexión. Siempre intenta primero la versión más nueva (red primero), así
 // index.html y calculos.js llegan juntos; sin señal usa la copia guardada. Los datos van a domesticas-api (otro
 // origen) y no pasan por aquí.
-const CACHE = 'casa27-v4';
+const CACHE = 'casa27-v5';
 const ARCHIVOS = ['./', 'index.html', 'calculos.js', 'manifest.webmanifest', 'icons/icon.svg', 'icons/apple-touch-icon.png', 'icons/icon-192.png', 'icons/icon-512.png'];
 
 self.addEventListener('install', (e) => {
