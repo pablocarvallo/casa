@@ -1056,8 +1056,8 @@
         ],
         "nota": "Calendario queda fuera (app independiente). Los datos del Banco Central siguen viniendo de la tarea del repositorio pablocarvallo/indicadores, que debe mantenerse aunque se retire la app Indicadores.",
         "url": "https://pablocarvallo.github.io/consulta/",
-        "estado": "Versión 1.0.0 (24 nov 2026): Indicadores (destacado, gráfico en la portada, tarjetas y detalle), Ajustes; Lecturas y Cartelera llegan en las próximas versiones. Convive un mes con las apps antiguas.",
-        "datos": "Sin datos en pablocarvallo/datos por ahora: los indicadores vienen de fuentes públicas (findic.cl o mindicador.cl y los archivos datos/*.json del repositorio indicadores) y quedan guardados en el iPhone.",
+        "estado": "Versión 1.1.0 (24 nov 2026): Indicadores y Cartelera (Quiero ver, Vistos, búsqueda y ficha de TMDB, respaldo de la app Cartelera e historial de Netflix o Prime Video), y Ajustes; Lecturas llega en la próxima versión. Convive un mes con las apps antiguas.",
+        "datos": "cartelera.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. La clave de TMDB y las plataformas de cada título quedan solo en el iPhone. Los indicadores vienen de fuentes públicas (findic.cl o mindicador.cl y los archivos datos/*.json del repositorio indicadores) y quedan guardados en el iPhone.",
         "diseno": "Domésticas 27, acento ámbar (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py).",
         "pestanas": [
           "Indicadores",
@@ -1080,7 +1080,7 @@
       "cigna: Gastos médicos, app independiente fuera de Finanzas (decisión del 24 nov 2026); datos cifrados en su repositorio",
       "calendario: Calendario, app independiente fuera de Consulta (decisión del 24 nov 2026); conserva su diseño propio"
     ],
-    "datos": "Repositorio privado pablocarvallo/datos: cuentas, movimientos por mes, pagos, créditos, ciclos, rutinas y maletas en JSON. Lo escriben la tarea de GitHub que lee los avisos y la función de Vercel pablocarvallo/api, que guarda el token como secreto. Detalle en plan/plan-5-apps.md.",
+    "datos": "Repositorio privado pablocarvallo/datos: cuentas, movimientos por mes, pagos, créditos, ciclos, rutinas, maletas y cartelera en JSON. Lo escriben la tarea de GitHub que lee los avisos y la función de Vercel pablocarvallo/api, que guarda el token como secreto. Detalle en plan/plan-5-apps.md.",
     "documento": "plan/plan-5-apps.md"
   },
   "retiradas": [

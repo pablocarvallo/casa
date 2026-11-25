@@ -50,6 +50,7 @@ El token de GitHub vive solo como secreto de la función y de las tareas. El iPh
 | `ciclos.json` | Gas, filtro, cepillos y cápsula: inicio, regla (días o consumo), umbrales de aviso e historial |
 | `rutinas.json` | Sábanas (miércoles alternados desde el 7 oct 2026, Piti) |
 | `maletas.json` | Maletas y objetos (los dibujos e imágenes quedan en `maletas/`) |
+| `cartelera.json` | Series y películas: Quiero ver y Vistos, con fecha, nota y lo traído del historial de Netflix o Prime Video (Consulta) |
 | `resumen.json` | Generado: saldos, avisos de «Hoy», últimos movimientos. Lo leen los widgets y Casa |
 | `salud.json` | Generado: último aviso recibido por fuente, para alertar si una fuente se calla 48 horas |
 | `dispositivos.json` | Huellas (hash) de las llaves de cada dispositivo, Atajos y widgets, con permisos y fecha |
