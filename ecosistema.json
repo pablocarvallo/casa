@@ -1,7 +1,7 @@
 {
   "nombre": "Apps domésticas",
   "version_catalogo": 2,
-  "revisado": "2026-11-24",
+  "revisado": "2026-11-25",
   "propietario_github": "pablocarvallo",
   "documento_diseno": "claude/sistema-de-diseno-domesticas.md (Project App Domésticas)",
   "decisiones": {
@@ -1013,7 +1013,7 @@
         ],
         "nota": "Mis créditos sigue siendo de ingreso manual. Gastos médicos queda fuera (app independiente).",
         "url": "https://pablocarvallo.github.io/finanzas/",
-        "estado": "Versión 1.1.1 (24 nov 2026): Resumen, Cuentas (FAN, Master, LiderBCI, Copec), Pagos del mes, Mesadas, Mis créditos y Ajustes. Convive un mes con las apps antiguas.",
+        "estado": "Versión 1.1.2 (25 nov 2026): Resumen, Cuentas (FAN, Master, LiderBCI, Copec), Pagos del mes, Mesadas, Mis créditos y Ajustes. Las hojas se cierran arrastrándolas hacia abajo. Convive un mes con las apps antiguas.",
         "datos": "cuentas.json, movimientos/AAAA-MM.json, pagos.json, mesadas.json y creditos.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. datos/herramientas/finanzas-calculos.mjs es copia de calculos.js para resumen.json.",
         "diseno": "Domésticas 27 (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py)."
       },
@@ -1056,7 +1056,7 @@
         ],
         "nota": "Calendario queda fuera (app independiente). Los datos del Banco Central siguen viniendo de la tarea del repositorio pablocarvallo/indicadores, que debe mantenerse aunque se retire la app Indicadores.",
         "url": "https://pablocarvallo.github.io/consulta/",
-        "estado": "Versión 1.2.0 (24 nov 2026): Indicadores, Lecturas (Leyendo, Desafíos, Quiero leer, búsqueda y ficha de cada libro, leídos de Goodreads con /api/lecturas) y Cartelera (Quiero ver, Vistos, búsqueda y ficha de TMDB, respaldo de la app Cartelera e historial de Netflix o Prime Video), y Ajustes. Convive un mes con las apps antiguas.",
+        "estado": "Versión 1.2.1 (25 nov 2026): Indicadores, Lecturas (Leyendo, Desafíos, Quiero leer, búsqueda y ficha de cada libro, leídos de Goodreads con /api/lecturas) y Cartelera (Quiero ver, Vistos, búsqueda y ficha de TMDB, respaldo de la app Cartelera e historial de Netflix o Prime Video), y Ajustes. Las hojas se cierran arrastrándolas hacia abajo. Convive un mes con las apps antiguas.",
         "datos": "cartelera.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. Lecturas lee Goodreads con /api/lecturas de domesticas-api (misma llave, solo lectura). La clave de TMDB y las plataformas de cada título quedan solo en el iPhone. Los indicadores vienen de fuentes públicas (findic.cl o mindicador.cl y los archivos datos/*.json del repositorio indicadores) y quedan guardados en el iPhone.",
         "diseno": "Domésticas 27, acento ámbar (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py).",
         "pestanas": [
