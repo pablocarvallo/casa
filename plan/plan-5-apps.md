@@ -70,6 +70,7 @@ Repositorio aparte del de datos, para que cada escritura de datos no publique la
 | `GET /api/resumen` | Resumen para widgets | Widget (solo lectura) |
 | `POST /api/push` | Registrar o quitar una suscripción de notificaciones | Dispositivo |
 | `POST /api/emparejar` | Canjea un código de un solo uso por una llave de dispositivo | Código |
+| `GET /api/lecturas` | Estantes, desafíos, búsqueda y ficha de libros de Goodreads para Consulta (solo lectura, con copia en memoria) | Dispositivo |
 
 ## Tareas de GitHub en pablocarvallo/datos
 

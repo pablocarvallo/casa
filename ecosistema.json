@@ -669,7 +669,7 @@
       ],
       "cache_sw": null,
       "icono": "Pila de libros (propio)",
-      "notas": "Único alojamiento fuera de GitHub Pages. Perfil Goodreads 90308354."
+      "notas": "Único alojamiento fuera de GitHub Pages. Perfil Goodreads 90308354. Desde el 24 nov 2026 Consulta lee Goodreads por domesticas-api (/api/lecturas); el proyecto lecturas-beta de Vercel se puede retirar al terminar la convivencia."
     },
     {
       "id": "cartelera",
@@ -1056,8 +1056,8 @@
         ],
         "nota": "Calendario queda fuera (app independiente). Los datos del Banco Central siguen viniendo de la tarea del repositorio pablocarvallo/indicadores, que debe mantenerse aunque se retire la app Indicadores.",
         "url": "https://pablocarvallo.github.io/consulta/",
-        "estado": "Versión 1.1.0 (24 nov 2026): Indicadores y Cartelera (Quiero ver, Vistos, búsqueda y ficha de TMDB, respaldo de la app Cartelera e historial de Netflix o Prime Video), y Ajustes; Lecturas llega en la próxima versión. Convive un mes con las apps antiguas.",
-        "datos": "cartelera.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. La clave de TMDB y las plataformas de cada título quedan solo en el iPhone. Los indicadores vienen de fuentes públicas (findic.cl o mindicador.cl y los archivos datos/*.json del repositorio indicadores) y quedan guardados en el iPhone.",
+        "estado": "Versión 1.2.0 (24 nov 2026): Indicadores, Lecturas (Leyendo, Desafíos, Quiero leer, búsqueda y ficha de cada libro, leídos de Goodreads con /api/lecturas) y Cartelera (Quiero ver, Vistos, búsqueda y ficha de TMDB, respaldo de la app Cartelera e historial de Netflix o Prime Video), y Ajustes. Convive un mes con las apps antiguas.",
+        "datos": "cartelera.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. Lecturas lee Goodreads con /api/lecturas de domesticas-api (misma llave, solo lectura). La clave de TMDB y las plataformas de cada título quedan solo en el iPhone. Los indicadores vienen de fuentes públicas (findic.cl o mindicador.cl y los archivos datos/*.json del repositorio indicadores) y quedan guardados en el iPhone.",
         "diseno": "Domésticas 27, acento ámbar (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py).",
         "pestanas": [
           "Indicadores",
@@ -1110,7 +1110,7 @@
       "repo": "pablocarvallo/api",
       "url": "https://domesticas-api.vercel.app",
       "alojamiento": "Vercel (proyecto domesticas-api)",
-      "notas": "Función creada el 24 nov 2026. Guarda el token de GitHub como variable GITHUB_TOKEN (vence el 23/11/2027). Rutas /api/aviso, /api/datos, /api/resumen, /api/emparejar y /api/estado; llaves por dispositivo de tipo dispositivo, atajos o widget."
+      "notas": "Función creada el 24 nov 2026. Guarda el token de GitHub como variable GITHUB_TOKEN (vence el 23/11/2027). Rutas /api/aviso, /api/datos, /api/resumen, /api/emparejar, /api/estado y /api/lecturas (Goodreads para Consulta, con copia de 10 minutos; el lector lib/goodreads.js se copió de pablocarvallo/lecturas el 24 nov 2026 y desde entonces este repositorio es la fuente); llaves por dispositivo de tipo dispositivo, atajos o widget."
     },
     "datos": {
       "repo": "pablocarvallo/datos",
