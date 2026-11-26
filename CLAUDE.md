@@ -16,6 +16,11 @@ la base común de diseño y las herramientas que la copian a cada app.
   (ver README.md).
 - `app/`: la app Casa nueva del plan de 5 apps (ver app/README.md), con el diseño Domésticas 27 de `diseno27/`
   (se copia con `herramientas/aplicar-diseno27.py`). Pruebas: `TZ=America/Santiago node --test app/pruebas/*.test.js`.
+- `diseno27/skins.css`: skins de las apps Domésticas 27 (Casa, Finanzas y Consulta), elegidos en Ajustes → Apariencia →
+  Skin y guardados en las preferencias de cada app; se aplican con `<html data-skin="…">`. Solo cambian el aspecto, nunca
+  el funcionamiento. Hoy: «vidrio» (por omisión, sin data-skin) y «tinta» (tinta electrónica, como un Kindle). Va en el
+  bloque `/*D27:SKINS*/`, al final del CSS de cada app (después de APP); cada regla empieza con `[data-skin="…"]`. Al
+  cambiarlo, comprobar con capturas que el diseño por omisión no cambie.
 
 ## Alcance de una instrucción
 

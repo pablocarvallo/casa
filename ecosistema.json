@@ -15,7 +15,8 @@
     "manuales": "Mis créditos y Gastos médicos son de ingreso manual: no toman datos de admincasa.xlsx.",
     "mini_planilla": "Mini Planilla funciona de manera independiente: no se integra a ninguna de las 5 apps ni comparte datos con ellas.",
     "gastos_medicos": "Gastos médicos queda como app independiente, fuera de Finanzas y de las 5 apps (decidido el 24 nov 2026).",
-    "calendario": "Calendario queda como app independiente, fuera de Consulta y de las 5 apps, igual que Gastos médicos y Mini Planilla (decidido el 24 nov 2026)."
+    "calendario": "Calendario queda como app independiente, fuera de Consulta y de las 5 apps, igual que Gastos médicos y Mini Planilla (decidido el 24 nov 2026).",
+    "skins": "Las apps Domésticas 27 (Casa, Finanzas y Consulta) tienen skins que solo cambian el aspecto, elegidos en Ajustes → Apariencia → Skin: Vidrio (por omisión) y Tinta electrónica, como un lector Kindle (pedido el 26 nov 2026). CSS en diseno27/skins.css, bloque D27:SKINS de cada app. Noche y Juegos conservan su diseño."
   },
   "como_usar": [
     "Una instrucción indica su alcance: «todas», un grupo («las de cuentas») o una app («solo FAN»).",
@@ -1013,9 +1014,9 @@
         ],
         "nota": "Mis créditos sigue siendo de ingreso manual. Gastos médicos queda fuera (app independiente).",
         "url": "https://pablocarvallo.github.io/finanzas/",
-        "estado": "Versión 1.2.3 (26 nov 2026): Resumen, Cuentas (FAN, Master, LiderBCI, Copec), Pagos del mes, Mesadas, Mis créditos y Ajustes. Las hojas se cierran arrastrándolas hacia abajo. Los puntos de LiderBCI se ven al tocar «Puntos» en su recuadro; Master y LiderBCI no tienen texto bajo el recuadro. Master genera un extracto entre dos fechas (total a pagar; compras Titular y Adicional; cuotas del periodo con su número, como 2/3; cargos; abonos aparte) y lo exporta a Excel (excel.js, sin bibliotecas). Las compras en cuotas de Master son una categoría aparte, sin Titular ni Adicional, y se elige en qué facturación se cobra su primera cuota. Convive un mes con las apps antiguas.",
+        "estado": "Versión 1.4.0 (26 nov 2026): Resumen, Cuentas (FAN, Master, LiderBCI, Copec), Pagos del mes, Mesadas, Mis créditos y Ajustes. Las hojas se cierran arrastrándolas hacia abajo. Los puntos de LiderBCI se ven al tocar «Puntos» en su recuadro; Master y LiderBCI no tienen texto bajo el recuadro. Master genera un extracto entre dos fechas (total a pagar; compras Titular y Adicional; cuotas del periodo con su número, como 2/3; cargos; abonos aparte) y lo exporta a Excel (excel.js, sin bibliotecas). Las compras en cuotas de Master son una categoría aparte, sin Titular ni Adicional, y se elige en qué facturación se cobra su primera cuota. Master se lleva como el estado de cuenta del banco (1.3.0). Skin Vidrio o Tinta electrónica en Ajustes → Apariencia (1.4.0). Convive un mes con las apps antiguas.",
         "datos": "cuentas.json, movimientos/AAAA-MM.json, pagos.json, mesadas.json y creditos.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. datos/herramientas/finanzas-calculos.mjs es copia de calculos.js para resumen.json.",
-        "diseno": "Domésticas 27 (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py)."
+        "diseno": "Domésticas 27 (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py). Skins Vidrio y Tinta electrónica (diseno27/skins.css)."
       },
       {
         "id": "casa",
@@ -1032,9 +1033,9 @@
         ],
         "url": "https://pablocarvallo.github.io/casa/app/",
         "carpeta": "app/",
-        "estado": "Versión 1.0.4 (25 nov 2026): las hojas se cierran arrastrándolas hacia abajo. Publicada el 24 nov 2026; convive un mes con Panel Casa y las apps de la casa.",
+        "estado": "Versión 1.1.0 (26 nov 2026): skin Vidrio o Tinta electrónica en Ajustes → Apariencia; las hojas se cierran arrastrándolas hacia abajo (1.0.4). Publicada el 24 nov 2026; convive un mes con Panel Casa y las apps de la casa.",
         "datos": "ciclos.json y rutinas.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. Maletas sigue con sus datos en el iPhone (la app Maletas va dentro de Casa).",
-        "diseno": "Domésticas 27 (diseno27/ en este repositorio; herramientas/aplicar-diseno27.py)."
+        "diseno": "Domésticas 27 (diseno27/ en este repositorio; herramientas/aplicar-diseno27.py). Skins Vidrio y Tinta electrónica (diseno27/skins.css)."
       },
       {
         "id": "noche",
@@ -1056,9 +1057,9 @@
         ],
         "nota": "Calendario queda fuera (app independiente). Los datos del Banco Central siguen viniendo de la tarea del repositorio pablocarvallo/indicadores, que debe mantenerse aunque se retire la app Indicadores.",
         "url": "https://pablocarvallo.github.io/consulta/",
-        "estado": "Versión 1.2.1 (25 nov 2026): Indicadores, Lecturas (Leyendo, Desafíos, Quiero leer, búsqueda y ficha de cada libro, leídos de Goodreads con /api/lecturas) y Cartelera (Quiero ver, Vistos, búsqueda y ficha de TMDB, respaldo de la app Cartelera e historial de Netflix o Prime Video), y Ajustes. Las hojas se cierran arrastrándolas hacia abajo. Convive un mes con las apps antiguas.",
+        "estado": "Versión 1.3.0 (26 nov 2026): Indicadores, Lecturas (Leyendo, Desafíos, Quiero leer, búsqueda y ficha de cada libro, leídos de Goodreads con /api/lecturas) y Cartelera (Quiero ver, Vistos, búsqueda y ficha de TMDB, respaldo de la app Cartelera e historial de Netflix o Prime Video), y Ajustes. Las hojas se cierran arrastrándolas hacia abajo. Skin Vidrio o Tinta electrónica en Ajustes → Apariencia (1.3.0). Convive un mes con las apps antiguas.",
         "datos": "cartelera.json en pablocarvallo/datos, a través de domesticas-api con llave de dispositivo. Lecturas lee Goodreads con /api/lecturas de domesticas-api (misma llave, solo lectura). La clave de TMDB y las plataformas de cada título quedan solo en el iPhone. Los indicadores vienen de fuentes públicas (findic.cl o mindicador.cl y los archivos datos/*.json del repositorio indicadores) y quedan guardados en el iPhone.",
-        "diseno": "Domésticas 27, acento ámbar (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py).",
+        "diseno": "Domésticas 27, acento ámbar (copiado desde casa/diseno27/ con herramientas/aplicar-diseno27.py). Skins Vidrio y Tinta electrónica (diseno27/skins.css).",
         "pestanas": [
           "Indicadores",
           "Lecturas",

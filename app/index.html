@@ -20,6 +20,12 @@
     var p = {}; try { p = JSON.parse(localStorage.getItem('casa27.prefs')) || {}; } catch (e) {}
     var oscuro = p.tema === 'oscuro' || (p.tema !== 'claro' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
     document.documentElement.setAttribute('data-theme', oscuro ? 'dark' : 'light');
+    // Skin (Ajustes → Apariencia): «vidrio» es el diseño de siempre; los demás están en el bloque D27:SKINS
+    if (p.skin && p.skin !== 'vidrio') document.documentElement.setAttribute('data-skin', p.skin);
+    if (p.skin === 'tinta') {
+      var ms = document.querySelectorAll('meta[name="theme-color"]');
+      for (var i = 0; i < ms.length; i++) { ms[i].setAttribute('data-vidrio', ms[i].content); ms[i].content = /dark/.test(ms[i].media) ? '#0d0d0c' : '#efede6'; }
+    }
   })();
 </script>
 <style>
@@ -352,6 +358,129 @@ body.en-maletas .c-desvanecer { display: none; }
   .c-hoja, .c-fondo-hoja, .c-toast, .c-barra-sup { transition: none; }
 }
 /*APP:END*/
+/*D27:SKINS:START*/
+/* Domésticas 27 — skins. Un skin cambia solo el aspecto: se elige en Ajustes → Apariencia y queda en <html data-skin="…">.
+   Sin data-skin (o «vidrio») la app se ve con el diseño de vidrio de siempre. Este bloque va al final del CSS de cada
+   app (después de APP), para poder ajustar también las piezas propias (c-*). Las reglas de cada skin empiezan con
+   [data-skin="…"], así que no tocan el diseño por omisión. Para agregar un skin: sus variables, sus ajustes de
+   componentes y una opción más en Ajustes de cada app. */
+
+/* ===================== Tinta electrónica ===================== */
+/* Como un lector de libros electrónicos (Kindle): papel gris cálido, tinta negra, letra con serifa, líneas finas en vez
+   de vidrio y sombras, sin colores ni degradados y sin animaciones. En oscuro, letra clara sobre negro. */
+html[data-skin="tinta"] {
+  --fondo: #efede6; --superficie: #f7f6f1; --superficie-2: #e8e6df;
+  --vidrio: #f7f6f1; --vidrio-tintado: #f7f6f1; --vidrio-brillo: transparent; --vidrio-borde: #1a1a1a;
+  --tinta: #161616; --tinta-2: #4c4b48; --tinta-3: #7b7974; --separador: #c4c0b6; --relleno: rgba(22, 22, 22, .07);
+  --linea: #9d9990; --papel-velo: rgba(22, 22, 22, .18);
+  --finanzas-texto: var(--tinta); --finanzas-relleno: var(--tinta); --finanzas-sobre: var(--superficie); --finanzas-hi: var(--tinta); --finanzas-lo: var(--tinta); --finanzas-brillo: transparent;
+  --casa-texto: var(--tinta); --casa-relleno: var(--tinta); --casa-sobre: var(--superficie); --casa-hi: var(--tinta); --casa-lo: var(--tinta); --casa-brillo: transparent;
+  --noche-texto: var(--tinta); --noche-relleno: var(--tinta); --noche-sobre: var(--superficie); --noche-hi: var(--tinta); --noche-lo: var(--tinta); --noche-brillo: transparent;
+  --consulta-texto: var(--tinta); --consulta-relleno: var(--tinta); --consulta-sobre: var(--superficie); --consulta-hi: var(--tinta); --consulta-lo: var(--tinta); --consulta-brillo: transparent;
+  --juegos-texto: var(--tinta); --juegos-relleno: var(--tinta); --juegos-sobre: var(--superficie); --juegos-hi: var(--tinta); --juegos-lo: var(--tinta); --juegos-brillo: transparent;
+  --reloj-rojo: var(--tinta); --positivo: var(--tinta); --negativo: var(--tinta); --aviso: var(--tinta); --aviso-relleno: var(--tinta-3);
+  --sombra-vidrio: 0 0 0 1px var(--linea); --sombra-flotante: 0 0 0 1.5px var(--tinta); --sombra-heroe: 0 0 0 2px var(--tinta);
+  --desenfoque-vidrio: 0px; --desenfoque-barra: 0px; --saturacion-vidrio: 100%;
+  --radius-s: 4px; --radius-m: 6px; --radius-tarjeta: 8px; --radius-heroe: 10px; --radius-capsula: 8px;
+  --font-sans: Charter, "Bitstream Charter", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, ui-serif, serif;
+  --font-rounded: var(--font-sans);
+  color-scheme: light;
+}
+html[data-skin="tinta"][data-theme="dark"] {
+  --fondo: #0d0d0c; --superficie: #151514; --superficie-2: #1e1e1c;
+  --vidrio: #151514; --vidrio-tintado: #151514; --vidrio-borde: #ecebe6;
+  --tinta: #ecebe6; --tinta-2: #b3b1ab; --tinta-3: #85837e; --separador: #3d3c39; --relleno: rgba(236, 235, 230, .09);
+  --linea: #5a5955; --papel-velo: rgba(0, 0, 0, .55);
+  color-scheme: dark;
+}
+
+/* Lienzo, vidrio y barras: planos, con una línea fina */
+[data-skin="tinta"] .d-app { background: var(--fondo); -webkit-font-smoothing: auto; }
+[data-skin="tinta"] .d-vidrio::before { display: none; }
+[data-skin="tinta"] .d-vidrio, [data-skin="tinta"] .d-barra, [data-skin="tinta"] .d-aviso, [data-skin="tinta"] .d-boton--vidrio,
+[data-skin="tinta"] .d-boton-circular, [data-skin="tinta"] .d-cabecera--fija, [data-skin="tinta"] .c-barra-sup, [data-skin="tinta"] .c-hoja {
+  -webkit-backdrop-filter: none; backdrop-filter: none; }
+[data-skin="tinta"] .d-cabecera--fija, [data-skin="tinta"] .c-barra-sup { background: var(--fondo); box-shadow: 0 1px 0 var(--tinta); }
+[data-skin="tinta"] .d-cabecera h1 { letter-spacing: 0; }
+[data-skin="tinta"] .d-seccion a, [data-skin="tinta"] .c-pasos a { color: var(--tinta); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Botones: negro lleno o con borde; al tocar se invierten, como en la tinta electrónica */
+[data-skin="tinta"] .d-boton { box-shadow: none; }
+[data-skin="tinta"] .d-boton:active { transform: none; background: var(--fondo); color: var(--tinta); box-shadow: inset 0 0 0 2px var(--tinta); }
+[data-skin="tinta"] .d-boton--discreto, [data-skin="tinta"] .c-mini--discreto { background: transparent; color: var(--tinta); box-shadow: inset 0 0 0 1.5px var(--tinta); }
+[data-skin="tinta"] .d-boton--discreto:active, [data-skin="tinta"] .c-mini--discreto:active { background: var(--tinta); color: var(--fondo); }
+[data-skin="tinta"] .d-boton--vidrio, [data-skin="tinta"] .d-boton-circular { background: var(--superficie); color: var(--tinta); box-shadow: inset 0 0 0 1.5px var(--tinta); }
+[data-skin="tinta"] .d-boton-circular--acento { background: var(--tinta); color: var(--fondo); }
+[data-skin="tinta"] .c-boton-peligro { background: transparent; color: var(--tinta); box-shadow: none; text-decoration: underline; text-underline-offset: 3px; }
+[data-skin="tinta"] .d-boton:focus-visible, [data-skin="tinta"] .d-boton-circular:focus-visible, [data-skin="tinta"] .d-barra button:focus-visible { outline-color: var(--tinta); }
+
+/* Tarjeta principal: papel con marco grueso */
+[data-skin="tinta"] .d-heroe { color: var(--tinta); background: var(--superficie); }
+[data-skin="tinta"] .d-heroe::after { display: none; }
+[data-skin="tinta"] .d-heroe .d-etiqueta { opacity: 1; color: var(--tinta-2); }
+[data-skin="tinta"] .d-heroe .d-barra-avance { background: transparent; box-shadow: inset 0 0 0 1px var(--tinta); }
+
+/* Listas e iconos: línea de 1 px y cuadros con borde en vez de color */
+[data-skin="tinta"] .d-fila + .d-fila::before, [data-skin="tinta"] .d-lista > li + li::before { height: 1px; }
+[data-skin="tinta"] .d-cuadro, [data-skin="tinta"] .c-cuenta-ico { color: var(--tinta); background: transparent; box-shadow: inset 0 0 0 1.5px var(--tinta); }
+[data-skin="tinta"] .c-fila:active, [data-skin="tinta"] .c-ciclo:active, [data-skin="tinta"] .c-cuenta:active { transform: none; background: var(--relleno); }
+
+/* Control segmentado y pestañas: la opción elegida, en negativo */
+[data-skin="tinta"] .d-segmentos { background: transparent; box-shadow: inset 0 0 0 1.5px var(--tinta); }
+[data-skin="tinta"] .d-segmentos button[aria-pressed="true"] { background: var(--tinta); color: var(--fondo); box-shadow: none; }
+[data-skin="tinta"] .d-barra { background: var(--superficie); }
+[data-skin="tinta"] .d-barra button[aria-current="page"] { background: var(--tinta); color: var(--fondo); box-shadow: none; }
+[data-skin="tinta"] .c-desvanecer { background: linear-gradient(to bottom, transparent, var(--fondo) 45%); }
+
+/* Estados sin color: con forma y peso */
+[data-skin="tinta"] .d-anillo .d-pista { stroke: var(--separador); }
+[data-skin="tinta"] .d-anillo--aviso .d-arco { stroke-linecap: butt; }
+[data-skin="tinta"] .d-chip { background: transparent; box-shadow: inset 0 0 0 1px currentColor; }
+[data-skin="tinta"] .d-chip--negativo { font-weight: 700; }
+[data-skin="tinta"] .d-aviso .d-punto, [data-skin="tinta"] .c-toast .d-punto { background: var(--tinta); box-shadow: none; }
+[data-skin="tinta"] .c-toast--error .d-punto { background: transparent; box-shadow: inset 0 0 0 2px var(--tinta); }
+[data-skin="tinta"] .c-punto { background: var(--tinta); }
+[data-skin="tinta"] .c-punto--aviso { background: transparent; box-shadow: inset 0 0 0 2px var(--tinta); }
+[data-skin="tinta"] .c-punto--neg { box-shadow: 0 0 0 2px var(--fondo), 0 0 0 3.5px var(--tinta); }
+[data-skin="tinta"] .c-detalle--aviso { font-style: italic; }
+[data-skin="tinta"] .c-detalle--neg, [data-skin="tinta"] .c-texto--alerta, [data-skin="tinta"] .c-error, [data-skin="tinta"] .c-hoja p.c-error { font-weight: 700; }
+[data-skin="tinta"] .c-check[aria-pressed="true"] { background: var(--tinta); border-color: var(--tinta); color: var(--fondo); }
+[data-skin="tinta"] .c-check { border-color: var(--tinta-3); }
+[data-skin="tinta"] .c-insignia, [data-skin="tinta"] .d-fila .d-texto .c-insignia { background: transparent; box-shadow: inset 0 0 0 1px var(--tinta-3); }
+
+/* Hojas y avisos: sin velo de color, con borde */
+[data-skin="tinta"] .c-fondo-hoja { background: var(--papel-velo); }
+[data-skin="tinta"] .c-hoja { background: var(--fondo); border-radius: 14px 14px 0 0; }
+[data-skin="tinta"] .c-hoja::before { background: var(--tinta); opacity: .55; }
+[data-skin="tinta"] .c-toast.d-aviso { background: var(--superficie); }
+
+/* Campos y chips */
+[data-skin="tinta"] .c-campo input[type="date"], [data-skin="tinta"] .c-campo input[type="text"], [data-skin="tinta"] .c-campo input[type="number"],
+[data-skin="tinta"] .c-campo input[type="time"], [data-skin="tinta"] .c-campo textarea, [data-skin="tinta"] .c-campo select, [data-skin="tinta"] .c-interruptor {
+  background: var(--superficie); box-shadow: inset 0 0 0 1px var(--linea); border-radius: var(--radius-m); }
+[data-skin="tinta"] .c-campo input:focus, [data-skin="tinta"] .c-campo textarea:focus { outline-color: var(--tinta); }
+[data-skin="tinta"] .c-chips label { background: transparent; box-shadow: inset 0 0 0 1.5px var(--tinta); }
+[data-skin="tinta"] .c-chips input:checked + label { background: var(--tinta); color: var(--fondo); }
+[data-skin="tinta"] .c-chips input:focus-visible + label { outline-color: var(--tinta); }
+[data-skin="tinta"] .c-barra-cupo { background: transparent; box-shadow: inset 0 0 0 1px var(--tinta-3); }
+
+/* Consulta: filtros, botones de Goodreads, plataformas, cifras y barras de avance, con borde en vez de relleno */
+[data-skin="tinta"] [data-app="consulta"] .c-filtro, [data-skin="tinta"] [data-app="consulta"] .c-libro-acc a, [data-skin="tinta"] [data-app="consulta"] .c-mas {
+  background: transparent; color: var(--tinta); box-shadow: inset 0 0 0 1.5px var(--tinta); }
+[data-skin="tinta"] [data-app="consulta"] .c-filtro[aria-pressed="true"] { background: var(--tinta); color: var(--fondo); }
+[data-skin="tinta"] [data-app="consulta"] .c-plat, [data-skin="tinta"] [data-app="consulta"] .c-genero, [data-skin="tinta"] [data-app="consulta"] .c-stat,
+[data-skin="tinta"] [data-app="consulta"] .c-resumen-nf div { background: transparent; box-shadow: inset 0 0 0 1px var(--linea); }
+[data-skin="tinta"] [data-app="consulta"] .c-fecha { background: var(--superficie); box-shadow: inset 0 0 0 1px var(--linea); }
+[data-skin="tinta"] [data-app="consulta"] .c-avance, [data-skin="tinta"] [data-app="consulta"] .c-barra { background: transparent; box-shadow: inset 0 0 0 1px var(--tinta-3); }
+
+/* Imágenes (portadas, afiches, logos) en escala de grises */
+[data-skin="tinta"] img, [data-skin="tinta"] .c-plogo, [data-skin="tinta"] .c-poster { filter: grayscale(1) contrast(1.06); }
+[data-skin="tinta"][data-theme="dark"] img, [data-skin="tinta"][data-theme="dark"] .c-poster { filter: grayscale(1) brightness(.88); }
+
+/* La tinta electrónica no se anima: los cambios aparecen de una vez */
+[data-skin="tinta"] *, [data-skin="tinta"] *::before, [data-skin="tinta"] *::after { transition: none !important; animation: none !important; }
+[data-skin="tinta"] .c-cargando::before { border: 2px dotted var(--tinta); }
+/*D27:SKINS:END*/
 </style>
 </head>
 <body class="d-app" data-app="casa">
@@ -414,7 +543,8 @@ const NOMBRE_CICLO = { gas: 'Gas', agua: 'Filtro', cepillos: 'Cepillos', capsula
 let llave = leerLS(CL.llave, null);          // { llave, nombre, id }
 let srv = leerLS(CL.datos, {});              // copia de lo que hay en GitHub: { archivo: { contenido, sha, leido } }
 let cola = leerLS(CL.cola, []);              // cambios aún sin guardar en GitHub: [{ archivo, cambio, mensaje }]
-let prefs = leerLS(CL.prefs, { tema: 'auto', vidrio: 'claro' });
+let prefs = leerLS(CL.prefs, { tema: 'auto', vidrio: 'claro', skin: 'vidrio' });
+if (!prefs.skin) prefs.skin = 'vidrio';
 let sync = leerLS(CL.sync, { at: 0 });
 let ui = Object.assign({ tab: 'hoy', ciclo: 'gas' }, leerLS(CL.ui, {}));
 if (ui.tab === 'maletas') ui.tab = 'hoy';
@@ -774,10 +904,11 @@ function vistaAjustes() {
     '<ul class="d-lista d-vidrio" style="margin-top:12px">' +
     fila({ icono: 'capsula', titulo: 'Mi cápsula diaria', sub: 'No tiene respaldo: registra el frasco con las cápsulas que quedan', a: 'ir-ciclo', attrs: 'data-c="capsula"', chev: true }) +
     fila({ icono: 'cama', titulo: 'Sábanas', sub: s.atrasados.length ? s.atrasados.length + ' miércoles sin marcar: márcalos si ya estaban hechos' : 'Al día', a: 'ir-ciclo', attrs: 'data-c="sabanas"', chev: true }) + '</ul>';
-  const seg = (nombre, op, val) => `<div class="d-segmentos" role="group" aria-label="${nombre}">${op.map(([v, t]) => `<button data-a="pref" data-k="${nombre === 'Tema' ? 'tema' : 'vidrio'}" data-v="${v}" aria-pressed="${val === v}">${t}</button>`).join('')}</div>`;
+  const seg = (nombre, op, val) => `<div class="d-segmentos" role="group" aria-label="${nombre}">${op.map(([v, t]) => `<button data-a="pref" data-k="${{ Tema: 'tema', Vidrio: 'vidrio', Skin: 'skin' }[nombre]}" data-v="${v}" aria-pressed="${val === v}">${t}</button>`).join('')}</div>`;
   html += seccion('Apariencia') + '<ul class="d-lista d-vidrio">' +
+    `<li class="d-fila c-ajuste-seg"><span class="d-texto"><strong>Skin</strong></span>${seg('Skin', [['vidrio', 'Vidrio'], ['tinta', 'Tinta electrónica']], prefs.skin)}</li>` +
     `<li class="d-fila c-ajuste-seg"><span class="d-texto"><strong>Tema</strong></span>${seg('Tema', [['auto', 'Automático'], ['claro', 'Claro'], ['oscuro', 'Oscuro']], prefs.tema)}</li>` +
-    `<li class="d-fila c-ajuste-seg"><span class="d-texto"><strong>Vidrio</strong></span>${seg('Vidrio', [['claro', 'Claro'], ['tintado', 'Tintado']], prefs.vidrio)}</li></ul>`;
+    (prefs.skin === 'tinta' ? '' : `<li class="d-fila c-ajuste-seg"><span class="d-texto"><strong>Vidrio</strong></span>${seg('Vidrio', [['claro', 'Claro'], ['tintado', 'Tintado']], prefs.vidrio)}</li>`) + '</ul>';
   html += seccion('Respaldo') + '<ul class="d-lista d-vidrio">' +
     fila({ icono: 'copiar', titulo: 'Copiar respaldo de Casa', sub: 'Gas, filtro, cepillos, cápsula y sábanas en un texto', a: 'respaldo', chev: true }) + '</ul>' +
     '<p class="c-nota">Cada cambio queda además en el historial de GitHub, desde donde se puede recuperar cualquier versión.</p>';
@@ -1207,6 +1338,12 @@ function aplicarPrefs() {
   const oscuro = prefs.tema === 'oscuro' || (prefs.tema !== 'claro' && matchMedia('(prefers-color-scheme: dark)').matches);
   document.documentElement.setAttribute('data-theme', oscuro ? 'dark' : 'light');
   if (prefs.vidrio === 'tintado') document.body.setAttribute('data-vidrio', 'tintado'); else document.body.removeAttribute('data-vidrio');
+  // Skin: solo cambia el aspecto (bloque D27:SKINS). Con «tinta», la barra de estado toma el color del papel.
+  if (prefs.skin && prefs.skin !== 'vidrio') document.documentElement.setAttribute('data-skin', prefs.skin); else document.documentElement.removeAttribute('data-skin');
+  document.querySelectorAll('meta[name="theme-color"]').forEach((m) => {
+    if (!m.dataset.vidrio) m.dataset.vidrio = m.content;
+    m.content = prefs.skin === 'tinta' ? (/dark/.test(m.media) ? '#0d0d0c' : '#efede6') : m.dataset.vidrio;
+  });
 }
 
 /* ---------- Arranque ---------- */

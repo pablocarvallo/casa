@@ -11,7 +11,8 @@ antiguas (desde el 24 nov 2026); Panel Casa sigue en `https://pablocarvallo.gith
 - **Ciclos**: detalle de gas, filtro, cepillos, cápsula y sábanas, con su historial y sus acciones.
 - **Maletas**: la app Maletas (`/maletas/`) dentro de Casa, con su estilo ilustrado. Sus datos quedan en el iPhone,
   como hoy; todavía no se guardan en GitHub.
-- **Ajustes**: conexión con GitHub, traer los respaldos de las apps antiguas, tema y vidrio, respaldo.
+- **Ajustes**: conexión con GitHub, traer los respaldos de las apps antiguas, skin (Vidrio o Tinta electrónica), tema y
+  vidrio, respaldo.
 
 El botón **+** abre los registros rápidos (cápsula, abrir o comprar balón, filtro, cepillo, sábanas, frasco nuevo).
 
